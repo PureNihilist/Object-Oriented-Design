@@ -15,9 +15,9 @@ class TestApplication {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Client client1 = new Client("jan","kowalski");
-        Client client2 = new Client("andrzej","malinowski");
-        Client client3 = new Client("zbigniew","nowak");
+        Client client1 = new Client("jan","kowalski","");
+        Client client2 = new Client("andrzej","malinowski","");
+        Client client3 = new Client("zbigniew","nowak","");
 
         String aa = client1.getName();
         int id1 = client1.getID();

@@ -10,6 +10,30 @@ package javaapplication2;
  *
  * @author student
  */
+// singleton
 public class Shop {
+    private static Shop singleton = new Shop();
     
+    private Shop(){
+        
+    }
+    
+    public static Shop getInstance() {
+        return singleton;
+    }
+    
+    protected static void method() {
+        
+    }
 }
+
+
+//@Value.Immutable(singleton==true)
+/*
+public class Slmm {
+}
+ImmutableSingletonImmutables.builder().build();
+
+
+
+*/

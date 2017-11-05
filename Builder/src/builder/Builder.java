@@ -10,27 +10,27 @@ public class Builder {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Dyrektor kelner = new Dyrektor();
-        builderDanie danieObiadowe = new Obiad();
+        Waiter kelner = new Waiter();
+        dishBuilder danieObiadowe = new Dinner();
         danieObiadowe.createNewProduct();
         kelner.setDanieBuilder(danieObiadowe);
         System.out.println(danieObiadowe.getDanie());
-        danieObiadowe.nazwa();
-        danieObiadowe.opis();
+        danieObiadowe.name();
+        danieObiadowe.describe();
         
-        builderDanie sniadanie = new Sniadanie();
+        dishBuilder sniadanie = new Breakfast();
         sniadanie.createNewProduct();
         kelner.setDanieBuilder(sniadanie);
         System.out.println(sniadanie.getDanie());
-        sniadanie.nazwa();
-        sniadanie.opis();
+        sniadanie.name();
+        sniadanie.describe();
         
-         builderDanie kolacja = new Kolacja();
+        dishBuilder kolacja = new Supper();
         kolacja.createNewProduct();
         kelner.setDanieBuilder(kolacja);
         System.out.println(kolacja.getDanie());
-        kolacja.nazwa();
-        kolacja.opis();
+        kolacja.name();
+        kolacja.describe();
         
         // kolacja, obiad, sniadanie rozszerzaja builderDanie
         // builder danie to abstrakcyjna klasa pokazujaca metody ktore potem przekazuje

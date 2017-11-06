@@ -5,6 +5,8 @@
  */
 package prototypeexample;
 
+import java.util.HashMap;
+
 /**
  *
  * @author PC
@@ -16,5 +18,5 @@ public interface Prototype {
     String getName();
     String getSurname();
     void collectMoney();
-    
+    HashMap<Integer,Integer> getNominals();
 }

@@ -6,7 +6,9 @@
 package prototypeexample;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -28,7 +30,14 @@ public class PrototypePattern {
             }
             for(Prototype p : prototypes) {
                 p.collectMoney();
-                System.out.println(p.getName() + " " + p.getSurname() + " collected " + p.getMoney() + " money ");
+                System.out.println(p.getName() + " " + p.getSurname() + " collected " + p.getMoney() + " money " );
+                HashMap<Integer, Integer> nominals = p.getNominals();
+                  for (Map.Entry<Integer, Integer> entry : nominals.entrySet()) {
+                    Integer key = entry.getKey(); //nominal
+                    Integer value = entry.getValue(); //ilosc banknotow
+                    System.out.println("he has " + value + " of " + key );
+                    System.out.println("sum: " + value*key);
+                  }
             }
             
         } else {

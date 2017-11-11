@@ -19,12 +19,14 @@ public class secondPrototype implements Prototype{
     int money = 0;
     HashMap<Integer,Integer> nominals = new HashMap<>();
 
-
     @Override
     public Prototype clone() {
-        return new secondPrototype();
+        secondPrototype prototype = new secondPrototype();
+        prototype.money = this.getMoney();
+        prototype.nominals = Prototype.copy(this.nominals);
+        return prototype;
     }
-
+   
     @Override
     public int getMoney() {
         return money;

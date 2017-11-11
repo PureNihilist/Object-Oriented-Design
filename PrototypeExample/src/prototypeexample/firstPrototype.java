@@ -21,9 +21,12 @@ public class firstPrototype implements Prototype{
     
     @Override
     public Prototype clone() {
-        return new firstPrototype();
+        firstPrototype prototype = new firstPrototype();
+        prototype.money = this.getMoney();
+        prototype.nominals = Prototype.copy(this.nominals);
+        return prototype;
     }
-
+    
     @Override
     public int getMoney() {
         return money;

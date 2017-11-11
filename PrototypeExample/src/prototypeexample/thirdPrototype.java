@@ -11,7 +11,7 @@ import java.util.Random;
 
 /**
  *
- * @author PC
+ * @author Mateusz Galas
  */
 public class thirdPrototype implements Prototype{
     String name = "Jakub";
@@ -19,10 +19,12 @@ public class thirdPrototype implements Prototype{
     int money = 0;
     HashMap<Integer,Integer> nominals = new HashMap<>();
 
-
     @Override
     public Prototype clone() {
-        return new thirdPrototype();
+        thirdPrototype prototype = new thirdPrototype();
+        prototype.money = this.getMoney();
+        prototype.nominals = Prototype.copy(this.nominals);
+        return prototype;
     }
 
     @Override

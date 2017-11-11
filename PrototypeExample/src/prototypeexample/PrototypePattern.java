@@ -31,6 +31,8 @@ public class PrototypePattern {
             for(Prototype p : prototypes) {
                 p.collectMoney();
                 System.out.println(p.getName() + " " + p.getSurname() + " collected " + p.getMoney() + " money " );
+                Prototype clone = p.clone();
+                System.out.println("Clone: "+ clone.getName() + " " + p.getSurname() + " collected " + p.getMoney());
                 HashMap<Integer, Integer> nominals = p.getNominals();
                   for (Map.Entry<Integer, Integer> entry : nominals.entrySet()) {
                     Integer key = entry.getKey(); //nominal

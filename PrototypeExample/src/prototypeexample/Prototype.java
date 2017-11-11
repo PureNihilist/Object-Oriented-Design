@@ -19,4 +19,11 @@ public interface Prototype {
     String getSurname();
     void collectMoney();
     HashMap<Integer,Integer> getNominals();
+    public static HashMap<Integer, Integer> copy(HashMap<Integer, Integer> original) {
+        HashMap<Integer, Integer> copy = new HashMap<>();
+        original.entrySet().forEach((entry) -> {
+            copy.put(entry.getKey(),entry.getValue());
+        });
+        return copy;
+    }
 }

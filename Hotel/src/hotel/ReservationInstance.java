@@ -11,36 +11,39 @@ import java.util.List;
  *
  * @author Mateusz Galas
  */
-public class ReservationInstance implements Reservation,ReservationInfo {
+public class ReservationInstance implements Reservation {
 
-    ReservationInstance() {
-        // ustalic jak to ma wygladac
+    private final int ID;
+    private final Client client;
+    private final ReservationInfo reservationInfo;
+
+    //tutaj proponuje dwa sposoby tworzenia obiektu - mozesz wypowiedziec sie jbc na fb
+
+    public ReservationInstance(int id, Client client, ReservationInfo reservationInfo) {
+        this.ID = id;
+        this.client = client;
+        this.reservationInfo = reservationInfo;
     }
-    
 
-    @Override
-    public Period getPeriod() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<RoomInfo> getRoomsInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ReservationInstance(int id, Client client, Period period, List<Room> rooms) {
+        this.ID = id;
+        this.client = client;
+        this.reservationInfo = new ReservationInfo(period, rooms);
     }
 
     @Override
     public long getId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.ID;
     }
 
     @Override
     public Client getClient() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.client;
     }
 
     @Override
     public ReservationInfo getInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.reservationInfo;
     }
     
 }

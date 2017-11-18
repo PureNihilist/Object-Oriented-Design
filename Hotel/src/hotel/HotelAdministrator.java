@@ -14,6 +14,7 @@ import java.util.List;
 public class HotelAdministrator implements Hotel{
     
     private List<Room> rooms; //list of rooms
+    private List<ReservationInstance> Reservations;//list of reservations
 
     @Override
     public void loadRooms(Reader reader) {

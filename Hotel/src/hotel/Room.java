@@ -7,11 +7,13 @@ package hotel;
 public class Room implements RoomInfo {
     private final String name;
     private final int capacity;
-    private int fill;
-    Room(String roomName, int roomCapacity, int roomFill) {
-        name = roomName;
-        capacity = roomCapacity;
-        fill = roomFill;
+    private final int quality;
+    private final double price;
+    public Room(String roomName, int roomCapacity, int rommQuality){
+        this.name = roomName;
+        this.capacity = roomCapacity;
+        this.quality = rommQuality;
+        this.price = this.quality * this.capacity;
     }
     @Override
     public int getCapacity() {
@@ -22,14 +24,7 @@ public class Room implements RoomInfo {
         return name;
     }
     @Override
-    public int getFill() {
-        return fill;
-    }
+    public int getQuality() {return quality; }
     @Override
-    public void setFIll(int numberOfPeople) {
-        int updatedFill = this.getFill() + numberOfPeople;
-        if(updatedFill <= this.getCapacity()){
-            this.fill = updatedFill; 
-        }
-    }
+    public double getPrice() {return price; }
 }

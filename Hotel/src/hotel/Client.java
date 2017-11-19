@@ -9,12 +9,12 @@ abstract class Client {
     public String Name;
     public String Surname;
     public int age;
-    public long PESEL;
+    public int PESEL;
     public double discount;
 }
 
 class Person extends Client{
-    public Person(String Name, String Surname, int age, long PESEL){
+    public Person(String Name, String Surname, int age, int PESEL){
         super();
         this.Name = Name;
         this.Surname = Surname;
@@ -25,7 +25,7 @@ class Person extends Client{
 }
 
 class LoyalClient extends Client{
-    public LoyalClient(String Name, String Surname, int age, long PESEL){
+    public LoyalClient(String Name, String Surname, int age, int PESEL){
         super();
         this.Name = Name;
         this.Surname = Surname;
@@ -36,7 +36,7 @@ class LoyalClient extends Client{
 }
 
 class Learner extends Client{
-    public Learner(String Name, String Surname, int age, long PESEL){
+    public Learner(String Name, String Surname, int age, int PESEL){
         super();
         this.Name = Name;
         this.Surname = Surname;
@@ -49,7 +49,7 @@ class Learner extends Client{
 }
 
 class Student extends Client{
-    public Student(String Name, String Surname, int age, long PESEL){
+    public Student(String Name, String Surname, int age, int PESEL){
         super();
         this.Name = Name;
         this.Surname = Surname;
@@ -62,7 +62,7 @@ class Student extends Client{
 }
 
 class Pensioner extends Client{
-    public Pensioner(String Name, String Surname, int age, long PESEL){
+    public Pensioner(String Name, String Surname, int age, int PESEL){
         super();
         this.Name = Name;
         this.Surname = Surname;
@@ -73,7 +73,7 @@ class Pensioner extends Client{
 }
 
 class Invalid extends Client{
-    public Invalid(String Name, String Surname, int age, long PESEL){
+    public Invalid(String Name, String Surname, int age, int PESEL){
         super();
         this.Name = Name;
         this.Surname = Surname;
@@ -84,7 +84,7 @@ class Invalid extends Client{
 }
 
 class CompanyAgent extends Client {
-    public CompanyAgent(String Name, String Surname, int age, long PESEL) {
+    public CompanyAgent(String Name, String Surname, int age, int PESEL) {
         super();
         this.Name = Name;
         this.Surname = Surname;

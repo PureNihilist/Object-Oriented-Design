@@ -5,19 +5,24 @@
  */
 package hotel;
 
+import java.time.Period;
+import java.util.List;
+
 /**
  *
  * @author Mateusz Galas
  */
-public class ReservationInstance implements Reservation {
+public class ReservationInstance implements Reservation,ReservationInfo{
     private final long ID;
     private final Client client;
-    private final ReservationInfo reservationInfo;
+    private final Period period;
+    private final List <RoomInfo> roomInfo;
 
-    public ReservationInstance(long id, Client client, ReservationInfo reservationInfo) {
+    public ReservationInstance(long id, Client client, Period period, List<RoomInfo> info) {
         this.ID = id;
         this.client = client;
-        this.reservationInfo = reservationInfo;
+        this.period = period;
+        this.roomInfo = info;
     }
 
     @Override
@@ -29,10 +34,15 @@ public class ReservationInstance implements Reservation {
     public Client getClient() {
         return this.client;
     }
+    
+    @Override
+    public Period getPeriod() {
+        return this.period;
+    }
 
     @Override
-    public ReservationInfo getInfo() {
-        return this.reservationInfo;
+    public List<RoomInfo> getRoomsInfo() {
+        return this.roomInfo;
     }
     
 }

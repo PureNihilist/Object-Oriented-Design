@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,8 +60,8 @@ public class Reader {
         return rooms;
     }
     
-    public List<Reservation> readReservationCSV(String fileName) {
-        List<Reservation> reservations = new ArrayList<>();
+    public List<ReservationInstance> readReservationCSV(String fileName) {
+        List<ReservationInstance> reservations = new ArrayList<>();
         Path pathToFile = Paths.get(fileName);
         try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
             String line;
@@ -100,7 +101,8 @@ public class Reader {
                 LocalDate from = LocalDate.parse(periodFrom);
                 String periodTo = attributes[6];
                 LocalDate to = LocalDate.parse(periodTo);
-                PeriodInterface period = new PeriodControl(from,to); //throws exception but i catch it in global catch
+                PeriodControl period_control = new PeriodControl(from,to); //throws exception but i catch it in global catch
+                Period period = period_control.getPeriod();
                 List<Room> room_list = new ArrayList();
                 for(int i = 7 ; i < attributes.length ; i+=3) { //One client may take reservation for more then 1 room, every room requires name,capacity and quality
                     String roomName = attributes[i];
@@ -109,8 +111,8 @@ public class Reader {
                     Room room = new Room(roomName,roomCapacity,roomQuality);
                     room_list.add(room);
                 }
-                ReservationInfo info = new ReservationInfo(period,room_list);
-                Reservation reservation = new ReservationInstance(reservationId,client,info);//ustalic pola  
+                List<RoomInfo> room_info = new ArrayList<>();
+                ReservationInstance reservation = new ReservationInstance(reservationId,client,period,room_info);//ustalic pola  
                 reservations.add(reservation);
             }
         } catch(Exception ex) {

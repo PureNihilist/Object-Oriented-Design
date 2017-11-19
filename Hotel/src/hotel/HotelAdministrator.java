@@ -5,6 +5,8 @@
  */
 package hotel;
 
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,12 +16,13 @@ import java.util.List;
 public class HotelAdministrator implements Hotel{
     
     private List<Room> rooms; //list of rooms
-    private List<ReservationInstance> Reservations;//list of reservations
+    private List<ReservationInstance> reservations;//list of reservations
+    private Reader reader;
 
     @Override
     public void loadRooms(Reader reader) {
         reader = Reader.getInstance(); //get singleton instance of reader
-        rooms = reader.readRoomsCSV("Rooms.csv");
+        this.rooms = reader.readRoomsCSV("Rooms.csv");
     }
 
     @Override
@@ -37,14 +40,36 @@ public class HotelAdministrator implements Hotel{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<ReservationInfo> findFreeRooms(PeriodInterface period, List<Integer> rooms) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void loadReservations(Reader reader) {
+        reader = Reader.getInstance();
+        this.reservations = reader.readReservationCSV("Reservations.csv");
     }
 
     @Override
+    public List<ReservationInfo> findFreeRooms(Period period, List<Integer> rooms) {
+        loadReservations(reader);
+        List<ReservationInfo> free_rooms = new ArrayList<>();
+        for(ReservationInstance r : reservations) {
+            //check if our loaded reservations have free rooms and create free room list
+        }
+        return free_rooms;
+    }
+    
+    @Override
     public boolean makeReservation(Client client, ReservationInfo request) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Period period = request.getPeriod(); //request ma okres na ktory ktos chce zamowic pokoje
+        List<RoomInfo> rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
+        List<Integer> request_list = new ArrayList();
+        for(RoomInfo info : rooms) { //przegladam informacje z requesta
+            int roomCapacity = info.getCapacity();
+            request_list.add(roomCapacity);
+        }
+        List<ReservationInfo> free_rooms = findFreeRooms(period,request_list); //check if this request is possible (for this period and this room list)
+        if(!free_rooms.isEmpty()){
+            return true;
+        } else {
+            return false;
+        }
     }
     
 }

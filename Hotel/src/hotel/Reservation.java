@@ -7,5 +7,4 @@ package hotel;
 public interface Reservation {
     public long getId();
     public Client getClient();
-    public ReservationInfo getInfo();
 }

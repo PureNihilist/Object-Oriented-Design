@@ -33,13 +33,33 @@ public class HotelAdministrator implements Hotel{
     }
 
     @Override
-    public void addRoom(String name, int nOfBeds) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addRoom(String name, int nOfBeds, int Quality) {
+        for(Room room : rooms){
+            if(room.getName().equals(name)){
+                System.out.println("There's already a room with this name");
+                return;
+            }
+            else{
+                continue;
+            }
+        }
+        Room room = new Room(name,nOfBeds,Quality);
+        rooms.add(room);
     }
 
     @Override
     public void deleteRoom(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(Room room : rooms){
+            if(room.getName().equals(name)){
+                rooms.remove(room);
+                System.out.println("Room has been removed.");
+                return;
+            }
+            else{
+                continue;
+            }
+        }
+        System.out.println("There's no room with this name");
     }
 
     private void loadReservations(Reader reader) {

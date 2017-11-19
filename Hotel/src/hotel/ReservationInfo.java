@@ -7,15 +7,15 @@ import java.util.List;
  * @author Mateusz Galas
  */
 public class ReservationInfo {
-    private Period period;
+    private PeriodInterface period;
     private List<Room> Rooms;
 
-    public ReservationInfo(Period period, List<Room> rooms){
+    public ReservationInfo(PeriodInterface period, List<Room> rooms){
         this.period = period;
         this.Rooms = rooms;
     }
 
-    public void setPeriod(Period period) {
+    public void setPeriod(PeriodInterface period) {
         this.period = period;
     }
 
@@ -27,7 +27,7 @@ public class ReservationInfo {
         return Rooms;
     }
 
-    public Period getPeriod() {
+    public PeriodInterface getPeriod() {
         return period;
     }
 }

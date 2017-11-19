@@ -5,30 +5,19 @@
  */
 package hotel;
 
-import java.util.List;
-
 /**
  *
  * @author Mateusz Galas
  */
 public class ReservationInstance implements Reservation {
-
-    private final int ID;
+    private final long ID;
     private final Client client;
     private final ReservationInfo reservationInfo;
 
-    //tutaj proponuje dwa sposoby tworzenia obiektu - mozesz wypowiedziec sie jbc na fb
-
-    public ReservationInstance(int id, Client client, ReservationInfo reservationInfo) {
+    public ReservationInstance(long id, Client client, ReservationInfo reservationInfo) {
         this.ID = id;
         this.client = client;
         this.reservationInfo = reservationInfo;
-    }
-
-    public ReservationInstance(int id, Client client, Period period, List<Room> rooms) {
-        this.ID = id;
-        this.client = client;
-        this.reservationInfo = new ReservationInfo(period, rooms);
     }
 
     @Override

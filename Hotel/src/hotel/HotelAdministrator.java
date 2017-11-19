@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author nihilist
+ * @author Mateusz Galas
  */
 public class HotelAdministrator implements Hotel{
     
@@ -38,7 +38,7 @@ public class HotelAdministrator implements Hotel{
     }
 
     @Override
-    public List<ReservationInfo> findFreeRooms(Period period, List<Integer> rooms) {
+    public List<ReservationInfo> findFreeRooms(PeriodInterface period, List<Integer> rooms) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

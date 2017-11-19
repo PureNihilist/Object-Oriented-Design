@@ -1,3 +1,6 @@
+package Hotel;
+import java.util.Scanner;
+
 public class Menu{
     public static void main(String[] args) {
         System.out.println("Witamy w systemie obsługi hotelu recepcja!");
@@ -20,5 +23,6 @@ public class Menu{
                 break;
             case 4:
                 System.exit(0);
+        }
     }
 }

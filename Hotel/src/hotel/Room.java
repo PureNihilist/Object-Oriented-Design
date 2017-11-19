@@ -9,10 +9,10 @@ public class Room implements RoomInfo {
     private final int capacity;
     private final int quality;
     private final double price;
-    public Room(String roomName, int roomCapacity, int rommQuality){
+    public Room(String roomName, int roomCapacity, int roomQuality){
         this.name = roomName;
         this.capacity = roomCapacity;
-        this.quality = rommQuality;
+        this.quality = roomQuality;
         this.price = this.quality * this.capacity;
     }
     @Override
@@ -24,7 +24,11 @@ public class Room implements RoomInfo {
         return name;
     }
     @Override
-    public int getQuality() {return quality; }
+    public int getQuality() {
+        return quality; 
+    }
     @Override
-    public double getPrice() {return price; }
+    public double getPrice() {
+        return price; 
+    }
 }

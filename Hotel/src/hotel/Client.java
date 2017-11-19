@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hotel;
 
 /**
  *
- * @author PC
+ * @author Hubert Banaś and Mateusz Galas
  */
 abstract class Client {
     public Client(){}
@@ -45,7 +40,9 @@ class Learner extends Client{
         super();
         this.Name = Name;
         this.Surname = Surname;
-        this.age = age;
+        if(age <= 21) {
+            this.age = age;
+        }
         this.PESEL = PESEL;
         this.discount = 0.47;
     }
@@ -56,7 +53,9 @@ class Student extends Client{
         super();
         this.Name = Name;
         this.Surname = Surname;
-        this.age = age;
+        if(age <= 26) {
+            this.age = age;
+        }
         this.PESEL = PESEL;
         this.discount = 0.4;
     }
@@ -81,6 +80,17 @@ class Invalid extends Client{
         this.age = age;
         this.PESEL = PESEL;
         this.discount = 0.55;
+    }
+}
+
+class CompanyAgent extends Client {
+    public CompanyAgent(String Name, String Surname, int age, long PESEL) {
+        super();
+        this.Name = Name;
+        this.Surname = Surname;
+        this.age = age;
+        this.PESEL = PESEL;
+        this.discount = 0.35;
     }
 }
 

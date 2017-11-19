@@ -65,11 +65,7 @@ public class HotelAdministrator implements Hotel{
             request_list.add(roomCapacity);
         }
         List<ReservationInfo> free_rooms = findFreeRooms(period,request_list); //check if this request is possible (for this period and this room list)
-        if(!free_rooms.isEmpty()){
-            return true;
-        } else {
-            return false;
-        }
+        return !free_rooms.isEmpty();
     }
     
 }

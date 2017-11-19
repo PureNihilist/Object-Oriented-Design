@@ -1,7 +1,12 @@
 package hotel;
 
 import java.nio.file.Path;
-
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Mateusz Galas
@@ -52,7 +57,7 @@ public class Writer {
                 Client client = reservationInstance.getClient();
                 Class cls = client.getClass();
                 PeriodControl periodControl  = reservationInstance.getPeriodControl();
-                List <RoomInfo> roomInfo = reservationInstance.getRoomInfo();//do zmiany reservationinstance
+                List <RoomInfo> roomInfo = reservationInstance.getRoomInfo();
                 line+ID+";"+client.getName()+";"+client.getSurname()+";"+client.getAge()+";"+client.getPESEL()+";"+cls.getSimpleName()+";"+periodControl.getBegin()+";"+periodControl.getEnd()+";";
                 List <Room> roomInfo = reservationInstance.getRoomsInfo();
                 for(Room room : roomInfo){

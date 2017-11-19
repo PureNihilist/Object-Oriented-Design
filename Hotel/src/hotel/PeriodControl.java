@@ -22,7 +22,15 @@ public class PeriodControl implements PeriodInterface{
         }
         this.p = Period.between(begin, end);
     }
-    
+
+    public LocalDate getBegin() {
+        return begin;
+    }
+
+    public LocalDate getEnd() {
+        return end;
+    }
+
     public void setBegin(LocalDate new_begin) {
         this.begin = new_begin;
     }

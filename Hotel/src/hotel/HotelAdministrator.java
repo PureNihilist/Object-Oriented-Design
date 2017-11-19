@@ -18,6 +18,7 @@ public class HotelAdministrator implements Hotel{
     private List<Room> rooms; //list of rooms
     private List<ReservationInstance> reservations;//list of reservations
     private Reader reader;
+    private Writer writer;
 
     @Override
     public void loadRooms(Reader reader) {
@@ -27,7 +28,8 @@ public class HotelAdministrator implements Hotel{
 
     @Override
     public void saveRooms(Writer writer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writer = Writer.getInstance();
+        writer.writeRoomsCSV("Rooms.csv", this.rooms);
     }
 
     @Override
@@ -43,6 +45,11 @@ public class HotelAdministrator implements Hotel{
     private void loadReservations(Reader reader) {
         reader = Reader.getInstance();
         this.reservations = reader.readReservationCSV("Reservations.csv");
+    }
+
+    private void saveReservations(Writer writer) {
+        writer = Writer.getInstance();
+        writer.writeReservationsCSV("Reservations.csv", this.reservations);
     }
 
     @Override

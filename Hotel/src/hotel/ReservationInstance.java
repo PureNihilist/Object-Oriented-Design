@@ -15,13 +15,13 @@ import java.util.List;
 public class ReservationInstance implements Reservation,ReservationInfo{
     private final long ID;
     private final Client client;
-    private final Period period;
-    private final List <RoomInfo> roomInfo;
+    private final PeriodControl periodControl;
+    private final List <Room> roomInfo;
 
-    public ReservationInstance(long id, Client client, Period period, List<RoomInfo> info) {
+    public ReservationInstance(long id, Client client, PeriodControl periodControl, List<RoomInfo> info) {
         this.ID = id;
         this.client = client;
-        this.period = period;
+        this.periodControl = periodControl;
         this.roomInfo = info;
     }
 
@@ -36,12 +36,12 @@ public class ReservationInstance implements Reservation,ReservationInfo{
     }
     
     @Override
-    public Period getPeriod() {
-        return this.period;
+    public PeriodControl getPeriodControl() {
+        return this.periodControl;
     }
 
     @Override
-    public List<RoomInfo> getRoomsInfo() {
+    public List<Room> getRoomsInfo() {
         return this.roomInfo;
     }
     

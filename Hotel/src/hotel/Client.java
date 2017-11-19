@@ -11,6 +11,26 @@ abstract class Client {
     public int age;
     public int PESEL;
     public double discount;
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getSurname() {
+        return Surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getPESEL() {
+        return PESEL;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
 }
 
 class Person extends Client{

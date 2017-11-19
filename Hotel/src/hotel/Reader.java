@@ -75,25 +75,25 @@ public class Reader {
                 String clientType = attributes[5];
                 Client client = null;
                 switch(clientType) {
-                    case "person" :
+                    case "Person" :
                         client = new Person(clientName,clientSurname,clientAge,clientPESEL);
                         break;
-                    case "loyal" :
+                    case "LoyalClient" :
                         client = new LoyalClient(clientName,clientSurname,clientAge,clientPESEL);
                         break;
-                    case "learner" :
+                    case "Learner" :
                         client = new Learner(clientName,clientSurname,clientAge,clientPESEL);
                         break;
-                    case "student":
+                    case "Student":
                         client = new Student(clientName,clientSurname,clientAge,clientPESEL);
                         break;
-                    case "pensioner":
+                    case "Pensioner":
                         client = new Pensioner(clientName,clientSurname,clientAge,clientPESEL);
                         break;
-                    case "invalid":
+                    case "Invalid":
                         client = new Invalid(clientName,clientSurname,clientAge,clientPESEL);
                         break;
-                    case "company":
+                    case "CompanyAgent":
                         client = new CompanyAgent(clientName,clientSurname,clientAge,clientPESEL);
                         break;
                 }
@@ -102,17 +102,15 @@ public class Reader {
                 String periodTo = attributes[6];
                 LocalDate to = LocalDate.parse(periodTo);
                 PeriodControl period_control = new PeriodControl(from,to); //throws exception but i catch it in global catch
-                Period period = period_control.getPeriod();
                 List<Room> room_list = new ArrayList();
                 for(int i = 7 ; i < attributes.length ; i+=3) { //One client may take reservation for more then 1 room, every room requires name,capacity and quality
                     String roomName = attributes[i];
-                    int roomCapacity = Integer.valueOf(attributes[i+1]);
-                    int roomQuality = Integer.valueOf(attributes[i+2]);
-                    Room room = new Room(roomName,roomCapacity,roomQuality);
+                    int roomCapacity = Integer.valueOf(attributes[i + 1]);
+                    int roomQuality = Integer.valueOf(attributes[i + 2]);
+                    Room room = new Room(roomName, roomCapacity, roomQuality);
                     room_list.add(room);
                 }
-                List<RoomInfo> room_info = new ArrayList<>();
-                ReservationInstance reservation = new ReservationInstance(reservationId,client,period,room_info);//ustalic pola  
+                ReservationInstance reservation = new ReservationInstance(reservationId,client,period_control,room_list);//ustalic pola
                 reservations.add(reservation);
             }
         } catch(Exception ex) {

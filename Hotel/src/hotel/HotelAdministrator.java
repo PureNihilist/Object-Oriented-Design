@@ -81,26 +81,31 @@ public class HotelAdministrator implements Hotel{
     }
 
     @Override
-    public List<ReservationInfo> findFreeRooms(Period period, List<Integer> rooms) {
-        loadReservations(reader);
-        List<ReservationInfo> free_rooms = new ArrayList<>();
-        for(ReservationInstance r : reservations) {
-            //check if our loaded reservations have free rooms and create free room list
+    public List<Room> findFreeRooms(Period period, List<Room> rooms) {
+        
+        List<Room> free_rooms = new ArrayList<>();
+        for(Room r : rooms) {
+            //PRZEGLADNAC REZERWACJE!
+            //SPRAWDZIC CZY POKOJE SA WOLNE I CZY ISTNIEJA
+            //DODAC DO LISTY TE KTORE SA WOLNE
         }
         return free_rooms;
     }
     
     @Override
-    public boolean makeReservation(Client client, ReservationInfo request) {
+    public boolean makeReservation(ReservationInstance request) {
         Period period = request.getPeriodControl().getPeriod(); //request ma okres na ktory ktos chce zamowic pokoje
         List<Room> rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
-        List<Integer> request_list = new ArrayList();
-        for(Room room : rooms) { //przegladam informacje z requesta
-            int roomCapacity = room.getCapacity();
-            request_list.add(roomCapacity);
+        List<Room> free_rooms = findFreeRooms(period,rooms); //check if this request is possible (for this period and this room list)
+        //TUTAJ PRZEGLADANIE LISTY FREE ROOMS CZY COS TAM JEST
+        if(!free_rooms.isEmpty()) {
+            //mamy pokoje ktore sa wolne
+            //podac ILE POKOI JEST WOLNYCH 
+            //spytac czy taka rezerwacja wystarcza
+            return true;
+        } else {
+            return false;
         }
-        List<ReservationInfo> free_rooms = findFreeRooms(period,request_list); //check if this request is possible (for this period and this room list)
-        return !free_rooms.isEmpty();
     }
     
 }

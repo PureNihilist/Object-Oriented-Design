@@ -1,5 +1,6 @@
 package hotel;
 
+import java.io.BufferedWriter;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +23,7 @@ public class Writer {
 
     public static Writer getInstance() {
         Writer writeCSV = Writer.writer;
-        if(writerCSV == null) {
+        if(writeCSV == null) {
             synchronized(Writer.class) {
                 writeCSV = Writer.writer;
                 if(writeCSV == null) {
@@ -37,8 +38,7 @@ public class Writer {
         Path pathToFile = Paths.get(fileName);
         try(BufferedWriter bw = Files.newBufferedWriter(pathToFile, StandardCharsets.UTF_8)) {
             for(Room room : rooms){
-                String line;
-                line+room.getName()+";"+room.getCapacity()+";"+room.getQuality()+";";
+                String line = room.getName()+";"+room.getCapacity()+";"+room.getQuality()+";";
                 bw.write(line);
                 bw.newLine();
             }
@@ -57,11 +57,10 @@ public class Writer {
                 Client client = reservationInstance.getClient();
                 Class cls = client.getClass();
                 PeriodControl periodControl  = reservationInstance.getPeriodControl();
-                List <RoomInfo> roomInfo = reservationInstance.getRoomInfo();
-                line+ID+";"+client.getName()+";"+client.getSurname()+";"+client.getAge()+";"+client.getPESEL()+";"+cls.getSimpleName()+";"+periodControl.getBegin()+";"+periodControl.getEnd()+";";
                 List <Room> roomInfo = reservationInstance.getRoomsInfo();
+                line = ID+";"+client.getName()+";"+client.getSurname()+";"+client.getAge()+";"+client.getPESEL()+";"+cls.getSimpleName()+";"+periodControl.getBegin()+";"+periodControl.getEnd()+";";
                 for(Room room : roomInfo){
-                    line+room.getName()+";"+room.getCapacity()+";"+room.getQuality()+";";
+                    line += room.getName()+";"+room.getCapacity()+";"+room.getQuality()+";";
                 }
                 bw.write(line);
                 bw.newLine();

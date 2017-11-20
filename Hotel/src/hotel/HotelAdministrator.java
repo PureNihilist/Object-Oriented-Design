@@ -25,6 +25,14 @@ public class HotelAdministrator implements Hotel{
         reader = Reader.getInstance(); //get singleton instance of reader
         this.rooms = reader.readRoomsCSV("Rooms.csv");
     }
+    
+    public List<Room> getRooms() {
+        return rooms;
+    }
+    
+    public List<ReservationInstance> getReservations() {
+        return reservations;
+    }
 
     @Override
     public void saveRooms(Writer writer) {
@@ -62,7 +70,7 @@ public class HotelAdministrator implements Hotel{
         System.out.println("There's no room with this name");
     }
 
-    private void loadReservations(Reader reader) {
+    public void loadReservations(Reader reader) {
         reader = Reader.getInstance();
         this.reservations = reader.readReservationCSV("Reservations.csv");
     }
@@ -84,11 +92,11 @@ public class HotelAdministrator implements Hotel{
     
     @Override
     public boolean makeReservation(Client client, ReservationInfo request) {
-        Period period = request.getPeriod(); //request ma okres na ktory ktos chce zamowic pokoje
-        List<RoomInfo> rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
+        Period period = request.getPeriodControl().getPeriod(); //request ma okres na ktory ktos chce zamowic pokoje
+        List<Room> rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
         List<Integer> request_list = new ArrayList();
-        for(RoomInfo info : rooms) { //przegladam informacje z requesta
-            int roomCapacity = info.getCapacity();
+        for(Room room : rooms) { //przegladam informacje z requesta
+            int roomCapacity = room.getCapacity();
             request_list.add(roomCapacity);
         }
         List<ReservationInfo> free_rooms = findFreeRooms(period,request_list); //check if this request is possible (for this period and this room list)

@@ -71,7 +71,7 @@ public class Reader {
                 String clientName = attributes[1];
                 String clientSurname = attributes[2];
                 int clientAge = Integer.valueOf(attributes[3]);
-                int clientPESEL = Integer.valueOf(attributes[4]);
+                long clientPESEL = Long.valueOf(attributes[4]);
                 String clientType = attributes[5];
                 Client client = null;
                 switch(clientType) {
@@ -97,13 +97,13 @@ public class Reader {
                         client = new CompanyAgent(clientName,clientSurname,clientAge,clientPESEL);
                         break;
                 }
-                String periodFrom = attributes[5]; //Date format : year-month-day example : 2017-11-19
+                String periodFrom = attributes[6]; //Date format : year-month-day example : 2017-11-19
                 LocalDate from = LocalDate.parse(periodFrom);
-                String periodTo = attributes[6];
+                String periodTo = attributes[7];
                 LocalDate to = LocalDate.parse(periodTo);
                 PeriodControl period_control = new PeriodControl(from,to); //throws exception but i catch it in global catch
                 List<Room> room_list = new ArrayList();
-                for(int i = 7 ; i < attributes.length ; i+=3) { //One client may take reservation for more then 1 room, every room requires name,capacity and quality
+                for(int i = 8 ; i < attributes.length ; i+=3) { //One client may take reservation for more then 1 room, every room requires name,capacity and quality
                     String roomName = attributes[i];
                     int roomCapacity = Integer.valueOf(attributes[i + 1]);
                     int roomQuality = Integer.valueOf(attributes[i + 2]);

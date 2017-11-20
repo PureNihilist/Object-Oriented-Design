@@ -18,7 +18,7 @@ public class ReservationInstance implements Reservation,ReservationInfo{
     private final PeriodControl periodControl;
     private final List <Room> roomInfo;
 
-    public ReservationInstance(long id, Client client, PeriodControl periodControl, List<RoomInfo> info) {
+    public ReservationInstance(long id, Client client, PeriodControl periodControl, List<Room> info) {
         this.ID = id;
         this.client = client;
         this.periodControl = periodControl;
@@ -37,7 +37,7 @@ public class ReservationInstance implements Reservation,ReservationInfo{
     
     @Override
     public PeriodControl getPeriodControl() {
-        return this.periodControl;
+        return periodControl;
     }
 
     @Override

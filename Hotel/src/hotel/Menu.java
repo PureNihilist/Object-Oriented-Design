@@ -47,7 +47,6 @@ public class Menu{
                     System.out.println("Podaj poziom komfortu pokoju:");
                     int roomQuality = Integer.valueOf(scanner.next());   
                     admin.addRoom(roomName, roomCapacity, roomQuality );
-                    admin.saveRooms(writer);
                     break;
                 case 4:
                     //add reservation
@@ -56,6 +55,8 @@ public class Menu{
                 case 5: //remove room
                     break;
                 case 8: //exit
+                    admin.saveRooms(writer);
+                    admin.saveReservations(writer);
                     System.exit(0);
             }
         }

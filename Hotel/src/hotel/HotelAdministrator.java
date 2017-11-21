@@ -75,35 +75,82 @@ public class HotelAdministrator implements Hotel{
         this.reservations = reader.readReservationCSV("Reservations.csv");
     }
 
-    private void saveReservations(Writer writer) {
+    public void saveReservations(Writer writer) {
         writer = Writer.getInstance();
         writer.writeReservationsCSV("Reservations.csv", this.reservations);
     }
 
     @Override
-    public List<Room> findFreeRooms(Period period, List<Room> rooms) {
-        
-        List<Room> free_rooms = new ArrayList<>();
+    public List<Room> findFreeRooms(PeriodControl periodcontrol, List<Room> rooms) {
+        List<Room> existing_rooms = new ArrayList<>();
         for(Room r : rooms) {
-            //PRZEGLADNAC REZERWACJE!
-            //SPRAWDZIC CZY POKOJE SA WOLNE I CZY ISTNIEJA
-            //DODAC DO LISTY TE KTORE SA WOLNE
+            for(Room ourroom : this.rooms){
+                if(ourroom.getCapacity()==r.getCapacity()&&ourroom.getQuality()==r.getQuality()){
+                    existing_rooms.add(ourroom);
+                }
+                else{
+                    continue;
+                }
+            }
         }
-        return free_rooms;
+        for(ReservationInstance reservation : this.reservations){
+            if((periodcontrol.getBegin().isAfter(reservation.getPeriodControl().getBegin())&&periodcontrol.getBegin().isBefore(reservation.getPeriodControl().getEnd()))||(periodcontrol.getEnd().isAfter(reservation.getPeriodControl().getBegin())&&periodcontrol.getEnd().isBefore(reservation.getPeriodControl().getEnd()))){
+                for(Room r : existing_rooms){
+                    for(Room room : reservation.getRoomsInfo()){
+                        if(r.equals(room)){
+                            existing_rooms.remove(r);
+                        }
+                    }
+                }
+            }
+        }
+        return existing_rooms;
     }
     
     @Override
     public boolean makeReservation(ReservationInstance request) {
-        Period period = request.getPeriodControl().getPeriod(); //request ma okres na ktory ktos chce zamowic pokoje
+        PeriodControl period = request.getPeriodControl(); //request ma okres na ktory ktos chce zamowic pokoje
         List<Room> rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
         List<Room> free_rooms = findFreeRooms(period,rooms); //check if this request is possible (for this period and this room list)
         //TUTAJ PRZEGLADANIE LISTY FREE ROOMS CZY COS TAM JEST
         if(!free_rooms.isEmpty()) {
-            //mamy pokoje ktore sa wolne
-            //podac ILE POKOI JEST WOLNYCH 
-            //spytac czy taka rezerwacja wystarcza
-            return true;
+            if(free_rooms.size()>=rooms.size()){
+                int count = 0;
+                for(Room room : rooms){
+                    for(Room ourroom : free_rooms){
+                        if(room.equals(ourroom)){
+                            count++;
+                            break;
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                }
+                if(count==rooms.size()){
+                    System.out.println("Dziękujemy, obecnie w tym przedziale czasowym mamy do zaoferowania takie pokoje:");
+                for(Room r : free_rooms){
+                    System.out.println("Pokój nr "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
+                }
+                return true;
+                }
+            else{
+                System.out.println("Przepraszamy, obecnie tylko takie pokoje są wolne w tym przedziale czasowym:");
+                for(Room r : free_rooms){
+                    System.out.println("Pokój nr "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
+                }
+                return false;
+            }
+            }
+            else{
+                System.out.println("Przepraszamy, obecnie tylko takie pokoje są wolne w tym przedziale czasowym:");
+                for(Room r : free_rooms){
+                    System.out.println("Pokój nr "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
+                }
+                return false;
+            }
         } else {
+            System.out.println("Przepraszamy, w tym przedziale czasowym nie ma żadnych wolnych pokoi, które państwo sobie zażyczyli.");
             return false;
         }
     }

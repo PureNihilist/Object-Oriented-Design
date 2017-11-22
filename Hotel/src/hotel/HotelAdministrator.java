@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hotel;
 
 import java.time.Period;
@@ -44,11 +39,8 @@ public class HotelAdministrator implements Hotel{
     public void addRoom(String name, int nOfBeds, int Quality) {
         for(Room room : rooms){
             if(room.getName().equals(name)){
-                System.out.println("There's already a room with this name");
+                System.out.println("Istnieje już pokój o tej nazwie.");
                 return;
-            }
-            else{
-                continue;
             }
         }
         Room room = new Room(name,nOfBeds,Quality);
@@ -74,7 +66,8 @@ public class HotelAdministrator implements Hotel{
         reader = Reader.getInstance();
         this.reservations = reader.readReservationCSV("Reservations.csv");
     }
-
+    
+    @Override
     public void saveReservations(Writer writer) {
         writer = Writer.getInstance();
         writer.writeReservationsCSV("Reservations.csv", this.reservations);
@@ -154,5 +147,8 @@ public class HotelAdministrator implements Hotel{
             return false;
         }
     }
-    
+    @Override
+    public void deleteReservation(){
+        
+    }
 }

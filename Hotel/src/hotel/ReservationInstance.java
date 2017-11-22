@@ -24,6 +24,7 @@ public class ReservationInstance implements Reservation,ReservationInfo{
         this.periodControl = periodControl;
         this.roomInfo = info;
     }
+    
 
     @Override
     public long getId() {

@@ -11,6 +11,7 @@ interface Hotel {
     void loadRooms(Reader reader);
     void saveRooms(Writer writer);
     void saveReservations(Writer writer);
+    void deleteReservation();
     void addRoom(String name, int nOfBeds, int Quality);
     void deleteRoom(String name);
     //rooms jest listą liczb określających ile osób chcemy zakwaterować w pokoju

@@ -1,6 +1,7 @@
 package hotel;
 
-import java.util.Map;
+import java.time.Period;
+import java.util.List;
 
 /**
  *
@@ -8,5 +9,5 @@ import java.util.Map;
  */
 public interface ReservationInfo {
     PeriodControl getPeriodControl();
-    Map<Integer,Integer> getRoomsInfo(); 
+    List<Room> getRoomsInfo(); 
 }

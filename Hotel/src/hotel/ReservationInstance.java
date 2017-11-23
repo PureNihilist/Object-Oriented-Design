@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hotel;
 
 import java.time.Period;
@@ -24,7 +19,6 @@ public class ReservationInstance implements Reservation,ReservationInfo{
         this.periodControl = periodControl;
         this.roomInfo = info;
     }
-    
 
     @Override
     public long getId() {

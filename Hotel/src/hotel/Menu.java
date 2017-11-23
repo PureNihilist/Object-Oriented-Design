@@ -1,10 +1,11 @@
 package hotel;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Menu{
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         System.out.println("Witamy w systemie obsługi hotelu recepcja!");
         
         Scanner scanner = new Scanner(System.in);
@@ -72,7 +73,17 @@ public class Menu{
                     break;
                 case 8: //tworzenie rezerwacji
                     System.out.println("Dodawanie rezerwacji.");
-                    
+                    System.out.println("Podaj numer PESEL klienta");
+                    long clientID = Long.valueOf(scanner.next());
+                    Client client = admin.searchForClient(clientID);
+                    System.out.println("Podaj termin rezerwacji.");
+                    System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
+                    String dateFrom = scanner.next();
+                    LocalDate from = LocalDate.parse(dateFrom);
+                    System.out.println("Do kiedy? Podaj datę w formacie YYYY-MM-DD");
+                    String dateTo = scanner.next();
+                    LocalDate to = LocalDate.parse(dateTo);
+                    PeriodControl period = new PeriodControl(from,to);
                     System.out.println("Podaj ilość pokoi.");
                     int roomAmount = Integer.valueOf(scanner.next());
                     List<Room> room_list = new ArrayList<>();
@@ -81,15 +92,13 @@ public class Menu{
                         int capacity = Integer.valueOf(scanner.next());
                         System.out.println("Podaj poziom komfortu pokoju:");
                         int quality = Integer.valueOf(scanner.next());
-                       // Room requestedRoom = new Room(capacity,quality);
-                     //   room_list.add(requestedRoom);
+                        Room requestedRoom = new Room(capacity,quality);
+                        room_list.add(requestedRoom);
                     }
-                     
-                   // ReservationInstance request = new ReservationInstance(room_list);
-                   // admin.makeReservation(request);
-                    //add reservation
-                    break;
-                        
+                    long ID = admin.getReservations().size();
+                    ReservationInstance request = new ReservationInstance(++ID,client,period,room_list);
+                    admin.makeReservation(request);
+                    break;                       
                 case 9: 
                     System.out.println("Usuwanie pokoju.");
                     System.out.println("Podaj nazwę pokoju do usunięcia.");
@@ -115,4 +124,5 @@ public class Menu{
             }
         }
     }
+    
 }

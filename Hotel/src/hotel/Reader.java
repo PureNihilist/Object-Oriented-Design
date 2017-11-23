@@ -59,9 +59,10 @@ public class Reader {
         }
         return rooms;
     }
-    
+
     public List<ReservationInstance> readReservationCSV(String fileName) {
         List<ReservationInstance> reservations = new ArrayList<>();
+        List<Client> clients = new ArrayList<>();
         Path pathToFile = Paths.get(fileName);
         try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
             String line;
@@ -110,6 +111,7 @@ public class Reader {
                     Room room = new Room(roomName, roomCapacity, roomQuality);
                     room_list.add(room);
                 }
+                clients.add(client);
                 ReservationInstance reservation = new ReservationInstance(reservationId,client,period_control,room_list);//ustalic pola
                 reservations.add(reservation);
             }

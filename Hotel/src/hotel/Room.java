@@ -5,16 +5,22 @@ package hotel;
  * @author Mateusz Galas
  */
 public class Room implements RoomInfo {
-    private final String name;
+    private String name = null;
     private final int capacity;
     private final int quality;
-    private final double price;
+    private double price; //price nie może być final bo przecież ma się zmieniać jak jest zniżka
+    
+    public Room(int roomCapacity, int roomQuality) {
+       this.capacity = roomCapacity;
+       this.quality = roomQuality; 
+    }
     public Room(String roomName, int roomCapacity, int roomQuality){
         this.name = roomName;
         this.capacity = roomCapacity;
         this.quality = roomQuality;
         this.price = this.quality * this.capacity;
     }
+    
     @Override
     public int getCapacity() {
         return capacity;

@@ -3,22 +3,21 @@ package hotel;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  *
  * @author Mateusz Galas
  */
 public class HotelAdministrator implements Hotel{
-    
     private List<Room> rooms; //list of rooms
     private List<ReservationInstance> reservations;//list of reservations
+    private List<Client> clients = null; // list of clients
     private Reader reader;
     private Writer writer;
 
     @Override
     public void loadRooms(Reader reader) {
-        reader = Reader.getInstance(); //get singleton instance of reader
-        this.rooms = reader.readRoomsCSV("Rooms.csv");
+        this.reader = Reader.getInstance(); //get singleton instance of reader
+        this.rooms = this.reader.readRoomsCSV("Rooms.csv");
     }
     
     public List<Room> getRooms() {
@@ -28,11 +27,15 @@ public class HotelAdministrator implements Hotel{
     public List<ReservationInstance> getReservations() {
         return reservations;
     }
+    
+    public List<Client> getClients() {
+        return clients;
+    }
 
     @Override
     public void saveRooms(Writer writer) {
-        writer = Writer.getInstance();
-        writer.writeRoomsCSV("Rooms.csv", this.rooms);
+        this.writer = Writer.getInstance();
+        this.writer.writeRoomsCSV("Rooms.csv", this.rooms);
     }
 
     @Override
@@ -46,7 +49,7 @@ public class HotelAdministrator implements Hotel{
         Room room = new Room(name,nOfBeds,Quality);
         rooms.add(room);
     }
-
+    
     @Override
     public void deleteRoom(String name) {
         for(Room room : rooms){
@@ -55,22 +58,43 @@ public class HotelAdministrator implements Hotel{
                 System.out.println("Room has been removed.");
                 return;
             }
-            else{
-                continue;
-            }
         }
         System.out.println("There's no room with this name");
     }
 
     public void loadReservations(Reader reader) {
-        reader = Reader.getInstance();
-        this.reservations = reader.readReservationCSV("Reservations.csv");
+        this.reader = Reader.getInstance();
+        this.reservations = this.reader.readReservationCSV("Reservations.csv");
+    }
+    
+    @Override
+    public void loadClients(Reader reader) {
+        List<Client> client_list = new ArrayList<>();
+        for(ReservationInstance instance : reservations) {
+            Client client = instance.getClient();
+            client_list.add(client);
+        }
+        this.clients = client_list;
+    }
+    
+    public Client searchForClient(long clientPESEL) throws Exception {
+        Client c = null;
+        for(Client client : clients) {
+            if(client.PESEL == clientPESEL) {
+                c = client;
+            }
+        }
+        if(c == null) {
+            throw new Exception("Klient o podanym numerze PESEL nie istnieje!");
+        } else {
+            return c;
+        }
     }
     
     @Override
     public void saveReservations(Writer writer) {
-        writer = Writer.getInstance();
-        writer.writeReservationsCSV("Reservations.csv", this.reservations);
+        this.writer = Writer.getInstance();
+        this.writer.writeReservationsCSV("Reservations.csv", this.reservations);
     }
 
     @Override
@@ -80,9 +104,6 @@ public class HotelAdministrator implements Hotel{
             for(Room ourroom : this.rooms){
                 if(ourroom.getCapacity()==r.getCapacity()&&ourroom.getQuality()==r.getQuality()){
                     existing_rooms.add(ourroom);
-                }
-                else{
-                    continue;
                 }
             }
         }
@@ -150,5 +171,15 @@ public class HotelAdministrator implements Hotel{
     @Override
     public void deleteReservation(){
         
+    }
+
+    @Override
+    public void addClient(Client client) {
+        if(clients != null) {
+            clients.add(client);
+        } else {
+            this.clients = new ArrayList<>();
+            this.clients.add(client);
+        }
     }
 }

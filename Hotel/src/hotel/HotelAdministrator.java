@@ -1,8 +1,10 @@
 package hotel;
 
+import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 /**
  *
  * @author Mateusz Galas
@@ -28,8 +30,12 @@ public class HotelAdministrator implements Hotel{
         return reservations;
     }
     
-    public List<Client> getClients() {
-        return clients;
+    public List<Client> getClients() throws Exception{
+        if(clients != null) {
+            return clients;
+        } else {
+            throw new Exception("Lista klientów nie została wczytana.");
+        }
     }
 
     @Override
@@ -55,11 +61,11 @@ public class HotelAdministrator implements Hotel{
         for(Room room : rooms){
             if(room.getName().equals(name)){
                 rooms.remove(room);
-                System.out.println("Room has been removed.");
+                System.out.println("Pokój został usunięty.");
                 return;
             }
         }
-        System.out.println("There's no room with this name");
+        System.out.println("Nie ma pokoju o tej nazwie.");
     }
 
     public void loadReservations(Reader reader) {
@@ -98,71 +104,59 @@ public class HotelAdministrator implements Hotel{
     }
 
     @Override
-    public List<Room> findFreeRooms(PeriodControl periodcontrol, List<Room> rooms) {
-        List<Room> existing_rooms = new ArrayList<>();
-        for(Room r : rooms) {
-            for(Room ourroom : this.rooms){
-                if(ourroom.getCapacity()==r.getCapacity()&&ourroom.getQuality()==r.getQuality()){
-                    existing_rooms.add(ourroom);
-                }
+    public List<Room> findFreeRooms(PeriodControl periodcontrol, List<Room> requested_rooms) {
+        List<Room> free_rooms = new ArrayList<>();
+        for(Room registered_room : rooms){
+            for(Room requested_room : requested_rooms) {
+                 if(requested_room.getCapacity() == registered_room.getCapacity() && requested_room.getQuality() == registered_room.getQuality()){
+                     free_rooms.add(registered_room); //lepiej dodać registered_room poniewaz on ma przypisany ID, a nie null'a:)
+                 }
             }
         }
-        for(ReservationInstance reservation : this.reservations){
-            if((periodcontrol.getBegin().isAfter(reservation.getPeriodControl().getBegin())&&periodcontrol.getBegin().isBefore(reservation.getPeriodControl().getEnd()))||(periodcontrol.getEnd().isAfter(reservation.getPeriodControl().getBegin())&&periodcontrol.getEnd().isBefore(reservation.getPeriodControl().getEnd()))){
-                for(Room r : existing_rooms){
-                    for(Room room : reservation.getRoomsInfo()){
-                        if(r.equals(room)){
-                            existing_rooms.remove(r);
-                        }
+        LocalDate requestedBegin = periodcontrol.getBegin();
+        LocalDate requestedEnd = periodcontrol.getEnd();
+        
+        for(ReservationInstance reservation : reservations){
+           LocalDate reservationBegin = reservation.getPeriodControl().getBegin();
+           LocalDate reservationEnd = reservation.getPeriodControl().getEnd();
+            //ten if sprawdza czy okresy na siebie zachodza/czy maja czesci wspolne
+            if(PeriodControl.isOverLaped(requestedBegin, requestedEnd, reservationBegin, reservationEnd) ) {
+            //dla okresow ktore sie pokrywaja sprawdzic czy pokoje sa zajete  
+                List<Room> reservation_rooms = reservation.getRoomsInfo(); // tutaj sa pokoje zarejestrowane w tym okresie w tej rejestracji
+                for(Room reserved_room : reservation_rooms) {
+                    if(free_rooms.contains(reserved_room)) {
+                        free_rooms.remove(reserved_room); //usuwam te co sa zajete, uwaga nawet jak jeden dzien sie pokrywa to tez zajete!
                     }
                 }
             }
         }
-        return existing_rooms;
+        return free_rooms;
     }
-    
     @Override
     public boolean makeReservation(ReservationInstance request) {
         PeriodControl period = request.getPeriodControl(); //request ma okres na ktory ktos chce zamowic pokoje
-        List<Room> rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
-        List<Room> free_rooms = findFreeRooms(period,rooms); //check if this request is possible (for this period and this room list)
-        //TUTAJ PRZEGLADANIE LISTY FREE ROOMS CZY COS TAM JEST
+        List<Room> requsted_rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
+        List<Room> free_rooms = findFreeRooms(period,requsted_rooms); //check if this request is possible (for this period and this room list)
         if(!free_rooms.isEmpty()) {
-            if(free_rooms.size()>=rooms.size()){
-                int count = 0;
-                for(Room room : rooms){
-                    for(Room ourroom : free_rooms){
-                        if(room.equals(ourroom)){
-                            count++;
-                            break;
-                        }
-                        else{
-                            continue;
-                        }
-                    }
+            //System.out.println("free roms size: " +free_rooms.size() + "  requested size: " +requsted_rooms.size());  
+            List<Room> room_list = new ArrayList<>();
+            System.out.println("Obecnie w tym przedziale czasowym mamy do zaoferowania:");
+            Scanner scanner = new Scanner(System.in);
+            for(Room r : free_rooms){
+                System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
+                System.out.println("Czy zarejestrować ten pokój?. Proszę wpisać tak lub nie.");
+                String userAnswer = scanner.next();
+                if(userAnswer.equals("tak")){
+                    room_list.add(new Room(r.getName(),r.getCapacity(),r.getQuality()));
+                } else if(userAnswer.equals("nie")){
+                    continue;
+                } else {
+                    System.err.println("Podano niewłaściwą komendę.");
                 }
-                if(count==rooms.size()){
-                    System.out.println("Dziękujemy, obecnie w tym przedziale czasowym mamy do zaoferowania takie pokoje:");
-                for(Room r : free_rooms){
-                    System.out.println("Pokój nr "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
-                }
-                return true;
-                }
-            else{
-                System.out.println("Przepraszamy, obecnie tylko takie pokoje są wolne w tym przedziale czasowym:");
-                for(Room r : free_rooms){
-                    System.out.println("Pokój nr "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
-                }
-                return false;
             }
-            }
-            else{
-                System.out.println("Przepraszamy, obecnie tylko takie pokoje są wolne w tym przedziale czasowym:");
-                for(Room r : free_rooms){
-                    System.out.println("Pokój nr "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
-                }
-                return false;
-            }
+            ReservationInstance correct_request = new ReservationInstance(request.getId(),request.getClient(),period,room_list); 
+            reservations.add(correct_request);
+            return true;
         } else {
             System.out.println("Przepraszamy, w tym przedziale czasowym nie ma żadnych wolnych pokoi, które państwo sobie zażyczyli.");
             return false;

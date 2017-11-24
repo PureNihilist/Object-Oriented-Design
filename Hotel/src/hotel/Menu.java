@@ -15,6 +15,7 @@ public class Menu{
         Writer writer = Writer.getInstance();
         admin.loadRooms(reader);
         admin.loadReservations(reader);
+        admin.loadClients(reader);
         while(true) {
             System.out.println("MENU");
             System.out.println("1. Wyświetl wszystkie pokoje.");
@@ -44,7 +45,7 @@ public class Menu{
                         Client client = r.getClient();
                         PeriodControl period = r.getPeriodControl();
                         System.out.println("Id rezerwacji:"+r.getId() + ",imię:" +client.getName() + ",nazwisko:" + client.getSurname() + ",wiek:" + client.getAge() + ",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.discount);
-                        System.out.println("Rezerwacja na okres od:"+period.begin + " do " + period.end + " ");
+                        System.out.println("Rezerwacja na okres od:"+period.getBegin() + " do " + period.getEnd() + " ");
                         r.getRoomsInfo().forEach((roomInfo) -> {
                             System.out.println("Nazwa pokoju:"+roomInfo.getName()+",pojemność:"+ roomInfo.getCapacity() + ",poziom komfortu:" + roomInfo.getQuality() + ",cena:" + roomInfo.getPrice());
                         });
@@ -122,6 +123,8 @@ public class Menu{
                     System.err.println("Podano złą komendę");
                     break;
             }
+            System.out.println("Wprowadź enter jeśli chcesz przejść do menu.");
+            System.in.read();
         }
     }
     

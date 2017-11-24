@@ -53,10 +53,22 @@ public class Menu{
                     break;
                 case 5: //wyswietla wolne pokoje
                     System.out.println("Wolne pokoje");
-                  //  PeriodControl control = new PeriodControl();
-                  //  admin.findFreeRooms(periodcontrol, room_list);
-                    
-                    
+                    System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
+                    String dateFromStr = scanner.next();
+                    LocalDate localDateFrom = LocalDate.parse(dateFromStr);
+                    System.out.println("Do kiedy? Podaj datę w formacie YYYY-MM-DD");
+                    String dateToStr = scanner.next();
+                    LocalDate localDateTo = LocalDate.parse(dateToStr);
+                    PeriodControl freeRoomPeriod = new PeriodControl(localDateFrom,localDateTo);
+                    List<Room> freeRooms = admin.findFreeRooms(freeRoomPeriod, admin.getRooms());
+                    if(!freeRooms.isEmpty()) {
+                        System.out.println("Obecnie w tym przedziale czasowym mamy do zaoferowania:");
+                        for(Room r : freeRooms){
+                            System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, o poziomie komfortu: "+r.getQuality());
+                        }
+                    } else {
+                            System.err.println("W tym przedziale czasowym nie mamy żadnego pokoju do zaoferowania.");
+                    }
                     break;
                 case 6://dodawanie klienta
                     break;

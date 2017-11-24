@@ -52,7 +52,7 @@ public class Menu{
                     });
                     break;
                 case 5: //wyswietla wolne pokoje
-                    System.out.println("Wolne pokoje");
+                    System.out.println("Wyświetlanie wolnych pokoi");
                     System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
                     String dateFromStr = scanner.next();
                     LocalDate localDateFrom = LocalDate.parse(dateFromStr);
@@ -71,6 +71,50 @@ public class Menu{
                     }
                     break;
                 case 6://dodawanie klienta
+                    System.out.println("Dodawanie nowego klienta.");
+                    System.out.println("Podaj imię.");
+                    String newclientName = scanner.next();
+                    System.out.println("Podaj nazwisko.");
+                    String newclientSurname = scanner.next();
+                    System.out.println("Podaj wiek.");
+                    int newclientAge = Integer.valueOf(scanner.next());
+                    System.out.println("Podaj numer PESEL.");
+                    long peselNumber = Long.valueOf(scanner.next());
+                    System.out.println("Czy podana osoba korzysta z podanych ulg? ");
+                    int discountChoice = Integer.valueOf(scanner.next());
+                    System.out.println("Wpisać 0 jeśli osoba nie korzysta z ulg.");
+                    System.out.println("Ulga 1 uczeń");
+                    System.out.println("Ulga 2 student");
+                    System.out.println("Ulga 3 emeryt");
+                    System.out.println("Ulga 4 inwalida");
+                    System.out.println("Ulga 5 dla firm");
+                    Client new_client = null;
+                    switch(discountChoice) {
+                        case 0:
+                            new_client = new Person(newclientName,newclientSurname,newclientAge,peselNumber);
+                            break;
+                        case 1:
+                            new_client = new Learner(newclientName,newclientSurname,newclientAge,peselNumber);
+                            break;
+                        case 2:
+                            new_client = new Student(newclientName,newclientSurname,newclientAge,peselNumber);
+                            break;
+                        case 3:
+                            new_client = new Pensioner(newclientName,newclientSurname,newclientAge,peselNumber);
+                            break;
+                        case 4:
+                            new_client = new Invalid(newclientName,newclientSurname,newclientAge,peselNumber);
+                            break;
+                        case 5:
+                            new_client = new CompanyAgent(newclientName,newclientSurname,newclientAge,peselNumber);
+                            break;
+                        default:
+                            System.err.println("Podano niewłaściwy numer ulgi");
+                            break;
+                    }
+                    if(new_client != null) {
+                        admin.addClient(new_client);
+                    }
                     break;
                 case 7: //dodawanie nowego pokoju
                     int roomCounter = admin.getRooms().size();
@@ -121,8 +165,8 @@ public class Menu{
                 case 10:
                     System.out.println("Usuwanie rezerwacji.");
                     System.out.println("Podaj id rezerwacji do usunięcia.");
-                    String reservation_name = scanner.next(); 
-                    admin.deleteReservation(); //Usuwanie po id? czy innych rzeczach ?? 
+                    long reservationId = Long.valueOf(scanner.next()); 
+                    admin.deleteReservation(reservationId); 
                     break;
                 case 11://usun klienta
                     break;

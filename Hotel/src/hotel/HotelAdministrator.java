@@ -172,9 +172,14 @@ public class HotelAdministrator implements Hotel{
             return false;
         }
     }
+    /*
+    Operatory funkcyjne działaja tak jak normalne for each'e
+    */
     @Override
-    public void deleteReservation(){
-        
+    public void deleteReservation(long ID){
+        reservations.stream().filter((instance) -> (instance.getId() == ID)).forEachOrdered((instance) -> {
+            reservations.remove(instance);
+        });
     }
 
     @Override

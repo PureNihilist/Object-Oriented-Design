@@ -10,7 +10,7 @@ interface Hotel {
     void loadRooms(Reader reader);
     void saveRooms(Writer writer);
     void saveReservations(Writer writer);
-    void deleteReservation();
+    void deleteReservation(long reservationId);
     void addRoom(String name, int nOfBeds, int Quality);
     void deleteRoom(String name);
     void loadClients(Reader reader);

@@ -109,7 +109,9 @@ public class HotelAdministrator implements Hotel{
         for(Room registered_room : rooms){
             for(Room requested_room : requested_rooms) {
                  if(requested_room.getCapacity() == registered_room.getCapacity() && requested_room.getQuality() == registered_room.getQuality()){
-                     free_rooms.add(registered_room); //lepiej dodać registered_room poniewaz on ma przypisany ID, a nie null'a:)
+                    if(!free_rooms.contains(registered_room)) {
+                        free_rooms.add(registered_room); //lepiej dodać registered_room poniewaz on ma przypisany ID, a nie null'a:)
+                    }
                  }
             }
         }
@@ -135,23 +137,31 @@ public class HotelAdministrator implements Hotel{
     @Override
     public boolean makeReservation(ReservationInstance request) {
         PeriodControl period = request.getPeriodControl(); //request ma okres na ktory ktos chce zamowic pokoje
-        List<Room> requsted_rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
-        List<Room> free_rooms = findFreeRooms(period,requsted_rooms); //check if this request is possible (for this period and this room list)
+        List<Room> requested_rooms = request.getRoomsInfo(); //request ma w sobie liste pokoi
+        List<Room> free_rooms = findFreeRooms(period,requested_rooms); //check if this request is possible (for this period and this room list)
         if(!free_rooms.isEmpty()) {
             //System.out.println("free roms size: " +free_rooms.size() + "  requested size: " +requsted_rooms.size());  
-            List<Room> room_list = new ArrayList<>();
             System.out.println("Obecnie w tym przedziale czasowym mamy do zaoferowania:");
             Scanner scanner = new Scanner(System.in);
             for(Room r : free_rooms){
-                System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, wartość jakości: "+r.getQuality());
-                System.out.println("Czy zarejestrować ten pokój?. Proszę wpisać tak lub nie.");
-                String userAnswer = scanner.next();
-                if(userAnswer.equals("tak")){
-                    room_list.add(new Room(r.getName(),r.getCapacity(),r.getQuality()));
-                } else if(userAnswer.equals("nie")){
-                    continue;
-                } else {
-                    System.err.println("Podano niewłaściwą komendę.");
+                System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, o poziomie komfortu: "+r.getQuality());
+            }
+            System.out.println("Proszę podać nazwę/nazwy pokoju/oi do rejestracji z listy dostępnych, oddzielone przecinkiem.");
+            String userAnswer = scanner.next();
+            String [] roomNames = userAnswer.split(",");
+            if(roomNames.length > requested_rooms.size()) {
+                System.err.println("Podano za dużo nazw pokoi. Zostanie zapisane pierwsze "+requested_rooms.size() + " pokoi");
+            } else if (roomNames.length == 0 ){
+                System.err.println("Nie podano żadnej nazwy pokoju albo była ona nieprawidłowa.");
+                return false;
+            }
+            List<Room> room_list = new ArrayList<>();
+            for(int i = 0 ; i < requested_rooms.size() ; i++){
+                for(Room room : free_rooms) {
+                    if(room.getName().equals(roomNames[i])) {
+                       System.out.println("Zapisano pokój "+room.getName());
+                       room_list.add(room);
+                    } 
                 }
             }
             ReservationInstance correct_request = new ReservationInstance(request.getId(),request.getClient(),period,room_list); 

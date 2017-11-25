@@ -226,6 +226,15 @@ public class HotelAdministrator implements Hotel{
     
     @Override
     public void deleteClient(long Pesel){
+        
+        //usuwanie wszystkich rezerwacji na tego klienta
+        for(ReservationInstance instance : reservations){
+            Client toRemove = instance.getClient();
+            if(toRemove.PESEL == Pesel) {
+                reservations.remove(instance); 
+            }
+        }
+        
         for(Client client : this.clients){
             if(client.getPESEL()==Pesel){
                 this.clients.remove(client);

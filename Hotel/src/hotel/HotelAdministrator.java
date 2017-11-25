@@ -1,10 +1,10 @@
 package hotel;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 /**
  *
  * @author Mateusz Galas
@@ -58,15 +58,12 @@ public class HotelAdministrator implements Hotel{
     @Override
     public void findReservation(long Pesel){
         List<ReservationInstance> list_reservations = new ArrayList<>();
-        for(ReservationInstance r : this.reservations){
+        this.reservations.forEach((r) -> {
             if(r.getClient().getPESEL()==Pesel){
                 list_reservations.add(r);
             }
-            else{
-                continue;
-            }
-        }
-        if(list_reservations.size()==0){
+        });
+        if(list_reservations.isEmpty()){
             System.out.println("Nie ma w naszym systemie rezerwacji na tego klienta.");
         }
         else{
@@ -74,9 +71,9 @@ public class HotelAdministrator implements Hotel{
             int count = 1;
             for(ReservationInstance res : list_reservations){
                 System.out.print(count+". "+res.getPeriodControl().getBegin()+"-"+res.getPeriodControl().getEnd()+" Pokoje: ");
-                for(Room r : res.getRoomsInfo()){
+                res.getRoomsInfo().forEach((Room r) -> {
                     System.out.print("Nazwa "+r.getName()+", Wielkość "+r.getCapacity()+"-osobowy, jakość "+r.getQuality()+" ");
-                }
+                });
                 System.out.println("");
                 count++;
             }
@@ -103,15 +100,9 @@ public class HotelAdministrator implements Hotel{
     @Override
     public void loadClients(Reader reader) {
         List<Client> client_list = new ArrayList<>();
-        for(ReservationInstance instance : reservations) {
-            Client client = instance.getClient();
-            if(client_list.contains(client)){
-                continue;
-            }
-            else{
+        reservations.stream().map((instance) -> instance.getClient()).filter((client) -> (!client_list.contains(client))).forEachOrdered((Client client) -> {
             client_list.add(client);
-            }
-        }
+        });
         this.clients = client_list;
     }
     
@@ -138,32 +129,25 @@ public class HotelAdministrator implements Hotel{
     @Override
     public List<Room> findFreeRooms(PeriodControl periodcontrol, List<Room> requested_rooms) {
         List<Room> free_rooms = new ArrayList<>();
-        for(Room registered_room : rooms){
-            for(Room requested_room : requested_rooms) {
-                 if(requested_room.getCapacity() == registered_room.getCapacity() && requested_room.getQuality() == registered_room.getQuality()){
-                    if(!free_rooms.contains(registered_room)) {
-                        free_rooms.add(registered_room); //lepiej dodać registered_room poniewaz on ma przypisany ID, a nie null'a:)
-                    }
-                 }
-            }
-        }
+        rooms.forEach((Room registered_room) -> {
+            requested_rooms.stream().filter((requested_room) -> (requested_room.getCapacity() == registered_room.getCapacity() && requested_room.getQuality() == registered_room.getQuality())).filter((_item) -> (!free_rooms.contains(registered_room))).forEachOrdered((_item) -> {
+                free_rooms.add(registered_room); //lepiej dodać registered_room poniewaz on ma przypisany ID, a nie null'a:)
+            });
+        });
         LocalDate requestedBegin = periodcontrol.getBegin();
         LocalDate requestedEnd = periodcontrol.getEnd();
         
-        for(ReservationInstance reservation : reservations){
-           LocalDate reservationBegin = reservation.getPeriodControl().getBegin();
-           LocalDate reservationEnd = reservation.getPeriodControl().getEnd();
+        reservations.forEach((ReservationInstance reservation) -> {
+            LocalDate reservationBegin = reservation.getPeriodControl().getBegin();
+            LocalDate reservationEnd = reservation.getPeriodControl().getEnd();
             //ten if sprawdza czy okresy na siebie zachodza/czy maja czesci wspolne
-            if(PeriodControl.isOverLaped(requestedBegin, requestedEnd, reservationBegin, reservationEnd) ) {
-            //dla okresow ktore sie pokrywaja sprawdzic czy pokoje sa zajete  
+            if (PeriodControl.isOverLaped(requestedBegin, requestedEnd, reservationBegin, reservationEnd)) {
+                //dla okresow ktore sie pokrywaja sprawdzic czy pokoje sa zajete
                 List<Room> reservation_rooms = reservation.getRoomsInfo(); // tutaj sa pokoje zarejestrowane w tym okresie w tej rejestracji
-                for(Room reserved_room : reservation_rooms) {
-                    if(free_rooms.contains(reserved_room)) {
-                        free_rooms.remove(reserved_room); //usuwam te co sa zajete, uwaga nawet jak jeden dzien sie pokrywa to tez zajete!
-                    }
-                }
+                reservation_rooms.stream().filter((reserved_room) -> (free_rooms.contains(reserved_room))).forEachOrdered(free_rooms::remove //usuwam te co sa zajete, uwaga nawet jak jeden dzien sie pokrywa to tez zajete!
+                );
             }
-        }
+        });
         return free_rooms;
     }
     @Override
@@ -175,9 +159,9 @@ public class HotelAdministrator implements Hotel{
             //System.out.println("free roms size: " +free_rooms.size() + "  requested size: " +requsted_rooms.size());  
             System.out.println("Obecnie w tym przedziale czasowym mamy do zaoferowania:");
             Scanner scanner = new Scanner(System.in);
-            for(Room r : free_rooms){
+            free_rooms.forEach((Room r) -> {
                 System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, o poziomie komfortu: "+r.getQuality());
-            }
+            });
             System.out.println("Proszę podać nazwę/nazwy pokoju/oi do rejestracji z listy dostępnych, oddzielone przecinkiem.");
             String userAnswer = scanner.next();
             String [] roomNames = userAnswer.split(",");
@@ -209,7 +193,7 @@ public class HotelAdministrator implements Hotel{
     */
     @Override
     public void deleteReservation(long ID){
-        reservations.stream().filter((instance) -> (instance.getId() == ID)).forEachOrdered((instance) -> {
+        reservations.stream().filter((instance) -> (instance.getId() == ID)).forEachOrdered((ReservationInstance instance) -> {
             reservations.remove(instance);
         });
     }
@@ -228,20 +212,17 @@ public class HotelAdministrator implements Hotel{
     public void deleteClient(long Pesel){
         
         //usuwanie wszystkich rezerwacji na tego klienta
-        for(ReservationInstance instance : reservations){
+        reservations.forEach((ReservationInstance instance) -> {
             Client toRemove = instance.getClient();
-            if(toRemove.PESEL == Pesel) {
+            if (toRemove.PESEL == Pesel) {
                 reservations.remove(instance); 
             }
-        }
+        });
         
         for(Client client : this.clients){
             if(client.getPESEL()==Pesel){
                 this.clients.remove(client);
                 break;
-            }
-            else{
-                continue;
             }
         }       
     }

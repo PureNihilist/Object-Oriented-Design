@@ -38,7 +38,10 @@ public class Menu{
                      });
                     break;
                 case 2:
-                    //zrobic
+                    System.out.println("Wyszukiwanie Rezerwacji.");
+                    System.out.println("Podaj Pesel klienta.");
+                    long pesel1 = Long.valueOf(scanner.next()); 
+                    admin.findReservation(pesel1);
                     break;
                 case 3:
                     admin.getReservations().forEach((r) -> {
@@ -169,9 +172,14 @@ public class Menu{
                     admin.deleteReservation(reservationId); 
                     break;
                 case 11://usun klienta
+                    System.out.println("Usuwanie klienta.");
+                    System.out.println("Podaj Pesel klienta do usunięcia.");
+                    long pesel = Long.valueOf(scanner.next()); 
+                    admin.deleteClient(pesel);
                     break;
                 case 12: //exit
                     // moze pytanie czy zapisac zmiany ? 
+                    // nie, nie trzeba
                     admin.saveRooms(writer);
                     admin.saveReservations(writer);
                     System.exit(0);

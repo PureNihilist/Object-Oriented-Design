@@ -55,6 +55,33 @@ public class HotelAdministrator implements Hotel{
         Room room = new Room(name,nOfBeds,Quality);
         rooms.add(room);
     }
+    @Override
+    public void findReservation(long Pesel){
+        List<ReservationInstance> list_reservations = new ArrayList<>();
+        for(ReservationInstance r : this.reservations){
+            if(r.getClient().getPESEL()==Pesel){
+                list_reservations.add(r);
+            }
+            else{
+                continue;
+            }
+        }
+        if(list_reservations.size()==0){
+            System.out.println("Nie ma w naszym systemie rezerwacji na tego klienta.");
+        }
+        else{
+            System.out.println("Lista rezerwacji:");
+            int count = 1;
+            for(ReservationInstance res : list_reservations){
+                System.out.print(count+". "+res.getPeriodControl().getBegin()+"-"+res.getPeriodControl().getEnd()+" Pokoje: ");
+                for(Room r : res.getRoomsInfo()){
+                    System.out.print("Nazwa "+r.getName()+", Wielkość "+r.getCapacity()+"-osobowy, jakość "+r.getQuality()+" ");
+                }
+                System.out.println("");
+                count++;
+            }
+        }
+    }
     
     @Override
     public void deleteRoom(String name) {
@@ -78,7 +105,12 @@ public class HotelAdministrator implements Hotel{
         List<Client> client_list = new ArrayList<>();
         for(ReservationInstance instance : reservations) {
             Client client = instance.getClient();
+            if(client_list.contains(client)){
+                continue;
+            }
+            else{
             client_list.add(client);
+            }
         }
         this.clients = client_list;
     }
@@ -190,5 +222,18 @@ public class HotelAdministrator implements Hotel{
             this.clients = new ArrayList<>();
             this.clients.add(client);
         }
+    }
+    
+    @Override
+    public void deleteClient(long Pesel){
+        for(Client client : this.clients){
+            if(client.getPESEL()==Pesel){
+                this.clients.remove(client);
+                break;
+            }
+            else{
+                continue;
+            }
+        }       
     }
 }

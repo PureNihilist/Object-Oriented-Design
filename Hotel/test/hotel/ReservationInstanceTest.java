@@ -41,11 +41,11 @@ public class ReservationInstanceTest {
         List<Room> rooms3 = new ArrayList<>();
         rooms3.add(new Room("2", 2, 5));
         rooms3.add(new Room("4", 5, 3));
-        reservation1 = new ReservationInstance(1L, new Student("Mateusz", "Stachak", 23, 93112987635L), new PeriodControl(LocalDate.of(2017, 12, 3), LocalDate.of(2017, 12, 8)), rooms1);
-        reservation2 = new ReservationInstance(2L, new Pensioner("Marcin", "Stachurski", 74, 43012181234L), new PeriodControl(LocalDate.of(2018, 2, 3), LocalDate.of(2018, 2, 8)), rooms2);
-        reservation3 = new ReservationInstance(3L, new Invalid("Gryzelda", "Guziec", 44, 73040153819L), new PeriodControl(LocalDate.of(2018, 1, 13), LocalDate.of(2018, 1, 19)), rooms1);
-        reservation4 = new ReservationInstance(4L, new Student("Hubert", "Banaś", 23, 94072112075L), new PeriodControl(LocalDate.of(2018, 5, 1), LocalDate.of(2018, 5, 4)), rooms3);
-        reservation5 = new ReservationInstance(5L, new Person("Hubert", "Urbański", 51, 66032319403L), new PeriodControl(LocalDate.of(2018, 7, 23), LocalDate.of(2018, 7, 28)), rooms2);
+        reservation1 = new ReservationInstance(1L, new Student("Mateusz", "Stachak", 23, 93112987635L), new PeriodControl(LocalDate.of(2017, 12, 3), LocalDate.of(2017, 12, 8)), rooms1, true);
+        reservation2 = new ReservationInstance(2L, new Pensioner("Marcin", "Stachurski", 74, 43012181234L), new PeriodControl(LocalDate.of(2018, 2, 3), LocalDate.of(2018, 2, 8)), rooms2, true);
+        reservation3 = new ReservationInstance(3L, new Invalid("Gryzelda", "Guziec", 44, 73040153819L), new PeriodControl(LocalDate.of(2018, 1, 13), LocalDate.of(2018, 1, 19)), rooms1, true);
+        reservation4 = new ReservationInstance(4L, new Student("Hubert", "Banaś", 23, 94072112075L), new PeriodControl(LocalDate.of(2018, 5, 1), LocalDate.of(2018, 5, 4)), rooms3, true);
+        reservation5 = new ReservationInstance(5L, new Person("Hubert", "Urbański", 51, 66032319403L), new PeriodControl(LocalDate.of(2018, 7, 23), LocalDate.of(2018, 7, 28)), rooms2, true);
     }
 
     /**

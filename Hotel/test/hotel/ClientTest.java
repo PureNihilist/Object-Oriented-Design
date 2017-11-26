@@ -37,6 +37,7 @@ public class ClientTest {
         companyagent = new CompanyAgent("Karolina", "Mazur", 32, 85071287432L);
     }
 
+    
     /**
      * Test of getName method, of class Client.
      */
@@ -110,6 +111,37 @@ public class ClientTest {
         assertEquals(0, student.getDiscount(), 0.4);
         assertEquals(0, learner.getDiscount(), 0.47);
         assertEquals(0, companyagent.getDiscount(), 0.35);        
+    }
+
+    /**
+     * Test of getId method, of class Client.
+     */
+    @Test
+    public void testGetId() {
+        System.out.println("getId");
+        Client instance = new ClientImpl();
+        int expResult = 0;
+        int result = instance.getId();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of clone method, of class Client.
+     */
+    @Test
+    public void testClone() throws Exception {
+        System.out.println("clone");
+        Client instance = new ClientImpl();
+        Object expResult = null;
+        Object result = instance.clone();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    public class ClientImpl extends Client {
     }
 
 }

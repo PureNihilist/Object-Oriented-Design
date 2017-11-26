@@ -1,7 +1,12 @@
 package hotel;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -11,6 +16,7 @@ public class PeriodControl implements PeriodInterface{
     private LocalDate begin;
     private LocalDate end;
     private Period p;
+    private static List<PeriodControl> seasons;
     
     PeriodControl (LocalDate begin, LocalDate end) throws Exception{
         this.end = null;
@@ -29,6 +35,10 @@ public class PeriodControl implements PeriodInterface{
 
     public LocalDate getEnd() {
         return end;
+    }
+    
+    public List<PeriodControl> getSeasons(){
+        return seasons;
     }
 
     public void setBegin(LocalDate new_begin) {
@@ -60,7 +70,42 @@ public class PeriodControl implements PeriodInterface{
                 (start1.isEqual(start2) && end1.isEqual(end2)); //rowne przedzialy
         //przedzialy sa rozlaczne
     } 
+    
+    
+    public static void loadSeasons() throws Exception{
+        seasons = new ArrayList<>();
+        for(int i = 0 ; i < 20 ; i++) {
+            LocalDate seasonVacationBegin = LocalDate.of(2017+i, Month.JULY, 1);
+            LocalDate seasonVacationEnd = LocalDate.of(2017+i, Month.SEPTEMBER, 1);
+            PeriodControl vacation = new PeriodControl(seasonVacationBegin,seasonVacationEnd);
+            seasons.add(vacation);
+            LocalDate seasonWinterBegin = LocalDate.of(2017+i, Month.DECEMBER, 20);
+            LocalDate seasonWinterEnd = LocalDate.of(2018+i, Month.JANUARY, 3);
+            PeriodControl winter = new PeriodControl(seasonWinterBegin, seasonWinterEnd);
+            seasons.add(winter);
+        }
+    }
+    
+    public boolean isSeason(PeriodControl p){
+        LocalDate p_begin = p.getBegin();
+        LocalDate p_end = p.getEnd();
+        for(PeriodControl control : seasons) {
+            LocalDate control_begin = control.getBegin();
+            LocalDate control_end = control.getEnd();
+            if(PeriodControl.isOverLaped(p_begin,p_end,control_begin,control_end)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void addEvent(PeriodControl p){
+        if(seasons != null) {
+            this.seasons.add(p);
+        }
+    }
 }
+
     //Jeśli potrzebujesz dokładnych danych to robi się to tak:
     /* gdzie p to obiekt Period
     long p2 = ChronoUnit.DAYS.between(birthday, today);

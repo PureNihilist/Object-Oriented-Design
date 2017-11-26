@@ -17,6 +17,7 @@ public class Menu{
         admin.loadReservations(reader); //rezerwacje w liscie reservations
       //  admin.loadClients(reader); //klienci w liście clients
         ClientCache cache = ClientCache.getInstance();
+        PeriodControl.loadSeasons();//ladowanie sezonow
         while(true){
         System.out.println("Witamy w systemie obsługi hotelu recepcja!");
         System.out.println("Wybierz zakres usług.");
@@ -79,7 +80,7 @@ public class Menu{
                                             if(!freeRooms.isEmpty()) {
                                                 System.out.println("Obecnie w tym przedziale czasowym mamy do zaoferowania:");
                                                 freeRooms.forEach((Room room) -> {
-                                                    System.out.println("Pokój "+room.getName()+", "+room.getCapacity()+"-osobowy, o poziomie komfortu: "+room.getQuality());
+                                                    System.out.println("Pokój "+room.getName()+", "+room.getCapacity()+"-osobowy, o poziomie komfortu: "+room.getQuality() + " " +room.getPrice());
                                                 });
                                             } else {
                                                 System.err.println("W tym przedziale czasowym nie mamy żadnego pokoju do zaoferowania.");

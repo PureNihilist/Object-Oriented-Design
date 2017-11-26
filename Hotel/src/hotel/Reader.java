@@ -61,26 +61,27 @@ public class Reader {
         List<ReservationInstance> reservations = new ArrayList<>();
         List<Client> clients = new ArrayList<>();
         ClientCache cache = ClientCache.getInstance();
-        cache.initilizeClientCache(clients,reservations); //tutaj tworze liste klientow ktora jest przechowywana w ClientCache
+        cache.initilizeClientCache(clients); //tutaj tworze liste klientow ktora jest przechowywana w ClientCache
         Path pathToFile = Paths.get(fileName);
         try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
             String line;
             while((line = br.readLine()) != null) {
                 String [] attributes = line.split(";");
                 long reservationId = Long.valueOf(attributes[0]);
-                String clientName = attributes[1];
-                String clientSurname = attributes[2];
-                int clientAge = Integer.valueOf(attributes[3]);
-                long clientPESEL = Long.valueOf(attributes[4]);
-                int clientType = Integer.valueOf(attributes[5]);
+                boolean confirmation = Boolean.valueOf(attributes[1]);
+                String clientName = attributes[2];
+                String clientSurname = attributes[3];
+                int clientAge = Integer.valueOf(attributes[4]);
+                long clientPESEL = Long.valueOf(attributes[5]);
+                int clientType = Integer.valueOf(attributes[6]);
                 Client client = cache.createClient(clientName, clientSurname, clientAge, clientPESEL, clientType);
-                String periodFrom = attributes[6]; //Date format : year-month-day example : 2017-11-19
+                String periodFrom = attributes[7]; //Date format : year-month-day example : 2017-11-19
                 LocalDate from = LocalDate.parse(periodFrom);
-                String periodTo = attributes[7];
+                String periodTo = attributes[8];
                 LocalDate to = LocalDate.parse(periodTo);
                 PeriodControl period_control = new PeriodControl(from,to); //throws exception but i catch it in global catch
                 List<Room> room_list = new ArrayList();
-                for(int i = 8 ; i < attributes.length ; i+=3) { //One client may take reservation for more then 1 room, every room requires name,capacity and quality
+                for(int i = 9 ; i < attributes.length ; i+=3) { //One client may take reservation for more then 1 room, every room requires name,capacity and quality
                     String roomName = attributes[i];
                     int roomCapacity = Integer.valueOf(attributes[i + 1]);
                     int roomQuality = Integer.valueOf(attributes[i + 2]);
@@ -88,7 +89,7 @@ public class Reader {
                     room_list.add(room);
                 }
                 clients.add(client);
-                ReservationInstance reservation = new ReservationInstance(reservationId,client,period_control,room_list);//ustalic pola
+                ReservationInstance reservation = new ReservationInstance(reservationId,client,period_control,room_list,confirmation);//ustalic pola
                 reservations.add(reservation);
             }
         } catch(Exception ex) {

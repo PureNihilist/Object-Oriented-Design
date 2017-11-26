@@ -12,12 +12,14 @@ public class ReservationInstance implements Reservation,ReservationInfo{
     private final Client client;
     private final PeriodControl periodControl;
     private final List <Room> roomInfo;
+    boolean isConfirmed;
 
-    public ReservationInstance(long id, Client client, PeriodControl periodControl, List<Room> info) {
+    public ReservationInstance(long id, Client client, PeriodControl periodControl, List<Room> info, boolean confirmed) {
         this.ID = id;
         this.client = client;
         this.periodControl = periodControl;
         this.roomInfo = info;
+        this.isConfirmed = confirmed;
     }
 
     @Override
@@ -28,6 +30,15 @@ public class ReservationInstance implements Reservation,ReservationInfo{
     @Override
     public Client getClient() {
         return this.client;
+    }
+    
+    @Override
+    public String isConfirmed() {
+        if(this.isConfirmed){
+            return "TAK";
+        } else {
+            return "NIE";
+        }
     }
     
     @Override

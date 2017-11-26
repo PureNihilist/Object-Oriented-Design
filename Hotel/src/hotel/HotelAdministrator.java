@@ -14,8 +14,7 @@ public class HotelAdministrator implements Hotel{
     private List<ReservationInstance> reservations = null;//list of reservations
     private Reader reader;
     private Writer writer;
-    private ClientCache client_controler = null;
-
+    
     @Override
     public void loadRooms(Reader reader) {
         this.reader = Reader.getInstance(); //get singleton instance of reader
@@ -36,14 +35,6 @@ public class HotelAdministrator implements Hotel{
         } else {
             throw new NullPointerException("Lista rezerwacji nie została poprawnie wczytana. Program zostanie zakończony.");
         }
-    }
-    
-    public ClientCache getClientControler() {
-        if(client_controler != null){ 
-            return client_controler;
-        } else {
-            throw new NullPointerException("Lista rezerwacji nie została poprawnie wczytana. Program zostanie zakończony.");
-        } 
     }
     
     @Override
@@ -78,6 +69,7 @@ public class HotelAdministrator implements Hotel{
             System.out.println("Lista rezerwacji:");
             int count = 1;
             for(ReservationInstance res : list_reservations){
+                System.out.println("Rezerwacja potwierdzona: "+res.isConfirmed());
                 System.out.print(count+". "+res.getPeriodControl().getBegin()+"-"+res.getPeriodControl().getEnd()+" Pokoje: ");
                 res.getRoomsInfo().forEach((Room r) -> {
                     System.out.print("Nazwa "+r.getName()+", Wielkość "+r.getCapacity()+"-osobowy, jakość "+r.getQuality()+" ");
@@ -109,14 +101,15 @@ public class HotelAdministrator implements Hotel{
             }
         });
         
-        List<Client> clients = client_controler.getClients();
+        ClientCache instance = ClientCache.getInstance();
+        List<Client> clients = instance.getClients();
         for(Client client : clients){
             if(client.getPESEL()==pesel){
                 clients.remove(client);
                 break;
             }
         }
-        client_controler.UpdateClients(clients);
+        instance.UpdateClients(clients);
     }
      
 
@@ -124,15 +117,6 @@ public class HotelAdministrator implements Hotel{
         this.reader = Reader.getInstance();
         this.reservations = this.reader.readReservationCSV("Reservations.csv");
     }
-    /*
-    @Override
-    public void loadClients(Reader reader) {
-        List<Client> client_list = new ArrayList<>();
-        this.client_controler = ClientCache.getInstance();
-        reservations.stream().map((instance) -> instance.getClient()).filter((client) -> (!client_list.contains(client))).forEachOrdered((Client client) -> {
-            client_list.add(client);
-        });
-    }*/
     
     @Override
     public void saveReservations(Writer writer) {
@@ -194,7 +178,8 @@ public class HotelAdministrator implements Hotel{
                     } 
                 }
             }
-            ReservationInstance correct_request = new ReservationInstance(request.getId(),request.getClient(),period,room_list); 
+            boolean confirmation = request.isConfirmed;
+            ReservationInstance correct_request = new ReservationInstance(request.getId(),request.getClient(),period,room_list,confirmation); 
             reservations.add(correct_request);
             return true;
         } else {

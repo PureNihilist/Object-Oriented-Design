@@ -3,6 +3,7 @@ package hotel;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -206,7 +207,6 @@ class CompanyAgent extends Client {
 /* clientCache to singleton ale jest to tez kontroler prototypow klienta */
 class ClientCache {
     private List<Client> clients = null;
-    private List<ReservationInstance> clientRequests = null; //prosby o rezerwacje tworzone przez klientow
     
     public volatile static ClientCache cache = null;
     
@@ -224,14 +224,13 @@ class ClientCache {
                 clientCache = ClientCache.cache;
                 if(clientCache == null) {
                     ClientCache.cache = clientCache = new ClientCache();
-                    clientCache.clientRequests = new ArrayList<>();
                 }
             }
         }
         return clientCache;
     }
     
-    public void initilizeClientCache(List<Client> clients , List<ReservationInstance> reservations) {
+    public void initilizeClientCache(List<Client> clients) {
         this.clients = clients;
     }
     
@@ -247,9 +246,6 @@ class ClientCache {
         this.clients = clients; 
     }
     
-    public void makeRequest(ReservationInstance request) {
-        clientRequests.add(request);
-    }
     public Client searchForClient(long clientPESEL) throws Exception {
         Client c = null;
         for(Client client : clients) {

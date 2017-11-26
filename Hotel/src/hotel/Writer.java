@@ -54,10 +54,11 @@ public class Writer {
             for(ReservationInstance reservationInstance : reservations){
                 String line;
                 long ID = reservationInstance.getId();
+                String confirmation = reservationInstance.isConfirmed();
                 Client client = reservationInstance.getClient();
                 PeriodControl periodControl  = reservationInstance.getPeriodControl();
                 List <Room> roomInfo = reservationInstance.getRoomsInfo();
-                line = ID+";"+client.getName()+";"+client.getSurname()+";"+client.getAge()+";"+client.getPESEL()+";"+client.getId()+";"+periodControl.getBegin()+";"+periodControl.getEnd()+";";
+                line = ID+";"+confirmation+";"+client.getName()+";"+client.getSurname()+";"+client.getAge()+";"+client.getPESEL()+";"+client.getId()+";"+periodControl.getBegin()+";"+periodControl.getEnd()+";";
                 line = roomInfo.stream().map((room) -> room.getName()+";"+room.getCapacity()+";"+room.getQuality()+";").reduce(line, String::concat); //dobra wiem ze przejebana linijka ale to to samo co for each po roomie :D
                 bw.write(line);
                 bw.newLine();

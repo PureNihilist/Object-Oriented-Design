@@ -52,7 +52,8 @@ public class Menu{
                                             Client client = reservation.getClient();
                                             if(client.getPESEL() == pesel) {
                                                 PeriodControl period = reservation.getPeriodControl();
-                                                System.out.println("Id rezerwacji:"+reservation.getId()+",imię:"+loggedClientName+",nazwisko:"+loggedClientSurname+",wiek:"+client.getAge()+",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.getDiscount());
+                                                String confirmed = reservation.isConfirmed();
+                                                System.out.println("Id rezerwacji:"+reservation.getId()+"potwierdzona: "+confirmed+",imię:"+loggedClientName+",nazwisko:"+loggedClientSurname+",wiek:"+client.getAge()+",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.getDiscount());
                                                 System.out.println("Rezerwacja na okres od:"+period.getBegin() + " do " + period.getEnd() + " ");
                                                 reservation.getRoomsInfo().forEach((roomInfo) -> {
                                                     System.out.println("Nazwa pokoju:"+roomInfo.getName()+",pojemność:"+ roomInfo.getCapacity() + ",poziom komfortu:" + roomInfo.getQuality() + ",cena:" + roomInfo.getPrice());
@@ -110,8 +111,8 @@ public class Menu{
                                             room_list.add(requestedRoom);
                                         }
                                         long ID = admin.getReservations().size();
-                                        ReservationInstance request = new ReservationInstance(++ID,c,period,room_list);
-                                        cache.makeRequest(request);
+                                        ReservationInstance request = new ReservationInstance(++ID,c,period,room_list,false);
+                                        admin.makeReservation(request);
                                         break;
                                     case 5://exit
                                         admin.saveReservations(writer); // teraz pytanie czy klient'a rezerwacje dodawac od razu do systemu ? czy czekac na akceptacje recepcji 
@@ -164,7 +165,8 @@ public class Menu{
                                     admin.getReservations().forEach((r) -> {
                                         Client client = r.getClient();
                                         PeriodControl period = r.getPeriodControl();
-                                        System.out.println("Id rezerwacji:"+r.getId() + ",imię:" +client.getName() + ",nazwisko:" + client.getSurname() + ",wiek:" + client.getAge() + ",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.discount);
+                                        String confirmed = r.isConfirmed();
+                                        System.out.println("Id rezerwacji:"+r.getId()+",potwierdzona: "+confirmed + ",imię:" +client.getName() + ",nazwisko:" + client.getSurname() + ",wiek:" + client.getAge() + ",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.discount);
                                         System.out.println("Rezerwacja na okres od:"+period.getBegin() + " do " + period.getEnd() + " ");
                                         r.getRoomsInfo().forEach((roomInfo) -> {
                                             System.out.println("Nazwa pokoju:"+roomInfo.getName()+",pojemność:"+ roomInfo.getCapacity() + ",poziom komfortu:" + roomInfo.getQuality() + ",cena:" + roomInfo.getPrice());
@@ -257,7 +259,7 @@ public class Menu{
                                         room_list.add(requestedRoom);
                                     }
                                     long ID = admin.getReservations().size();
-                                    ReservationInstance request = new ReservationInstance(++ID,client,period,room_list);
+                                    ReservationInstance request = new ReservationInstance(++ID,client,period,room_list,true);
                                     admin.makeReservation(request);
                                     break;
                                 case 9: //usuwanie pokoju

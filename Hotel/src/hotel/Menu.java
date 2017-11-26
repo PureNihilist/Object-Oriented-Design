@@ -142,13 +142,14 @@ public class Menu{
                             System.out.println("3. Wyświetl wszystkie rezerwacje.");
                             System.out.println("4. Wyświetl wszystkich gości hotelowych.");
                             System.out.println("5. Wyświetl wolne pokoje.");
-                            System.out.println("6. Dodaj nowego klienta.");
-                            System.out.println("7. Dodaj nowy pokój.");
-                            System.out.println("8. Dodaj nową rezerwację.");
-                            System.out.println("9. Usuń pokój.");
-                            System.out.println("10. Usuń rezerwację.");
-                            System.out.println("11. Usuń klienta.");
-                            System.out.println("12. Zakończ działanie systemu.");
+                            System.out.println("6. Potwierdzanie rezerwacji klienckich");
+                            System.out.println("7. Dodaj nowego klienta.");
+                            System.out.println("8. Dodaj nowy pokój.");
+                            System.out.println("9. Dodaj nową rezerwację.");
+                            System.out.println("10. Usuń pokój.");
+                            System.out.println("11. Usuń rezerwację.");
+                            System.out.println("12. Usuń klienta.");
+                            System.out.println("13. Zakończ działanie systemu.");
                             int choice = scanner.nextInt();
                             switch (choice) {
                                 case 1: //wyswietl wszystkie pokoje
@@ -198,7 +199,39 @@ public class Menu{
                                         System.err.println("W tym przedziale czasowym nie mamy żadnego pokoju do zaoferowania.");
                                     }
                                     break;
-                                case 6://dodawanie klienta
+                                case 6://potwierdzanie rezerwacji klienckich
+                                    System.out.println("Potwierdanie rezerwacji klienckich");
+                                    System.out.println("Aktualnie niepotwierdzone rejestracje: ");
+                                    List<ReservationInstance> actual_reservations = admin.getReservations();
+                                    List<ReservationInstance> unconfirmed = new ArrayList();
+                                    for(ReservationInstance r : actual_reservations){
+                                        if(r.isConfirmed().equals("NIE")){
+                                            Client client = r.getClient();
+                                            PeriodControl period = r.getPeriodControl();
+                                            System.out.println("Id rezerwacji:"+r.getId()+",imię:" +client.getName() + ",nazwisko:" + client.getSurname() + ",wiek:" + client.getAge() + ",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.discount);
+                                            System.out.println("Rezerwacja na okres od:"+period.getBegin() + " do " + period.getEnd() + " ");
+                                            r.getRoomsInfo().forEach((roomInfo) -> {
+                                                System.out.println("Nazwa pokoju:"+roomInfo.getName()+",pojemność:"+ roomInfo.getCapacity() + ",poziom komfortu:" + roomInfo.getQuality() + ",cena:" + roomInfo.getPrice());
+                                            });
+                                            unconfirmed.add(r);
+                                        }
+                                    }
+                                    if(!unconfirmed.isEmpty()) {
+                                        System.out.println("Proszę podać ID rezerwacji, którą potwierdzić.");
+                                        long Id = Long.valueOf(scanner.next());
+                                        for(ReservationInstance r : unconfirmed) {
+                                            if(r.getId() == Id){
+                                                r.setConfirmed();
+                                                break;
+                                            }
+                                        }
+                                        System.err.println("Wprowadzono złe id rezerwacji");
+                                        break;
+                                    } else {
+                                        System.out.println("Brak niepotwierdzonych rezerwacji w systemie.");
+                                        break;
+                                    }
+                                case 7://dodawanie klienta
                                     System.out.println("Dodawanie nowego klienta.");
                                     System.out.println("Podaj imię.");
                                     String newclientName = scanner.next();
@@ -218,7 +251,7 @@ public class Menu{
                                     System.out.println("Ulga 5 dla firm");                                     
                                     cache.createClient(newclientName, newclientSurname, newclientAge,peselNumber,discountChoice);
                                     break;
-                                case 7: //dodawanie nowego pokoju
+                                case 8: //dodawanie nowego pokoju
                                     int roomCounter = admin.getRooms().size();
                                     System.out.println("Dodawanie pokoju. ");
                                     System.out.println("Aktualnie hotel posiada "+roomCounter +" zapisanych pokoi.");
@@ -230,7 +263,7 @@ public class Menu{
                                     int roomQuality = Integer.valueOf(scanner.next());
                                     admin.addRoom(roomName, roomCapacity, roomQuality );
                                     break;
-                                case 8: //tworzenie rezerwacji
+                                case 9: //tworzenie rezerwacji
                                     System.out.println("Dodawanie rezerwacji.");
                                     System.out.println("Podaj numer PESEL klienta");
                                     long clientID = Long.valueOf(scanner.next());
@@ -262,22 +295,22 @@ public class Menu{
                                     ReservationInstance request = new ReservationInstance(++ID,client,period,room_list,true);
                                     admin.makeReservation(request);
                                     break;
-                                case 9: //usuwanie pokoju
+                                case 10: //usuwanie pokoju
                                     System.out.println("Usuwanie pokoju.");
                                     System.out.println("Podaj nazwę pokoju do usunięcia.");
                                     admin.deleteRoom(scanner.next());
                                     break;
-                                case 10://usuwanie rezerwacji
+                                case 11://usuwanie rezerwacji
                                     System.out.println("Usuwanie rezerwacji.");
                                     System.out.println("Podaj id rezerwacji do usunięcia.");
                                     admin.deleteReservation(Long.valueOf(scanner.next()));
                                     break;
-                                case 11://usuwanie klienta
+                                case 12://usuwanie klienta
                                     System.out.println("Usuwanie klienta.");
                                     System.out.println("Podaj Pesel klienta do usunięcia.");
                                     admin.deleteClient(Long.valueOf(scanner.next()));
                                     break;
-                                case 12: //exit
+                                case 13: //exit
                                     admin.saveRooms(writer);
                                     admin.saveReservations(writer);
                                     System.exit(0);

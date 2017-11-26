@@ -32,6 +32,10 @@ public class ReservationInstance implements Reservation,ReservationInfo{
         return this.client;
     }
     
+    public void setConfirmed() {
+        this.isConfirmed = true;
+    }
+    
     @Override
     public String isConfirmed() {
         if(this.isConfirmed){

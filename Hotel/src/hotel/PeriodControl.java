@@ -49,19 +49,16 @@ public class PeriodControl implements PeriodInterface{
     stad dodatkowe 5 przypadkow
     */
     public static boolean isOverLaped(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2){
-        if ((start1.isBefore(start2) && start2.isBefore(end1) && end1.isBefore(end2)) || //czesc wspólna
-            (start2.isBefore(start1) && start1.isBefore(end2) && end2.isBefore(end1)) || //czesc wspolna odwrotnie
-            (start1.isBefore(start2) && end2.isBefore(end1)) || // zawieranie
-            (start2.isBefore(start1) && end1.isBefore(end2)) || //zawieranie w druga strone
-            (start1.isBefore(start2) && end1.isEqual(start2)) || //wspolny koniec
-            (start2.isBefore(start1) && end2.isEqual(start1)) || //wspolny koniec odwrotnie
-            (start1.isEqual(start2) && end2.isBefore(end1)) || // wspolny poczatek
-            (start1.isEqual(start2) && end1.isBefore(end2)) || // wspolny poczatek odwrotnie
-            (start1.isEqual(start2) && end1.isEqual(end2))) //rowne przedzialy
-            return true;
-        else { //przedzialy sa rozlaczne
-            return false;
-        }
+        return (start1.isBefore(start2) && start2.isBefore(end1) && end1.isBefore(end2)) || //czesc wspólna
+                (start2.isBefore(start1) && start1.isBefore(end2) && end2.isBefore(end1)) || //czesc wspolna odwrotnie
+                (start1.isBefore(start2) && end2.isBefore(end1)) || // zawieranie
+                (start2.isBefore(start1) && end1.isBefore(end2)) || //zawieranie w druga strone
+                (start1.isBefore(start2) && end1.isEqual(start2)) || //wspolny koniec
+                (start2.isBefore(start1) && end2.isEqual(start1)) || //wspolny koniec odwrotnie
+                (start1.isEqual(start2) && end2.isBefore(end1)) || // wspolny poczatek
+                (start1.isEqual(start2) && end1.isBefore(end2)) || // wspolny poczatek odwrotnie
+                (start1.isEqual(start2) && end1.isEqual(end2)); //rowne przedzialy
+        //przedzialy sa rozlaczne
     } 
 }
     //Jeśli potrzebujesz dokładnych danych to robi się to tak:

@@ -10,8 +10,8 @@ import java.util.Scanner;
  * @author Mateusz Galas
  */
 public class HotelAdministrator implements Hotel{
-    private List<Room> rooms; //list of rooms
-    private List<ReservationInstance> reservations;//list of reservations
+    private List<Room> rooms = null; //list of rooms
+    private List<ReservationInstance> reservations = null;//list of reservations
     private List<Client> clients = null; // list of clients
     private Reader reader;
     private Writer writer;
@@ -23,18 +23,26 @@ public class HotelAdministrator implements Hotel{
     }
     
     public List<Room> getRooms() {
-        return rooms;
+        if(rooms != null){ 
+            return rooms;
+        } else {
+            throw new NullPointerException("Lista pokoi nie została poprawnie wczytana. Program zostanie zakończony.");
+        }
     }
     
     public List<ReservationInstance> getReservations() {
-        return reservations;
+        if(reservations != null){ 
+            return reservations;
+        } else {
+            throw new NullPointerException("Lista rezerwacji nie została poprawnie wczytana. Program zostanie zakończony.");
+        }
     }
     
-    public List<Client> getClients() throws Exception{
-        if(clients != null) {
+    public List<Client> getClients() {
+        if(clients != null){ 
             return clients;
         } else {
-            throw new Exception("Lista klientów nie została wczytana.");
+            throw new NullPointerException("Lista klientów nie została poprawnie wczytana. Program zostanie zakończony.");
         }
     }
 
@@ -48,7 +56,7 @@ public class HotelAdministrator implements Hotel{
     public void addRoom(String name, int nOfBeds, int Quality) {
         for(Room room : rooms){
             if(room.getName().equals(name)){
-                System.out.println("Istnieje już pokój o tej nazwie.");
+                System.err.println("Istnieje już pokój o tej nazwie.");
                 return;
             }
         }
@@ -89,7 +97,7 @@ public class HotelAdministrator implements Hotel{
                 return;
             }
         }
-        System.out.println("Nie ma pokoju o tej nazwie.");
+        System.err.println("Nie ma pokoju o tej nazwie.");
     }
 
     public void loadReservations(Reader reader) {
@@ -113,11 +121,7 @@ public class HotelAdministrator implements Hotel{
                 c = client;
             }
         }
-        if(c == null) {
-            throw new Exception("Klient o podanym numerze PESEL nie istnieje!");
-        } else {
-            return c;
-        }
+        return c; //c moze byc nullem ale jest to obsluzone w uzyciu -> patrz Menu
     }
     
     @Override
@@ -184,7 +188,7 @@ public class HotelAdministrator implements Hotel{
             reservations.add(correct_request);
             return true;
         } else {
-            System.out.println("Przepraszamy, w tym przedziale czasowym nie ma żadnych wolnych pokoi, które państwo sobie zażyczyli.");
+            System.err.println("Przepraszamy, w tym przedziale czasowym nie ma żadnych wolnych pokoi, które państwo sobie zażyczyli.");
             return false;
         }
     }
@@ -210,7 +214,6 @@ public class HotelAdministrator implements Hotel{
     
     @Override
     public void deleteClient(long Pesel){
-        
         //usuwanie wszystkich rezerwacji na tego klienta
         reservations.forEach((ReservationInstance instance) -> {
             Client toRemove = instance.getClient();

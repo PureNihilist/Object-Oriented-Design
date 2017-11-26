@@ -5,7 +5,6 @@ package hotel;
  * @author Hubert Banaś and Mateusz Galas
  */
 abstract class Client {
-    public Client(){}
     public String Name;
     public String Surname;
     public int age;

@@ -14,9 +14,8 @@ abstract class Client implements Cloneable {
     protected int age;
     protected long PESEL;
     protected double discount;
-    protected String type;
-    private String id;
-    
+    protected int id; //typ klienta od 0 do 6
+
     public String getName() {
         return Name;
     }
@@ -36,14 +35,9 @@ abstract class Client implements Cloneable {
     public double getDiscount() {
         return discount;
     }
-    public String getType(){
-      return type;
-    }
-   
-    public String getId() {
+    public int getId(){
       return id;
     }
-   
         
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -67,7 +61,7 @@ class Person extends Client{
         this.age = age;
         this.PESEL = PESEL;
         this.discount = 0;
-        this.type = "person";
+        this.id = 0;
     }
     @Override
     public Client clone() throws CloneNotSupportedException {
@@ -88,7 +82,7 @@ class LoyalClient extends Client{
         this.age = age;
         this.PESEL = PESEL;
         this.discount = 0.2;
-        this.type = "loyal";
+        this.id = 6;
     }
     @Override
     public Client clone() throws CloneNotSupportedException {
@@ -111,7 +105,7 @@ class Learner extends Client{
         }
         this.PESEL = PESEL;
         this.discount = 0.47;
-        this.type = "learner";
+        this.id = 1;
     }
     @Override
     public Client clone() throws CloneNotSupportedException {
@@ -134,7 +128,7 @@ class Student extends Client{
         }
         this.PESEL = PESEL;
         this.discount = 0.4;
-        this.type = "student";
+        this.id = 2;
     }
     @Override
     public Client clone() throws CloneNotSupportedException {
@@ -155,7 +149,7 @@ class Pensioner extends Client{
         this.age = age;
         this.PESEL = PESEL;
         this.discount = 0.3;
-        this.type = "pensioner";
+        this.id = 3;
     }
     @Override
     public Client clone() throws CloneNotSupportedException {
@@ -176,7 +170,7 @@ class Invalid extends Client{
         this.age = age;
         this.PESEL = PESEL;
         this.discount = 0.55;
-        this.type = "invalid";
+        this.id = 4;
     }
     @Override
     public Client clone() throws CloneNotSupportedException {
@@ -197,7 +191,7 @@ class CompanyAgent extends Client {
         this.age = age;
         this.PESEL = PESEL;
         this.discount = 0.35;
-        this.type = "agent";
+        this.id = 5;
     }
     @Override
     public Client clone() throws CloneNotSupportedException {
@@ -209,14 +203,36 @@ class CompanyAgent extends Client {
         return prototype;
     }
 }
-
+/* clientCache to singleton ale jest to tez kontroler prototypow klienta */
 class ClientCache {
     private List<Client> clients = null;
-    private List<ReservationInstance> reservations = null;
+    private List<ReservationInstance> clientRequests = null; //prosby o rezerwacje tworzone przez klientow
     
-    public void initializeCache(List<Client> loadedList, List<ReservationInstance> loadedReservations) {
-        clients = loadedList;
-        reservations = loadedReservations;
+    public volatile static ClientCache cache = null;
+    
+    
+    private ClientCache() {
+        if(cache != null) { 
+            throw new RuntimeException("Cannot create instance of singleton. Use getInstance().");
+        }
+    }
+    
+    public static ClientCache getInstance() {
+        ClientCache clientCache = ClientCache.cache;
+        if(clientCache == null) {
+            synchronized(ClientCache.class) {
+                clientCache = ClientCache.cache;
+                if(clientCache == null) {
+                    ClientCache.cache = clientCache = new ClientCache();
+                    clientCache.clientRequests = new ArrayList<>();
+                }
+            }
+        }
+        return clientCache;
+    }
+    
+    public void initilizeClientCache(List<Client> clients , List<ReservationInstance> reservations) {
+        this.clients = clients;
     }
     
     public List<Client> getClients() {
@@ -227,23 +243,13 @@ class ClientCache {
         }
     }
     
-    public void deleteClient(long pesel){
-        //usuwanie wszystkich rezerwacji na tego klienta
-        reservations.forEach((ReservationInstance instance) -> {
-            Client toRemove = instance.getClient();
-            if (toRemove.PESEL == pesel) {
-                reservations.remove(instance); 
-            }
-        });
-        
-        for(Client client : this.clients){
-            if(client.getPESEL()==pesel){
-                this.clients.remove(client);
-                break;
-            }
-        }       
+    public void UpdateClients(List<Client> clients ) {
+        this.clients = clients; 
     }
-     
+    
+    public void makeRequest(ReservationInstance request) {
+        clientRequests.add(request);
+    }
     public Client searchForClient(long clientPESEL) throws Exception {
         Client c = null;
         for(Client client : clients) {
@@ -253,46 +259,45 @@ class ClientCache {
         }
         return c; //c moze byc nullem ale jest to obsluzone w uzyciu -> patrz Menu
     }
-      
+    //tworzy nowego klienta albo klonuje jesli juz taki jest 
     public Client createClient(String name, String surname, int age, long pesel, int type) throws CloneNotSupportedException {
-        
-        if(clients == null) {
+        if(clients != null) {
+            for(Client p : clients) {//jest taki klient
+                if(p.getName().equals(name) && p.getSurname().equals(surname) && p.getAge() == age && p.getPESEL() == pesel ){
+                    return (Client)p.clone();
+                }
+            } // nie ma takiego klienta jeszcze
+            Client client = null;
+            switch(type) {
+                    case 0 :
+                        client = new Person(name,surname,age,pesel);
+                        break;
+                    case 1 :
+                        client = new Learner(name,surname,age,pesel);
+                        break;
+                    case 2 :
+                        client = new Student(name,surname,age,pesel);
+                        break;
+                    case 3 :
+                        client = new Pensioner(name,surname,age,pesel);
+                        break;
+                    case 4 :
+                        client = new Invalid(name,surname,age,pesel);;
+                        break;
+                    case 5 :
+                        client = new CompanyAgent(name,surname,age,pesel);
+                        break;
+                    case 6 :
+                        client = new LoyalClient(name,surname,age,pesel);
+                        break;
+                    default :
+                        System.err.println("Podano niewłaściwy typ ulgi.");
+                        break;
+            }
+            this.clients.add(client);
+            return client;
+        } else {
             throw new NullPointerException("Lista klienta nie została wczytana");
         }
-        
-        for(Client p : clients) {//jest taki klient
-            if(p.getName().equals(name) && p.getSurname().equals(surname) && p.getAge() == age && p.getPESEL() == pesel ){
-                return (Client)p.clone();
-            }
-        } // nie ma takiego klienta jeszcze
-        Client client = null;
-        switch(type) {
-                  case 0 :
-                      client = new Person(name,surname,age,pesel);
-                      break;
-                  case 1 :
-                      client = new LoyalClient(name,surname,age,pesel);
-                      break;
-                  case 2 :
-                      client = new Learner(name,surname,age,pesel);
-                      break;
-                  case 3 :
-                      client = new Student(name,surname,age,pesel);
-                      break;
-                  case 4 :
-                      client = new Pensioner(name,surname,age,pesel);
-                      break;
-                  case 5 :
-                      client = new Invalid(name,surname,age,pesel);;
-                      break;
-                  case 6 :
-                      client = new CompanyAgent(name,surname,age,pesel);
-                      break;
-                  default :
-                      System.err.println("Podano niewłaściwy typ ulgi.");
-                      break;
-        }
-        this.clients.add(client);
-        return client;
     }
 }

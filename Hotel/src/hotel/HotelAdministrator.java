@@ -99,23 +99,40 @@ public class HotelAdministrator implements Hotel{
         }
         System.err.println("Nie ma pokoju o tej nazwie.");
     }
+    
+    public void deleteClient(long pesel){
+        //usuwanie wszystkich rezerwacji na tego klienta
+        reservations.forEach((ReservationInstance instance) -> {
+            Client toRemove = instance.getClient();
+            if (toRemove.PESEL == pesel) {
+                reservations.remove(instance); 
+            }
+        });
+        
+        List<Client> clients = client_controler.getClients();
+        for(Client client : clients){
+            if(client.getPESEL()==pesel){
+                clients.remove(client);
+                break;
+            }
+        }
+        client_controler.UpdateClients(clients);
+    }
+     
 
     public void loadReservations(Reader reader) {
         this.reader = Reader.getInstance();
         this.reservations = this.reader.readReservationCSV("Reservations.csv");
     }
-    
+    /*
     @Override
     public void loadClients(Reader reader) {
         List<Client> client_list = new ArrayList<>();
-        client_controler = new ClientCache();
+        this.client_controler = ClientCache.getInstance();
         reservations.stream().map((instance) -> instance.getClient()).filter((client) -> (!client_list.contains(client))).forEachOrdered((Client client) -> {
             client_list.add(client);
         });
-        client_controler.initializeCache(client_list,reservations);
-    }
-    
-   
+    }*/
     
     @Override
     public void saveReservations(Writer writer) {
@@ -194,15 +211,4 @@ public class HotelAdministrator implements Hotel{
             reservations.remove(instance);
         });
     }
-    /*
-    @Override
-    public void addClient(Client client) {
-        if(clients != null) {
-            clients.add(client);
-        } else {
-            this.clients = new ArrayList<>();
-            this.clients.add(client);
-        }
-    }*/
-   
 }

@@ -13,7 +13,7 @@ interface Hotel {
     void deleteReservation(long reservationId);
     void addRoom(String name, int nOfBeds, int Quality);
     void deleteRoom(String name);
-    void loadClients(Reader reader);
+  //  void loadClients(Reader reader);
     List<Room> findFreeRooms(PeriodControl periodcontrol, List<Room> rooms);
     boolean makeReservation(ReservationInstance request);
     void findReservation(long Pesel);

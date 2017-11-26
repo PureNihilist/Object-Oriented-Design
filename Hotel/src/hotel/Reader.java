@@ -60,6 +60,8 @@ public class Reader {
     public List<ReservationInstance> readReservationCSV(String fileName) {
         List<ReservationInstance> reservations = new ArrayList<>();
         List<Client> clients = new ArrayList<>();
+        ClientCache cache = ClientCache.getInstance();
+        cache.initilizeClientCache(clients,reservations); //tutaj tworze liste klientow ktora jest przechowywana w ClientCache
         Path pathToFile = Paths.get(fileName);
         try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
             String line;
@@ -70,31 +72,8 @@ public class Reader {
                 String clientSurname = attributes[2];
                 int clientAge = Integer.valueOf(attributes[3]);
                 long clientPESEL = Long.valueOf(attributes[4]);
-                String clientType = attributes[5];
-                Client client = null;
-                switch(clientType) {
-                    case "Person" :
-                        client = new Person(clientName,clientSurname,clientAge,clientPESEL);
-                        break;
-                    case "LoyalClient" :
-                        client = new LoyalClient(clientName,clientSurname,clientAge,clientPESEL);
-                        break;
-                    case "Learner" :
-                        client = new Learner(clientName,clientSurname,clientAge,clientPESEL);
-                        break;
-                    case "Student":
-                        client = new Student(clientName,clientSurname,clientAge,clientPESEL);
-                        break;
-                    case "Pensioner":
-                        client = new Pensioner(clientName,clientSurname,clientAge,clientPESEL);
-                        break;
-                    case "Invalid":
-                        client = new Invalid(clientName,clientSurname,clientAge,clientPESEL);
-                        break;
-                    case "CompanyAgent":
-                        client = new CompanyAgent(clientName,clientSurname,clientAge,clientPESEL);
-                        break;
-                }
+                int clientType = Integer.valueOf(attributes[5]);
+                Client client = cache.createClient(clientName, clientSurname, clientAge, clientPESEL, clientType);
                 String periodFrom = attributes[6]; //Date format : year-month-day example : 2017-11-19
                 LocalDate from = LocalDate.parse(periodFrom);
                 String periodTo = attributes[7];

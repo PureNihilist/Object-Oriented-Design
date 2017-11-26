@@ -15,7 +15,8 @@ public class Menu{
         Writer writer = Writer.getInstance();
         admin.loadRooms(reader);//pokoje w liście rooms
         admin.loadReservations(reader); //rezerwacje w liscie reservations
-        admin.loadClients(reader); //klienci w liście clients
+      //  admin.loadClients(reader); //klienci w liście clients
+        ClientCache cache = ClientCache.getInstance();
         while(true){
         System.out.println("Witamy w systemie obsługi hotelu recepcja!");
         System.out.println("Wybierz zakres usług.");
@@ -26,7 +27,7 @@ public class Menu{
                 case 1: //panel klienta
                     System.out.println("Podaj twój numer PESEL.");
                     Long pesel = Long.valueOf(scanner.next());
-                    List<Client> client_list = admin.getClientControler().getClients();
+                    List<Client> client_list = cache.getClients();
                     for(Client c: client_list){
                         if(c.getPESEL() == pesel){ //logowanie
                             while(true){
@@ -89,12 +90,6 @@ public class Menu{
                                         break;
                                     case 4://dodaje nowa rezerwacje przez klienta
                                         System.out.println("Zamawianie rezerwacji.");
-                                        System.out.println("Podaj numer PESEL klienta");
-                                        Client client = admin.getClientControler().searchForClient(Long.valueOf(scanner.next()));
-                                        if(client == null) {
-                                            System.err.println("Klient o podanym numerze PESEL nie istnieje!");
-                                            break;
-                                        } 
                                         System.out.println("Podaj termin rezerwacji.");
                                         System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
                                         String dateFrom = scanner.next();
@@ -115,8 +110,8 @@ public class Menu{
                                             room_list.add(requestedRoom);
                                         }
                                         long ID = admin.getReservations().size();
-                                        ReservationInstance request = new ReservationInstance(++ID,client,period,room_list);
-                                        admin.makeReservation(request);
+                                        ReservationInstance request = new ReservationInstance(++ID,c,period,room_list);
+                                        cache.makeRequest(request);
                                         break;
                                     case 5://exit
                                         admin.saveReservations(writer); // teraz pytanie czy klient'a rezerwacje dodawac od razu do systemu ? czy czekac na akceptacje recepcji 
@@ -155,17 +150,17 @@ public class Menu{
                             System.out.println("12. Zakończ działanie systemu.");
                             int choice = scanner.nextInt();
                             switch (choice) {
-                                case 1:
+                                case 1: //wyswietl wszystkie pokoje
                                     admin.getRooms().forEach((r) -> {
                                         System.out.println("Nazwa pokoju:"+r.getName()+",pojemność:"+ r.getCapacity() + ",poziom komfortu:" + r.getQuality() + ",cena:" + r.getPrice());
                                     });
                                     break;
-                                case 2:
+                                case 2://wyszukaj rezerwacje po numerze pesel klienta
                                     System.out.println("Wyszukiwanie Rezerwacji.");
                                     System.out.println("Podaj numer pesel klienta.");
                                     admin.findReservation(Long.valueOf(scanner.next()));
                                     break;
-                                case 3:
+                                case 3://wszystkie rezerwacje
                                     admin.getReservations().forEach((r) -> {
                                         Client client = r.getClient();
                                         PeriodControl period = r.getPeriodControl();
@@ -174,6 +169,12 @@ public class Menu{
                                         r.getRoomsInfo().forEach((roomInfo) -> {
                                             System.out.println("Nazwa pokoju:"+roomInfo.getName()+",pojemność:"+ roomInfo.getCapacity() + ",poziom komfortu:" + roomInfo.getQuality() + ",cena:" + roomInfo.getPrice());
                                         });
+                                    });
+                                    break;
+                                case 4: //wyswietl wszystkich gosci hotelowych!
+                                    List<Client> actual_client_list = cache.getClients();
+                                    actual_client_list.forEach((client) -> {
+                                        System.out.println("imię:" +client.getName() + ",nazwisko:" + client.getSurname() + ",wiek:" + client.getAge() + ",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.discount);
                                     });
                                     break;
                                 case 5: //wyswietla wolne pokoje
@@ -213,7 +214,7 @@ public class Menu{
                                     System.out.println("Ulga 3 emeryt");
                                     System.out.println("Ulga 4 inwalida");
                                     System.out.println("Ulga 5 dla firm");                                     
-                                    admin.getClientControler().createClient(newclientName, newclientSurname, newclientAge,peselNumber,discountChoice);
+                                    cache.createClient(newclientName, newclientSurname, newclientAge,peselNumber,discountChoice);
                                     break;
                                 case 7: //dodawanie nowego pokoju
                                     int roomCounter = admin.getRooms().size();
@@ -231,7 +232,7 @@ public class Menu{
                                     System.out.println("Dodawanie rezerwacji.");
                                     System.out.println("Podaj numer PESEL klienta");
                                     long clientID = Long.valueOf(scanner.next());
-                                    Client client = admin.getClientControler().searchForClient(clientID);
+                                    Client client = cache.searchForClient(clientID);
                                     if(client == null) {
                                         System.err.println("Klient o podanym numerze PESEL nie istnieje!");
                                         break;
@@ -259,20 +260,20 @@ public class Menu{
                                     ReservationInstance request = new ReservationInstance(++ID,client,period,room_list);
                                     admin.makeReservation(request);
                                     break;
-                                case 9:
+                                case 9: //usuwanie pokoju
                                     System.out.println("Usuwanie pokoju.");
                                     System.out.println("Podaj nazwę pokoju do usunięcia.");
                                     admin.deleteRoom(scanner.next());
                                     break;
-                                case 10:
+                                case 10://usuwanie rezerwacji
                                     System.out.println("Usuwanie rezerwacji.");
                                     System.out.println("Podaj id rezerwacji do usunięcia.");
                                     admin.deleteReservation(Long.valueOf(scanner.next()));
                                     break;
-                                case 11:
+                                case 11://usuwanie klienta
                                     System.out.println("Usuwanie klienta.");
                                     System.out.println("Podaj Pesel klienta do usunięcia.");
-                                    admin.getClientControler().deleteClient(Long.valueOf(scanner.next()));
+                                    admin.deleteClient(Long.valueOf(scanner.next()));
                                     break;
                                 case 12: //exit
                                     admin.saveRooms(writer);

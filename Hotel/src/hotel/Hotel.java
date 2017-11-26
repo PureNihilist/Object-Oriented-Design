@@ -14,8 +14,6 @@ interface Hotel {
     void addRoom(String name, int nOfBeds, int Quality);
     void deleteRoom(String name);
     void loadClients(Reader reader);
-    void addClient(Client client);
-    void deleteClient(long Pesel);
     List<Room> findFreeRooms(PeriodControl periodcontrol, List<Room> rooms);
     boolean makeReservation(ReservationInstance request);
     void findReservation(long Pesel);

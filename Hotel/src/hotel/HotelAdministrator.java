@@ -12,9 +12,9 @@ import java.util.Scanner;
 public class HotelAdministrator implements Hotel{
     private List<Room> rooms = null; //list of rooms
     private List<ReservationInstance> reservations = null;//list of reservations
-    private List<Client> clients = null; // list of clients
     private Reader reader;
     private Writer writer;
+    private ClientCache client_controler = null;
 
     @Override
     public void loadRooms(Reader reader) {
@@ -38,14 +38,14 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
-    public List<Client> getClients() {
-        if(clients != null){ 
-            return clients;
+    public ClientCache getClientControler() {
+        if(client_controler != null){ 
+            return client_controler;
         } else {
-            throw new NullPointerException("Lista klientów nie została poprawnie wczytana. Program zostanie zakończony.");
-        }
+            throw new NullPointerException("Lista rezerwacji nie została poprawnie wczytana. Program zostanie zakończony.");
+        } 
     }
-
+    
     @Override
     public void saveRooms(Writer writer) {
         this.writer = Writer.getInstance();
@@ -108,21 +108,14 @@ public class HotelAdministrator implements Hotel{
     @Override
     public void loadClients(Reader reader) {
         List<Client> client_list = new ArrayList<>();
+        client_controler = new ClientCache();
         reservations.stream().map((instance) -> instance.getClient()).filter((client) -> (!client_list.contains(client))).forEachOrdered((Client client) -> {
             client_list.add(client);
         });
-        this.clients = client_list;
+        client_controler.initializeCache(client_list,reservations);
     }
     
-    public Client searchForClient(long clientPESEL) throws Exception {
-        Client c = null;
-        for(Client client : clients) {
-            if(client.PESEL == clientPESEL) {
-                c = client;
-            }
-        }
-        return c; //c moze byc nullem ale jest to obsluzone w uzyciu -> patrz Menu
-    }
+   
     
     @Override
     public void saveReservations(Writer writer) {
@@ -201,7 +194,7 @@ public class HotelAdministrator implements Hotel{
             reservations.remove(instance);
         });
     }
-
+    /*
     @Override
     public void addClient(Client client) {
         if(clients != null) {
@@ -210,23 +203,6 @@ public class HotelAdministrator implements Hotel{
             this.clients = new ArrayList<>();
             this.clients.add(client);
         }
-    }
-    
-    @Override
-    public void deleteClient(long Pesel){
-        //usuwanie wszystkich rezerwacji na tego klienta
-        reservations.forEach((ReservationInstance instance) -> {
-            Client toRemove = instance.getClient();
-            if (toRemove.PESEL == Pesel) {
-                reservations.remove(instance); 
-            }
-        });
-        
-        for(Client client : this.clients){
-            if(client.getPESEL()==Pesel){
-                this.clients.remove(client);
-                break;
-            }
-        }       
-    }
+    }*/
+   
 }

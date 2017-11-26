@@ -26,7 +26,7 @@ public class Menu{
                 case 1: //panel klienta
                     System.out.println("Podaj twój numer PESEL.");
                     Long pesel = Long.valueOf(scanner.next());
-                    List<Client> client_list = admin.getClients();
+                    List<Client> client_list = admin.getClientControler().getClients();
                     for(Client c: client_list){
                         if(c.getPESEL() == pesel){ //logowanie
                             while(true){
@@ -90,7 +90,7 @@ public class Menu{
                                     case 4://dodaje nowa rezerwacje przez klienta
                                         System.out.println("Zamawianie rezerwacji.");
                                         System.out.println("Podaj numer PESEL klienta");
-                                        Client client = admin.searchForClient(Long.valueOf(scanner.next()));
+                                        Client client = admin.getClientControler().searchForClient(Long.valueOf(scanner.next()));
                                         if(client == null) {
                                             System.err.println("Klient o podanym numerze PESEL nie istnieje!");
                                             break;
@@ -212,34 +212,8 @@ public class Menu{
                                     System.out.println("Ulga 2 student");
                                     System.out.println("Ulga 3 emeryt");
                                     System.out.println("Ulga 4 inwalida");
-                                    System.out.println("Ulga 5 dla firm");
-                                    Client new_client = null;
-                                    switch(discountChoice) {
-                                        case 0:
-                                            new_client = new Person(newclientName,newclientSurname,newclientAge,peselNumber);
-                                            break;
-                                        case 1:
-                                            new_client = new Learner(newclientName,newclientSurname,newclientAge,peselNumber);
-                                            break;
-                                        case 2:
-                                            new_client = new Student(newclientName,newclientSurname,newclientAge,peselNumber);
-                                            break;
-                                        case 3:
-                                            new_client = new Pensioner(newclientName,newclientSurname,newclientAge,peselNumber);
-                                            break;
-                                        case 4:
-                                            new_client = new Invalid(newclientName,newclientSurname,newclientAge,peselNumber);
-                                            break;
-                                        case 5:
-                                            new_client = new CompanyAgent(newclientName,newclientSurname,newclientAge,peselNumber);
-                                            break;
-                                        default:
-                                            System.err.println("Podano niewłaściwy numer ulgi");
-                                            break;
-                                    }
-                                    if(new_client != null) {
-                                        admin.addClient(new_client);
-                                    }
+                                    System.out.println("Ulga 5 dla firm");                                     
+                                    admin.getClientControler().createClient(newclientName, newclientSurname, newclientAge,peselNumber,discountChoice);
                                     break;
                                 case 7: //dodawanie nowego pokoju
                                     int roomCounter = admin.getRooms().size();
@@ -257,7 +231,7 @@ public class Menu{
                                     System.out.println("Dodawanie rezerwacji.");
                                     System.out.println("Podaj numer PESEL klienta");
                                     long clientID = Long.valueOf(scanner.next());
-                                    Client client = admin.searchForClient(clientID);
+                                    Client client = admin.getClientControler().searchForClient(clientID);
                                     if(client == null) {
                                         System.err.println("Klient o podanym numerze PESEL nie istnieje!");
                                         break;
@@ -298,7 +272,7 @@ public class Menu{
                                 case 11:
                                     System.out.println("Usuwanie klienta.");
                                     System.out.println("Podaj Pesel klienta do usunięcia.");
-                                    admin.deleteClient(Long.valueOf(scanner.next()));
+                                    admin.getClientControler().deleteClient(Long.valueOf(scanner.next()));
                                     break;
                                 case 12: //exit
                                     admin.saveRooms(writer);

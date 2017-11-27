@@ -1,9 +1,6 @@
 package hotel;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  *
@@ -39,6 +36,10 @@ abstract class Client implements Cloneable {
     public int getId(){
       return id;
     }
+    
+    public void upgradeDiscount(){
+        this.discount = this.getDiscount()+0.05;
+    }
         
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -71,27 +72,6 @@ class Person extends Client{
         int _age = this.age;
         Long _pesel = this.PESEL;
         Person prototype = new Person(_name,_surname,_age,_pesel);
-        return prototype;
-    }
-}
-
-class LoyalClient extends Client{
-    public LoyalClient(String Name, String Surname, int age, long PESEL){
-        super();
-        this.Name = Name;
-        this.Surname = Surname;
-        this.age = age;
-        this.PESEL = PESEL;
-        this.discount = 0.2;
-        this.id = 6;
-    }
-    @Override
-    public Client clone() throws CloneNotSupportedException {
-        String _name = this.Name;
-        String _surname = this.Surname;
-        int _age = this.age;
-        Long _pesel = this.PESEL;
-        LoyalClient prototype = new LoyalClient(_name,_surname,_age,_pesel);
         return prototype;
     }
 }
@@ -282,9 +262,6 @@ class ClientCache {
                         break;
                     case 5 :
                         client = new CompanyAgent(name,surname,age,pesel);
-                        break;
-                    case 6 :
-                        client = new LoyalClient(name,surname,age,pesel);
                         break;
                     default :
                         System.err.println("Podano niewłaściwy typ ulgi.");

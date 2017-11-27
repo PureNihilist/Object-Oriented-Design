@@ -2,7 +2,9 @@ package hotel;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -12,6 +14,7 @@ import java.util.Scanner;
 public class HotelAdministrator implements Hotel{
     private List<Room> rooms = null; //list of rooms
     private List<ReservationInstance> reservations = null;//list of reservations
+    private HashMap<PeriodControl,Double> seasons = null;
     private Reader reader;
     private Writer writer;
     
@@ -29,6 +32,10 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
+    public HashMap<PeriodControl, Double> getSeasons(){
+        return seasons;
+    }
+    
     public List<ReservationInstance> getReservations() {
         if(reservations != null){ 
             return reservations;
@@ -42,6 +49,12 @@ public class HotelAdministrator implements Hotel{
         this.writer = Writer.getInstance();
         this.writer.writeRoomsCSV("Rooms.csv", this.rooms);
     }
+    
+    @Override 
+    public void saveSeasons(Writer writer){
+        this.writer = Writer.getInstance();
+        this.writer.writeSeasonsCSV("Seasons.csv", this.seasons);
+    }
 
     @Override
     public void addRoom(String name, int nOfBeds, int Quality) {
@@ -54,6 +67,7 @@ public class HotelAdministrator implements Hotel{
         Room room = new Room(name,nOfBeds,Quality);
         rooms.add(room);
     }
+    
     @Override
     public void findReservation(long Pesel){
         List<ReservationInstance> list_reservations = new ArrayList<>();
@@ -70,10 +84,13 @@ public class HotelAdministrator implements Hotel{
             int count = 1;
             for(ReservationInstance res : list_reservations){
                 System.out.println("Rezerwacja potwierdzona: "+res.isConfirmed());
+                Client client = res.getClient();
                 System.out.print(count+". "+res.getPeriodControl().getBegin()+"-"+res.getPeriodControl().getEnd()+" Pokoje: ");
+
                 res.getRoomsInfo().forEach((Room r) -> {
-                    System.out.print("Nazwa "+r.getName()+", Wielkość "+r.getCapacity()+"-osobowy, jakość "+r.getQuality()+" ");
+                    System.out.print("Nazwa "+r.getName()+", Wielkość "+r.getCapacity()+"-osobowy, jakość "+r.getQuality()+"/5 "+"cena: "+ r.getPrice());
                 });
+                System.out.println("Cena za całość rezerwacji ze zniżką: "+res.countPrice()*client.getDiscount());
                 System.out.println("");
                 count++;
             }
@@ -94,13 +111,17 @@ public class HotelAdministrator implements Hotel{
     
     public void deleteClient(long pesel){
         //usuwanie wszystkich rezerwacji na tego klienta
-        reservations.forEach((ReservationInstance instance) -> {
-            Client toRemove = instance.getClient();
-            if (toRemove.PESEL == pesel) {
-                reservations.remove(instance); 
+        List<ReservationInstance> reservations_to_remove = new ArrayList();
+        for(ReservationInstance reservation : reservations) {
+            Client toRemove = reservation.getClient();
+            if(toRemove.getPESEL() == pesel){
+                reservations_to_remove.add(reservation);
             }
-        });
-        
+        } 
+        for(ReservationInstance toRemove : reservations_to_remove){
+            reservations.remove(toRemove);
+        }
+      
         ClientCache instance = ClientCache.getInstance();
         List<Client> clients = instance.getClients();
         for(Client client : clients){
@@ -111,8 +132,12 @@ public class HotelAdministrator implements Hotel{
         }
         instance.UpdateClients(clients);
     }
-     
-
+    
+    public void loadSeasons(Reader reader) {
+        this.reader = Reader.getInstance();
+        this.seasons = this.reader.readSeasonsCSV("Seasons.csv");
+    }
+    
     public void loadReservations(Reader reader) {
         this.reader = Reader.getInstance();
         this.reservations = this.reader.readReservationCSV("Reservations.csv");
@@ -187,13 +212,64 @@ public class HotelAdministrator implements Hotel{
             return false;
         }
     }
-    /*
-    Operatory funkcyjne działaja tak jak normalne for each'e
-    */
+ 
     @Override
     public void deleteReservation(long ID){
-        reservations.stream().filter((instance) -> (instance.getId() == ID)).forEachOrdered((ReservationInstance instance) -> {
-            reservations.remove(instance);
-        });
+        ReservationInstance toRemove = null;
+        for(ReservationInstance reservation : reservations) {
+            if(reservation.getId() == ID) {
+                toRemove = reservation;
+                break;
+            }
+        }
+        if(toRemove != null) {
+            reservations.remove(toRemove);
+        } else {
+            System.err.println("Nie ma rezerwacji o tym numerze ID!");
+        }
+    }
+    
+    public void addEvent(PeriodControl period, double discount){
+        if(seasons != null) {   
+            if(!seasons.containsKey(period)) {
+                seasons.put(period,discount);
+            } else {
+                System.err.println("System posiada już wydarzenie promocyjne w tym okresie.");
+            }
+        } else {
+            System.err.println("System nie zainicjował mapy wydarzeń.");
+        }
+    }
+    
+    public double getPriceifSeason(PeriodControl p){
+       LocalDate p_begin = p.getBegin();
+       LocalDate p_end = p.getEnd();
+       for(Map.Entry<PeriodControl, Double> entry : seasons.entrySet()) {
+        PeriodControl control = entry.getKey();
+        double value = entry.getValue();
+        LocalDate control_begin = control.getBegin();
+        LocalDate control_end = control.getEnd();
+        if(PeriodControl.isOverLaped(p_begin,p_end,control_begin,control_end)){
+            return value;
+        }        
+       }
+       return 1;
+   }
+    
+    public void upgradeLoayalClients(){
+        List<Client> client_list = ClientCache.getInstance().getClients();
+        int count = 0;
+        
+        for(Client c : client_list){
+            for(ReservationInstance r : reservations){
+                Client client = r.getClient();
+                if(client.getId() == c.getId()) {
+                    count++;
+                }
+                if(count == 5) {
+                    client.upgradeDiscount();
+                }
+            }    
+        }
     }
 }

@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 /**
  *
@@ -60,6 +61,22 @@ public class Writer {
                 List <Room> roomInfo = reservationInstance.getRoomsInfo();
                 line = ID+";"+confirmation+";"+client.getName()+";"+client.getSurname()+";"+client.getAge()+";"+client.getPESEL()+";"+client.getId()+";"+periodControl.getBegin()+";"+periodControl.getEnd()+";";
                 line = roomInfo.stream().map((room) -> room.getName()+";"+room.getCapacity()+";"+room.getQuality()+";").reduce(line, String::concat); //dobra wiem ze przejebana linijka ale to to samo co for each po roomie :D
+                bw.write(line);
+                bw.newLine();
+            }
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void writeSeasonsCSV(String fileName, HashMap<PeriodControl,Double> seasons) {
+        Path pathToFile = Paths.get(fileName);
+        try(BufferedWriter bw = Files.newBufferedWriter(pathToFile, StandardCharsets.UTF_8)) {          
+            for(Map.Entry<PeriodControl, Double> entry : seasons.entrySet()) {
+                PeriodControl key = entry.getKey();
+                double value = entry.getValue();
+                String line = key.getBegin()+";"+key.getEnd()+";"+value+";";
                 bw.write(line);
                 bw.newLine();
             }

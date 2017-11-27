@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,5 +97,26 @@ public class Reader {
             ex.printStackTrace();            
         }
         return reservations;
+    }
+    
+    public HashMap<PeriodControl,Double> readSeasonsCSV(String fileName) {
+        HashMap<PeriodControl,Double> seasons = new HashMap<>();
+        Path pathToFile = Paths.get(fileName);
+        try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
+            String line;
+            while((line = br.readLine()) != null) {
+                String [] attributes = line.split(";");
+                String periodFrom = attributes[0]; //Date format : year-month-day example : 2017-11-19
+                LocalDate from = LocalDate.parse(periodFrom);
+                String periodTo = attributes[1];
+                LocalDate to = LocalDate.parse(periodTo);
+                PeriodControl period_control = new PeriodControl(from,to); //throws exception but i catch it in global catch
+                double discount = Double.valueOf(attributes[2]);
+                seasons.put(period_control,discount);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();            
+        }
+        return seasons;
     }
 }

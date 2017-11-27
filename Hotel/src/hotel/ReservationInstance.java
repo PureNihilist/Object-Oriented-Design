@@ -45,6 +45,19 @@ public class ReservationInstance implements Reservation,ReservationInfo{
         }
     }
     
+    public double countPrice(){
+        if(roomInfo != null) {
+            double fullPrice = 0;
+            for(Room r : roomInfo) {
+                fullPrice += r.getPrice();
+            }
+            return fullPrice;
+        } else {
+            System.err.println("Nie da się wyliczyć ceny rezerwacji, ponieważ lista pokoi tej rezerwacji nie jest zainicjowana.");
+            return 0;
+        }
+    }
+    
     @Override
     public PeriodControl getPeriodControl() {
         return periodControl;

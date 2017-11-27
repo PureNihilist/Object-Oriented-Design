@@ -25,11 +25,9 @@ public class ClientTest {
     Invalid invalid;
     CompanyAgent companyagent;
     Learner learner;
-    LoyalClient loyalclient;
     
     public ClientTest() {
         person = new Person("Stanisław", "Olejniczak", 55, 62032923453L);
-        loyalclient = new LoyalClient("Dorota", "Wellmann", 38, 89042330459L);
         pensioner = new Pensioner("Mateusz", "Rozmaryn", 76, 41041467534L);
         invalid = new Invalid("Małgorzata", "Guz", 47, 70081939122L);
         student = new Student("Hubert", "Banaś", 23, 94072112075L);
@@ -45,7 +43,6 @@ public class ClientTest {
     public void testGetName() {
         System.out.println("getName");
         assertEquals("Stanisław", person.getName());
-        assertEquals("Dorota", loyalclient.getName());
         assertEquals("Mateusz", pensioner.getName());
         assertEquals("Małgorzata", invalid.getName());
         assertEquals("Hubert", student.getName());
@@ -60,7 +57,6 @@ public class ClientTest {
     public void testGetSurname() {
         System.out.println("getSurname");
         assertEquals("Olejniczak", person.getSurname());
-        assertEquals("Wellmann", loyalclient.getSurname());
         assertEquals("Rozmaryn", pensioner.getSurname());
         assertEquals("Guz", invalid.getSurname());
         assertEquals("Banaś", student.getSurname());
@@ -75,7 +71,6 @@ public class ClientTest {
     public void testGetAge() {
         System.out.println("getAge");
         assertEquals(55, person.getAge());
-        assertEquals(38, loyalclient.getAge());
         assertEquals(76, pensioner.getAge());
         assertEquals(47, invalid.getAge());
         assertEquals(23, student.getAge());
@@ -90,7 +85,6 @@ public class ClientTest {
     public void testGetPESEL() {
         System.out.println("getPESEL");
         assertEquals(62032923453L, person.getPESEL());
-        assertEquals(89042330459L, loyalclient.getPESEL());
         assertEquals(41041467534L, pensioner.getPESEL());
         assertEquals(70081939122L, invalid.getPESEL());
         assertEquals(94072112075L, student.getPESEL());
@@ -105,7 +99,6 @@ public class ClientTest {
     public void testGetDiscount() {
         System.out.println("getDiscount");
         assertEquals(0, person.getDiscount(), 0);
-        assertEquals(0, loyalclient.getDiscount(), 0.2);
         assertEquals(0, pensioner.getDiscount(), 0.3);
         assertEquals(0, invalid.getDiscount(), 0.55);
         assertEquals(0, student.getDiscount(), 0.4);
@@ -120,7 +113,6 @@ public class ClientTest {
     public void testGetId() {
         System.out.println("getId");
         assertEquals(0, person.getId());
-        assertEquals(6, loyalclient.getId());
         assertEquals(3, pensioner.getId());
         assertEquals(4, invalid.getId());
         assertEquals(2, student.getId());
@@ -140,12 +132,6 @@ public class ClientTest {
         assertEquals(person1.getAge(), person.getAge());
         assertEquals(person1.getPESEL(), person.getPESEL());
         assertEquals(person1.getId(), person.getId());
-        Client loyalclient1 = loyalclient.clone();
-        assertEquals(loyalclient1.getName(), loyalclient.getName());
-        assertEquals(loyalclient1.getSurname(), loyalclient.getSurname());
-        assertEquals(loyalclient1.getAge(), loyalclient.getAge());
-        assertEquals(loyalclient1.getPESEL(), loyalclient.getPESEL());
-        assertEquals(loyalclient1.getId(), loyalclient.getId());
         Client pensioner1 = pensioner.clone();
         assertEquals(pensioner1.getName(), pensioner.getName());
         assertEquals(pensioner1.getSurname(), pensioner.getSurname());

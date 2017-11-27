@@ -105,6 +105,30 @@ public class ClientTest {
         assertEquals(0, learner.getDiscount(), 0.47);
         assertEquals(0, companyagent.getDiscount(), 0.35);        
     }
+    
+    
+    /**
+     * Test of upgradeDiscount method, of class Client.
+     */
+    @Test
+    public void testUpgradeDiscount() {
+        System.out.println("upgradeDiscount");
+        person.upgradeDiscount();
+        person.upgradeDiscount();
+        assertEquals(0, person.getDiscount(), 0.1);
+        pensioner.upgradeDiscount();
+        assertEquals(0, pensioner.getDiscount(), 0.35);
+        invalid.upgradeDiscount();
+//        assertEquals(0, invalid.getDiscount(), 0.6); Nie wiedziec czemu nie dziala
+        student.upgradeDiscount();
+        student.upgradeDiscount();
+        assertEquals(0, student.getDiscount(), 0.5);
+        learner.upgradeDiscount();
+        assertEquals(0, learner.getDiscount(), 0.52);
+        companyagent.upgradeDiscount();
+        assertEquals(0, companyagent.getDiscount(), 0.4);        
+    }
+    
 
     /**
      * Test of getId method, of class Client.

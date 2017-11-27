@@ -10,6 +10,7 @@ import java.time.Month;
 import java.time.Period;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -110,10 +111,43 @@ public class HotelAdministratorTest {
     }
     
     /**
+     * Test of loadSeasons and getSeasonsmethod, of class HotelAdministrator.
+     */
+    @Test
+    public void test3LoadAndGetSeasons() throws Exception {
+        System.out.println("loadSeasons");
+        hoteladmin.loadSeasons(reader);
+        List<Double> lista_doubli = new ArrayList<>();
+        List<PeriodControl> lista_periodow = new ArrayList<>();
+        HashMap<PeriodControl,Double> lista = hoteladmin.getSeasons();
+        int count = 0;
+        for(double val : lista.values()) {
+            lista_doubli.add(count, val);
+            count++;
+        }
+        assertEquals(1, lista_doubli.get(0), 0.2);
+        assertEquals(1, lista_doubli.get(1), 0.2);
+        assertEquals(1, lista_doubli.get(2), 0.2);
+        assertEquals(1, lista_doubli.get(3), 0.2);
+        assertEquals(1, lista_doubli.get(4), 0.15);
+        assertEquals(1, lista_doubli.get(5), 0.2);
+        assertEquals(1, lista_doubli.get(6), 0.2);
+        assertEquals(1, lista_doubli.get(7), 0.2);
+        //Nie rozumiem - tylko raz znalazl niby 1.15, a jest wiecej tam przypadkow
+        int count1 = 0;
+        for(PeriodControl aKey : lista.keySet()) {
+            lista_periodow.add(count1, aKey);
+        }
+        assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(1).getPeriod());
+        assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(3).getPeriod());
+        //tu juz w ogole pomieszalo sie wszystko XD
+    }
+    
+    /**
      * Test of addRoom method, of class HotelAdministrator.
      */
     @Test
-    public void test3AddRoom() {
+    public void test4AddRoom() {
         System.out.println("addRoom");
         hoteladmin.loadRooms(reader);
         hoteladmin.addRoom("150", 3, 4);
@@ -127,7 +161,7 @@ public class HotelAdministratorTest {
      * Test of findReservation method, of class HotelAdministrator.
      */
     @Test
-    public void test4FindReservation() {
+    public void test5FindReservation() {
         System.out.println("findReservation");
         hoteladmin.loadReservations(reader);
         hoteladmin.findReservation(94072112075L);
@@ -140,7 +174,7 @@ public class HotelAdministratorTest {
      * Test of deleteRoom method, of class HotelAdministrator.
      */
     @Test
-    public void test5DeleteRoom() {
+    public void test6DeleteRoom() {
         System.out.println("deleteRoom");
         hoteladmin.loadRooms(reader);
         hoteladmin.deleteRoom("2");
@@ -154,7 +188,7 @@ public class HotelAdministratorTest {
      * Test of deleteClient method, of class HotelAdministrator.
      */
     @Test
-    public void test6DeleteClient() {
+    public void test7DeleteClient() {
         System.out.println("deleteClient");
         hoteladmin.loadReservations(reader);
         hoteladmin.deleteClient(94072112075L);
@@ -165,7 +199,7 @@ public class HotelAdministratorTest {
      * Test of findFreeRooms method, of class HotelAdministrator.
      */
     @Test
-    public void test7FindFreeRooms() throws Exception {
+    public void test8FindFreeRooms() throws Exception {
         System.out.println("findFreeRooms");
         hoteladmin.loadReservations(reader);
         hoteladmin.loadRooms(reader);

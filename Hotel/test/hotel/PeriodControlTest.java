@@ -127,45 +127,6 @@ public class PeriodControlTest {
         assertEquals(expResult, result8);
         assertEquals(expResult, result9);
     }
-    /**
-     * Test of loadSeasons method, of class PeriodControl.
-     */
-    @Test
-    public void testLoadSeasons() throws Exception {
-        System.out.println("loadSeasons");
-        period1.loadSeasons();
-        period2.loadSeasons();
-        period3.loadSeasons();
-        period4.loadSeasons();
-        period5.loadSeasons();
-        assertEquals(period1.getSeasons(), period2.getSeasons());
-        assertEquals(period1.getSeasons(), period3.getSeasons());
-        assertEquals(period1.getSeasons(), period4.getSeasons());
-        assertEquals(period1.getSeasons(), period5.getSeasons());
-        assertEquals(period2.getSeasons(), period3.getSeasons());
-        assertEquals(period2.getSeasons(), period4.getSeasons());
-        assertEquals(period2.getSeasons(), period5.getSeasons());
-        assertEquals(period3.getSeasons(), period4.getSeasons());
-        assertEquals(period3.getSeasons(), period5.getSeasons());
-        assertEquals(period4.getSeasons(), period5.getSeasons());
-    }
     
-    /**
-     * Test of loadSeasons method, of class PeriodControl.
-     */
-    @Test
-    public void testzAddEvent() throws Exception{
-        System.out.println("addEvent");
-        period1.addEvent(new PeriodControl(LocalDate.of(2017, 12, 31), LocalDate.of(2018, 1, 1)));
-        period1.getSeasons().get(0);
-        period2.addEvent(new PeriodControl(LocalDate.of(2017, 12, 31), LocalDate.of(2018, 1, 1)));
-        period2.getSeasons().get(0);
-        period3.addEvent(new PeriodControl(LocalDate.of(2017, 12, 31), LocalDate.of(2018, 1, 1)));
-        period3.getSeasons().get(0);
-        period4.addEvent(new PeriodControl(LocalDate.of(2017, 12, 31), LocalDate.of(2018, 1, 1)));
-        period4.getSeasons().get(0);
-        period5.addEvent(new PeriodControl(LocalDate.of(2017, 12, 31), LocalDate.of(2018, 1, 1)));
-        period5.getSeasons().get(0);
-    }
     
 }

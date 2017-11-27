@@ -8,6 +8,7 @@ package hotel;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import java.util.HashMap;
 
 /**
  *
@@ -114,6 +116,39 @@ public class ReaderTest {
         assertEquals(2, lista.get(2).getRoomsInfo().get(0).getCapacity());
         assertEquals(3, lista.get(2).getRoomsInfo().get(0).getQuality());
         assertEquals(6, lista.get(2).getRoomsInfo().get(0).getPrice(), 0);
+    }
+    
+    /**
+     * Test of readSeasonsCSV method, of class Reader.
+     */
+    @Test
+    public void testReadSeasonsCSV() {
+    System.out.println("readSeasonsCSV");
+    Reader reader = Reader.getInstance();
+    List<Double> lista_doubli = new ArrayList<>();
+        List<PeriodControl> lista_periodow = new ArrayList<>();
+    HashMap<PeriodControl, Double> lista = reader.readSeasonsCSV("Seasons.csv");
+    int count = 0;
+        for(double val : lista.values()) {
+            lista_doubli.add(count, val);
+            count++;
+        }
+        assertEquals(1, lista_doubli.get(0), 0.2);
+        assertEquals(1, lista_doubli.get(1), 0.2);
+        assertEquals(1, lista_doubli.get(2), 0.2);
+        assertEquals(1, lista_doubli.get(3), 0.2);
+        assertEquals(1, lista_doubli.get(4), 0.2);
+        assertEquals(1, lista_doubli.get(5), 0.2);
+        assertEquals(1, lista_doubli.get(6), 0.2);
+        assertEquals(1, lista_doubli.get(7), 0.2);
+        //Nie rozumiem - tylko raz znalazl niby 1.15, a jest wiecej tam przypadkow
+        int count1 = 0;
+        for(PeriodControl aKey : lista.keySet()) {
+            lista_periodow.add(count1, aKey);
+        }
+        assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(1).getPeriod());
+        assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(2).getPeriod());
+        //tu juz w ogole pomieszalo sie wszystko XD
     }
     
 }

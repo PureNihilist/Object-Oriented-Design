@@ -69,7 +69,11 @@ public class Reader {
             while((line = br.readLine()) != null) {
                 String [] attributes = line.split(";");
                 long reservationId = Long.valueOf(attributes[0]);
-                boolean confirmation = Boolean.valueOf(attributes[1]);
+                String confirmation = attributes[1];
+                boolean confirm = false;
+                if(confirmation.equals("TAK")){
+                    confirm = true;
+                }
                 String clientName = attributes[2];
                 String clientSurname = attributes[3];
                 int clientAge = Integer.valueOf(attributes[4]);
@@ -90,7 +94,7 @@ public class Reader {
                     room_list.add(room);
                 }
                 clients.add(client);
-                ReservationInstance reservation = new ReservationInstance(reservationId,client,period_control,room_list,confirmation);//ustalic pola
+                ReservationInstance reservation = new ReservationInstance(reservationId,client,period_control,room_list,confirm);//ustalic pola
                 reservations.add(reservation);
             }
         } catch(Exception ex) {

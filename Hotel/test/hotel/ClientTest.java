@@ -119,12 +119,13 @@ public class ClientTest {
     @Test
     public void testGetId() {
         System.out.println("getId");
-        Client instance = new ClientImpl();
-        int expResult = 0;
-        int result = instance.getId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, person.getId());
+        assertEquals(6, loyalclient.getId());
+        assertEquals(3, pensioner.getId());
+        assertEquals(4, invalid.getId());
+        assertEquals(2, student.getId());
+        assertEquals(1, learner.getId());
+        assertEquals(5, companyagent.getId());
     }
 
     /**
@@ -133,15 +134,48 @@ public class ClientTest {
     @Test
     public void testClone() throws Exception {
         System.out.println("clone");
-        Client instance = new ClientImpl();
-        Object expResult = null;
-        Object result = instance.clone();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    public class ClientImpl extends Client {
+        Client person1 = person.clone();
+        assertEquals(person1.getName(), person.getName());
+        assertEquals(person1.getSurname(), person.getSurname());
+        assertEquals(person1.getAge(), person.getAge());
+        assertEquals(person1.getPESEL(), person.getPESEL());
+        assertEquals(person1.getId(), person.getId());
+        Client loyalclient1 = loyalclient.clone();
+        assertEquals(loyalclient1.getName(), loyalclient.getName());
+        assertEquals(loyalclient1.getSurname(), loyalclient.getSurname());
+        assertEquals(loyalclient1.getAge(), loyalclient.getAge());
+        assertEquals(loyalclient1.getPESEL(), loyalclient.getPESEL());
+        assertEquals(loyalclient1.getId(), loyalclient.getId());
+        Client pensioner1 = pensioner.clone();
+        assertEquals(pensioner1.getName(), pensioner.getName());
+        assertEquals(pensioner1.getSurname(), pensioner.getSurname());
+        assertEquals(pensioner1.getAge(), pensioner.getAge());
+        assertEquals(pensioner1.getPESEL(), pensioner.getPESEL());
+        assertEquals(pensioner1.getId(), pensioner.getId());
+        Client invalid1 = invalid.clone();
+        assertEquals(invalid1.getName(), invalid.getName());
+        assertEquals(invalid1.getSurname(), invalid.getSurname());
+        assertEquals(invalid1.getAge(), invalid.getAge());
+        assertEquals(invalid1.getPESEL(), invalid.getPESEL());
+        assertEquals(invalid1.getId(), invalid.getId());
+        Client student1 = student.clone();
+        assertEquals(student1.getName(), student.getName());
+        assertEquals(student1.getSurname(), student.getSurname());
+        assertEquals(student1.getAge(), student.getAge());
+        assertEquals(student1.getPESEL(), student.getPESEL());
+        assertEquals(student1.getId(), student.getId());
+        Client learner1 = learner.clone();
+        assertEquals(learner1.getName(), learner.getName());
+        assertEquals(learner1.getSurname(), learner.getSurname());
+        assertEquals(learner1.getAge(), learner.getAge());
+        assertEquals(learner1.getPESEL(), learner.getPESEL());
+        assertEquals(learner1.getId(), learner.getId());
+        Client companyagent1 = companyagent.clone();
+        assertEquals(companyagent1.getName(), companyagent.getName());
+        assertEquals(companyagent1.getSurname(), companyagent.getSurname());
+        assertEquals(companyagent1.getAge(), companyagent.getAge());
+        assertEquals(companyagent1.getPESEL(), companyagent.getPESEL());
+        assertEquals(companyagent1.getId(), companyagent.getId());
     }
 
 }

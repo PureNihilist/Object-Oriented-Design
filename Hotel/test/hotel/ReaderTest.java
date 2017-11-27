@@ -141,14 +141,12 @@ public class ReaderTest {
         assertEquals(1.2, lista_doubli.get(2), 0);
         assertEquals(1.2, lista_doubli.get(1), 0);
         assertEquals(1.15, lista_doubli.get(0), 0);
-        //Nie rozumiem - tylko raz znalazl niby 1.15, a jest wiecej tam przypadkow
-        int count1 = 0;
+        
         for(PeriodControl aKey : lista.keySet()) {
-            lista_periodow.add(count1, aKey);
+            lista_periodow.add(aKey);
         }
-     //   assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(1).getPeriod());
-     //   assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(2).getPeriod());
-        //tu juz w ogole pomieszalo sie wszystko XD co to jest ? bez sensu
+        assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(1).getPeriod());
+        assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(0).getPeriod());
     }
     
 }

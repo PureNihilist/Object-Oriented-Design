@@ -133,14 +133,12 @@ public class HotelAdministratorTest {
         assertEquals(1, lista_doubli.get(5), 0.2);
         assertEquals(1, lista_doubli.get(6), 0.2);
         assertEquals(1, lista_doubli.get(7), 0.2);
-        //Nie rozumiem - tylko raz znalazl niby 1.15, a jest wiecej tam przypadkow
         int count1 = 0;
         for(PeriodControl aKey : lista.keySet()) {
-            lista_periodow.add(count1, aKey);
+            lista_periodow.add(aKey);
         }
         assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(1).getPeriod());
         assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(3).getPeriod());
-        //tu juz w ogole pomieszalo sie wszystko XD
     }
     
     /**
@@ -222,22 +220,6 @@ public class HotelAdministratorTest {
         assertEquals(free_rooms.get(1).getPrice(), rooms.get(1).getPrice(), 0);
     }
 
-    /**
-     * Test of makeReservation method, of class HotelAdministrator.
-     */
-    /* //TEN TEST NIE MA SENSU BO W MAKERESERVATION TRZEBA WYBRAC KTORE POKOJE CHCE SIE REZERWOWAC Z TYCH KTORE SA AKTUALNIE DOSTEPNE :p a jako ze nie podajesz nic to wywala exception
-    @Test
-    public void test8MakeReservation() throws Exception {
-        System.out.println("makeReservation");
-        hoteladmin.loadReservations(reader);
-        hoteladmin.loadRooms(reader);
-        List<Room> requested_rooms = new ArrayList<>();
-        Room e = new Room(2, 4);
-        requested_rooms.add(e);
-        ReservationInstance reservation1 = new ReservationInstance(15L, new Person("Hubert", "Urbański", 55, 62091139458L), new PeriodControl(LocalDate.of(2020, 3, 13), LocalDate.of(2020, 3, 18)), requested_rooms, false);
-        assertTrue(hoteladmin.makeReservation(reservation1));
-    }
-*/
     /**
      * Test of deleteReservation method, of class HotelAdministrator.
      */

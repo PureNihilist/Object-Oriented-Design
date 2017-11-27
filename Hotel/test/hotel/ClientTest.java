@@ -115,18 +115,18 @@ public class ClientTest {
         System.out.println("upgradeDiscount");
         person.upgradeDiscount();
         person.upgradeDiscount();
-        assertEquals(0, person.getDiscount(), 0.1);
+        assertEquals(0.1, person.getDiscount(), 0.001);
         pensioner.upgradeDiscount();
-        assertEquals(0, pensioner.getDiscount(), 0.35);
+        assertEquals(0.35, pensioner.getDiscount(), 0.001);
         invalid.upgradeDiscount();
-//        assertEquals(0, invalid.getDiscount(), 0.6); Nie wiedziec czemu nie dziala
+        assertEquals(0.6, invalid.getDiscount(), 0.001); 
         student.upgradeDiscount();
         student.upgradeDiscount();
-        assertEquals(0, student.getDiscount(), 0.5);
+        assertEquals(0.5, student.getDiscount(), 0.001);
         learner.upgradeDiscount();
-        assertEquals(0, learner.getDiscount(), 0.52);
+        assertEquals(0.52, learner.getDiscount(), 0.001);
         companyagent.upgradeDiscount();
-        assertEquals(0, companyagent.getDiscount(), 0.4);        
+        assertEquals(0.4, companyagent.getDiscount(), 0.001);        
     }
     
 

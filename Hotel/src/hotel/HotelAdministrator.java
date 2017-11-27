@@ -255,19 +255,21 @@ public class HotelAdministrator implements Hotel{
        }
        return 1;
    }
-    
+    /*tylko dla potwierdzonych rezerwacji :)*/
     public void upgradeLoayalClients(){
         List<Client> client_list = ClientCache.getInstance().getClients();
         int count = 0;
         
         for(Client c : client_list){
             for(ReservationInstance r : reservations){
-                Client client = r.getClient();
-                if(client.getId() == c.getId()) {
-                    count++;
-                }
-                if(count == 5) {
-                    client.upgradeDiscount();
+                if(r.isConfirmed) {
+                    Client client = r.getClient();
+                    if(client.getId() == c.getId()) {
+                        count++;
+                    }
+                    if(count == 5) {
+                        client.upgradeDiscount();
+                    }
                 }
             }    
         }

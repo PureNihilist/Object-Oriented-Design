@@ -33,7 +33,11 @@ public class HotelAdministrator implements Hotel{
     }
     
     public HashMap<PeriodControl, Double> getSeasons(){
-        return seasons;
+         if(seasons != null){ 
+            return seasons;
+        } else {
+            throw new NullPointerException("Mapa wydarzeń nie została poprawnie wczytana. Program zostanie zakończony.");
+        }
     }
     
     public List<ReservationInstance> getReservations() {

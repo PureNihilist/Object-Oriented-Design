@@ -10,17 +10,30 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  *
- * @author Mateusz Galas
+ * @author Mateusz Galas and Hubert Banaś
+ * Writer class writes CVS files. Uses singleton design pattern.
  */
 public class Writer {
+
+    /**
+     *Instance of class Writer.
+     */
     public volatile static Writer writer = null;
 
+    /**
+     *Constructor, which prevents from creating another instance of class writer.
+     * @throws RuntimeException
+     */
     private Writer() {
         if(writer != null) {
             throw new RuntimeException("Cannot create instance of singleton. Use getInstance().");
         }
     }
 
+    /**
+     * Singleton method to get instance of class.
+     * @return Instance of class writer.
+     */
     public static Writer getInstance() {
         Writer writeCSV = Writer.writer;
         if(writeCSV == null) {
@@ -34,6 +47,11 @@ public class Writer {
         return writeCSV;
     }
 
+    /**
+     * Saves rooms to csv file
+     * @param fileName
+     * @param rooms
+     */
     public void writeRoomsCSV(String fileName, List<Room> rooms) {
         Path pathToFile = Paths.get(fileName);
         try(BufferedWriter bw = Files.newBufferedWriter(pathToFile, StandardCharsets.UTF_8)) {
@@ -48,6 +66,11 @@ public class Writer {
         }
     }
 
+    /**
+     * Saves reservations to csv file
+     * @param fileName
+     * @param reservations
+     */
     public void writeReservationsCSV(String fileName, List<ReservationInstance> reservations) {
         Path pathToFile = Paths.get(fileName);
         try(BufferedWriter bw = Files.newBufferedWriter(pathToFile, StandardCharsets.UTF_8)) {
@@ -69,6 +92,11 @@ public class Writer {
         }
     }
     
+    /**
+     * Saves promotional seasons to csv file
+     * @param fileName
+     * @param seasons
+     */
     public void writeSeasonsCSV(String fileName, ArrayList<PeriodControl> seasons) {
         Path pathToFile = Paths.get(fileName);
         try(BufferedWriter bw = Files.newBufferedWriter(pathToFile, StandardCharsets.UTF_8)) {          

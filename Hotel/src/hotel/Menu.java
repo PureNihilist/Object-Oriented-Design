@@ -2,12 +2,21 @@ package hotel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Class Menu, containing console menu interface for user defined in list of clients and for administrator
+ * @author Hubert Banaś and Mateusz Galas
+ */
+
 public class Menu{
+
+    /**
+     * 
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception{
         
         Scanner scanner = new Scanner(System.in);

@@ -2,7 +2,7 @@ package hotel;
 
 /**
  *
- * @author Mateusz Galas
+ * @author Hubert Banaś and Mateusz Galas
  */
 public interface Reservation {
     public long getId();

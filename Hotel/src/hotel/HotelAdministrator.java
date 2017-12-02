@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- *
- * @author Mateusz Galas
+ * Class HotelAdministrator, which represents manager of the hotel. Implements methods from interface Hotel.
+ * @author Hubert Banaś and Mateusz Galas
  */
 public class HotelAdministrator implements Hotel{
     private List<Room> rooms = null; //list of rooms
@@ -18,12 +18,21 @@ public class HotelAdministrator implements Hotel{
     private Reader reader;
     private Writer writer;
     
+    /**
+     * loading rooms from csv file using instance of class reader
+     * @param reader
+     */
     @Override
     public void loadRooms(Reader reader) {
         this.reader = Reader.getInstance(); //get singleton instance of reader
         this.rooms = this.reader.readRoomsCSV("Rooms.csv");
     }
     
+    /**
+     * getRooms method
+     * @return list of room objects
+     * @throws NullPointerException
+     */
     public List<Room> getRooms() {
         if(rooms != null){ 
             return rooms;
@@ -32,6 +41,11 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
+    /**
+     * getSeasons method
+     * @return list of PeriodControl objects
+     * @throws NullPointerException
+     */
     public ArrayList<PeriodControl> getSeasons(){
          if(seasons != null){ 
             return seasons;
@@ -40,6 +54,11 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
+    /**
+     * getReservations method
+     * @return list of ReservationInstance objects
+     * @throws NullPointerException
+     */
     public List<ReservationInstance> getReservations() {
         if(reservations != null){ 
             return reservations;
@@ -48,18 +67,32 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
+    /**
+     * saves rooms to csv file using instance of class writer.
+     * @param writer
+     */
     @Override
     public void saveRooms(Writer writer) {
         this.writer = Writer.getInstance();
         this.writer.writeRoomsCSV("Rooms.csv", this.rooms);
     }
     
+    /**
+     * saves promotional seasons to csv file using instance of class writer.
+     * @param writer
+     */
     @Override 
     public void saveSeasons(Writer writer){
         this.writer = Writer.getInstance();
         this.writer.writeSeasonsCSV("Seasons.csv", this.seasons);
     }
 
+    /**
+     * adds room to list of rooms if it doesn't exist already
+     * @param name
+     * @param nOfBeds
+     * @param Quality
+     */
     @Override
     public void addRoom(String name, int nOfBeds, int Quality) {
         for(Room room : rooms){
@@ -72,6 +105,10 @@ public class HotelAdministrator implements Hotel{
         rooms.add(room);
     }
     
+    /**
+     * finds and prints out all client reservations
+     * @param Pesel
+     */
     @Override
     public void findReservation(long Pesel){
         List<ReservationInstance> list_reservations = new ArrayList<>();
@@ -101,6 +138,10 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
+    /**
+     * deletes room if exists and no reservation is made on this room
+     * @param name
+     */
     @Override
     public void deleteRoom(String name) {
         for(Room room : rooms){
@@ -113,6 +154,10 @@ public class HotelAdministrator implements Hotel{
         System.err.println("Nie ma pokoju o tej nazwie.");
     }
     
+    /**
+     * deletes client and all of his reservations if exists
+     * @param pesel
+     */
     public void deleteClient(long pesel){
         //usuwanie wszystkich rezerwacji na tego klienta
         List<ReservationInstance> reservations_to_remove = new ArrayList();
@@ -137,22 +182,40 @@ public class HotelAdministrator implements Hotel{
         instance.UpdateClients(clients);
     }
     
+    /**
+     * loads promotional seasons from csv file using instance of class reader
+     * @param reader
+     */
     public void loadSeasons(Reader reader) {
         this.reader = Reader.getInstance();
         this.seasons = this.reader.readSeasonsCSV("Seasons.csv");
     }
     
+    /**
+     * loads reservations from csv file using instance of class reader
+     * @param reader
+     */
     public void loadReservations(Reader reader) {
         this.reader = Reader.getInstance();
         this.reservations = this.reader.readReservationCSV("Reservations.csv");
     }
     
+    /**
+     * saves reservations to csv file using instance of class writer
+     * @param writer
+     */
     @Override
     public void saveReservations(Writer writer) {
         this.writer = Writer.getInstance();
         this.writer.writeReservationsCSV("Reservations.csv", this.reservations);
     }
 
+    /**
+     * finds free rooms for defined period, depending on list of rooms that client demands
+     * @param periodcontrol
+     * @param requested_rooms
+     * @return list of room objects
+     */
     @Override
     public List<Room> findFreeRooms(PeriodControl periodcontrol, List<Room> requested_rooms) {
         List<Room> free_rooms = new ArrayList<>();
@@ -177,6 +240,12 @@ public class HotelAdministrator implements Hotel{
         });
         return free_rooms;
     }
+
+    /**
+     * makes reservation depending on clients request
+     * @param request
+     * @return true if reservation is able to finalize, else false
+     */
     @Override
     public boolean makeReservation(ReservationInstance request) {
         PeriodControl period = request.getPeriodControl(); //request ma okres na ktory ktos chce zamowic pokoje
@@ -217,6 +286,10 @@ public class HotelAdministrator implements Hotel{
         }
     }
  
+    /**
+     * deletes reservation depending on ID reservation
+     * @param ID
+     */
     @Override
     public void deleteReservation(long ID){
         ReservationInstance toRemove = null;
@@ -233,6 +306,11 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
+    /**
+     * adds event to list of promotional seasons
+     * @param period
+     * @param discount
+     */
     public void addEvent(PeriodControl period, double discount){
         period.setRabate(discount);
         if(seasons != null) {   
@@ -246,6 +324,11 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
+    /**
+     * getPriceifSeason method, checks if parameter is overlapped with any of promotional season
+     * @param p
+     * @return discount for matched season (if this season exists), else returns 1
+     */
     public double getPriceifSeason(PeriodControl p){
        LocalDate p_begin = p.getBegin();
        LocalDate p_end = p.getEnd();
@@ -259,7 +342,11 @@ public class HotelAdministrator implements Hotel{
        }
        return 1;
    }
-    /*tylko dla potwierdzonych rezerwacji :)*/
+
+    /**
+     * upgrades list of loyal clients (if client has at least five reservations)
+     */
+
     public void upgradeLoayalClients(){
         List<Client> client_list = ClientCache.getInstance().getClients();
         int count = 0;

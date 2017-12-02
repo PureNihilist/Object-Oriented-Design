@@ -13,19 +13,30 @@ import java.util.List;
 
 /**
  *
- * @author Mateusz Galas
+ * @author Mateusz Galas and Hubert Banaś
  * Reader class reads CVS files. Uses singleton design pattern.
  */
 public class Reader {
     
+    /**
+     *Instance of class Reader.
+     */
     public volatile static Reader reader = null;
     
+    /**
+     *Constructor, which prevents from creating another instance of class reader.
+     * @throws RuntimeException
+     */
     private Reader() {
         if(reader != null) { 
             throw new RuntimeException("Cannot create instance of singleton. Use getInstance().");
         }
     }
     
+    /**
+     * Singleton method to get instance of class.
+     * @return Instance of class reader.
+     */
     public static Reader getInstance() {
         Reader readCSV = Reader.reader;
         if(readCSV == null) {
@@ -39,6 +50,11 @@ public class Reader {
         return readCSV;
     }
     
+    /**
+     * Loads rooms from csv file
+     * @param fileName
+     * @return list of room objects
+     */
     public List<Room> readRoomsCSV(String fileName) {
         List<Room> rooms = new ArrayList<>();
         Path pathToFile = Paths.get(fileName);
@@ -58,6 +74,11 @@ public class Reader {
         return rooms;
     }
 
+    /**
+     * Loads reservations from csv file
+     * @param fileName
+     * @return list of ReservationInstance objects
+     */
     public List<ReservationInstance> readReservationCSV(String fileName) {
         List<ReservationInstance> reservations = new ArrayList<>();
         List<Client> clients = new ArrayList<>();
@@ -103,6 +124,11 @@ public class Reader {
         return reservations;
     }
     
+    /**
+     * Loads Seasons from csv file
+     * @param fileName
+     * @return list of PeriodControl objects
+     */
     public ArrayList<PeriodControl> readSeasonsCSV(String fileName) {
         ArrayList<PeriodControl> seasons = new ArrayList<>();
         Path pathToFile = Paths.get(fileName);

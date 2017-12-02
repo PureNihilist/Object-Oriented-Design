@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author Mateusz Galas
+ * Class PeriodControl, which represents periods. Implements methods from interface PeriodInterface.
+ * @author Hubert Banaś and Mateusz Galas
  */
 public class PeriodControl implements PeriodInterface{
     private LocalDate begin;
@@ -18,6 +18,12 @@ public class PeriodControl implements PeriodInterface{
     private Period p;
     private double rabate = 1.0;
     
+    /**
+     * Constructor of class PeriodControl, creates object if begin is before end
+     * @param begin
+     * @param end
+     * @throws Exception 
+     */
     PeriodControl (LocalDate begin, LocalDate end) throws Exception{
         this.begin = begin;
         if(end.isAfter(begin)) {
@@ -28,39 +34,72 @@ public class PeriodControl implements PeriodInterface{
         this.p = Period.between(begin, end);
     }
     
+    /**
+     * setRabate method
+     * @param newRabate
+     */
     public void setRabate(double newRabate){
         rabate = newRabate;
     }
     
+    /**
+     * getRabate method
+     * @return period rabate
+     */
     public double getRabate() {
         return rabate;
     }
 
+    /**
+     * getBegin method
+     * @return Begin date of period
+     */
     public LocalDate getBegin() {
         return begin;
     }
 
+    /**
+     * getEnd method
+     * @return End date of period
+     */
     public LocalDate getEnd() {
         return end;
     }
     
+    /**
+     * setBegin method
+     * @param new_begin
+     */
     public void setBegin(LocalDate new_begin) {
         this.begin = new_begin;
     }
     
+    /**
+     * setEnd method
+     * @param new_end
+     */
     public void setEnd(LocalDate new_end) {
         this.end = new_end;
     }
     
+    /**
+     * getPeriod method
+     * @return period
+     */
     @Override
     public Period getPeriod() {
         return this.p;
     }
-    /*
-    Niestety ta metoda chyba musi tak wyglądać bo... 
-    isBefore i isAfter nie biorą pod uwage przypadków kiedy daty sa rowne... trzeba do tego użyć isEqual.. 
-    stad dodatkowe 5 przypadkow
-    */
+
+    /**
+     * checks if periods are overlaped
+     * @param start1
+     * @param end1
+     * @param start2
+     * @param end2
+     * @return true if periods are overlaped, else false
+     */
+
     public static boolean isOverLaped(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2){
         return (start1.isBefore(start2) && start2.isBefore(end1) && end1.isBefore(end2)) || //czesc wspólna
                 (start2.isBefore(start1) && start1.isBefore(end2) && end2.isBefore(end1)) || //czesc wspolna odwrotnie

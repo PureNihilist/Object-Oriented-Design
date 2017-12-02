@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class HotelAdministrator implements Hotel{
     private List<Room> rooms = null; //list of rooms
     private List<ReservationInstance> reservations = null;//list of reservations
-    private HashMap<PeriodControl,Double> seasons = null;
+    private ArrayList<PeriodControl> seasons = null;
     private Reader reader;
     private Writer writer;
     
@@ -32,11 +32,11 @@ public class HotelAdministrator implements Hotel{
         }
     }
     
-    public HashMap<PeriodControl, Double> getSeasons(){
+    public ArrayList<PeriodControl> getSeasons(){
          if(seasons != null){ 
             return seasons;
         } else {
-            throw new NullPointerException("Mapa wydarzeń nie została poprawnie wczytana. Program zostanie zakończony.");
+            throw new NullPointerException("Lista wydarzeń nie została poprawnie wczytana. Program zostanie zakończony.");
         }
     }
     
@@ -234,9 +234,10 @@ public class HotelAdministrator implements Hotel{
     }
     
     public void addEvent(PeriodControl period, double discount){
+        period.setRabate(discount);
         if(seasons != null) {   
-            if(!seasons.containsKey(period)) {
-                seasons.put(period,discount);
+            if(!seasons.contains(period)) {
+                seasons.add(period);
             } else {
                 System.err.println("System posiada już wydarzenie promocyjne w tym okresie.");
             }
@@ -248,9 +249,8 @@ public class HotelAdministrator implements Hotel{
     public double getPriceifSeason(PeriodControl p){
        LocalDate p_begin = p.getBegin();
        LocalDate p_end = p.getEnd();
-       for(Map.Entry<PeriodControl, Double> entry : seasons.entrySet()) {
-        PeriodControl control = entry.getKey();
-        double value = entry.getValue();
+       for(PeriodControl control : seasons) {
+        double value = control.getRabate();
         LocalDate control_begin = control.getBegin();
         LocalDate control_end = control.getEnd();
         if(PeriodControl.isOverLaped(p_begin,p_end,control_begin,control_end)){

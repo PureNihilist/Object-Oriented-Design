@@ -16,6 +16,7 @@ public class PeriodControl implements PeriodInterface{
     private LocalDate begin;
     private LocalDate end;
     private Period p;
+    private double rabate = 1.0;
     
     PeriodControl (LocalDate begin, LocalDate end) throws Exception{
         this.begin = begin;
@@ -25,6 +26,14 @@ public class PeriodControl implements PeriodInterface{
             throw new Exception("Początek jest później niż koniec okresu.");
         }
         this.p = Period.between(begin, end);
+    }
+    
+    public void setRabate(double newRabate){
+        rabate = newRabate;
+    }
+    
+    public double getRabate() {
+        return rabate;
     }
 
     public LocalDate getBegin() {

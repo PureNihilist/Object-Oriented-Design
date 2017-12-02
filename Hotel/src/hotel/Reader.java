@@ -103,8 +103,8 @@ public class Reader {
         return reservations;
     }
     
-    public HashMap<PeriodControl,Double> readSeasonsCSV(String fileName) {
-        HashMap<PeriodControl,Double> seasons = new HashMap<>();
+    public ArrayList<PeriodControl> readSeasonsCSV(String fileName) {
+        ArrayList<PeriodControl> seasons = new ArrayList<>();
         Path pathToFile = Paths.get(fileName);
         try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
             String line;
@@ -116,7 +116,8 @@ public class Reader {
                 LocalDate to = LocalDate.parse(periodTo);
                 PeriodControl period_control = new PeriodControl(from,to); //throws exception but i catch it in global catch
                 double discount = Double.valueOf(attributes[2]);
-                seasons.put(period_control,discount);
+                period_control.setRabate(discount);
+                seasons.add(period_control);
             }
         } catch(Exception ex) {
             ex.printStackTrace();            

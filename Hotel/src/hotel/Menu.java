@@ -222,11 +222,10 @@ public class Menu{
                                     }
                                     break;
                                 case 6://aktualne sezony promocyjne
-                                    HashMap<PeriodControl,Double> actual_seasons = admin.getSeasons();
-                                    for(Map.Entry<PeriodControl, Double> entry : actual_seasons.entrySet()) {
-                                        PeriodControl period_control = entry.getKey();
-                                        double value = entry.getValue();
-                                        System.out.println("Od: "+period_control.getBegin().toString() + " do " + period_control.getEnd().toString() + ",zniżka: "+value);
+                                    ArrayList<PeriodControl> actual_seasons = admin.getSeasons();
+                                    for(PeriodControl control : actual_seasons) {
+                                        double value = control.getRabate();
+                                        System.out.println("Od: "+control.getBegin().toString() + " do " + control.getEnd().toString() + ",zniżka: "+value);
                                     }
                                     break;
                                 case 7://potwierdzanie rezerwacji klienckich

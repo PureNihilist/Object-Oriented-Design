@@ -128,25 +128,22 @@ public class ReaderTest {
     
     List<Double> lista_doubli = new ArrayList<>();
     List<PeriodControl> lista_periodow = new ArrayList<>();
-    HashMap<PeriodControl, Double> lista = reader.readSeasonsCSV("Seasons.csv");
-        for(double val : lista.values()) {
-            lista_doubli.add(val);
+    ArrayList<PeriodControl> lista = reader.readSeasonsCSV("Seasons.csv");
+        for(PeriodControl control : lista) {
+            lista_doubli.add(control.getRabate());
+            lista_periodow.add(control);
         }
-        
-        assertEquals(1.15, lista_doubli.get(7),0);
-        assertEquals(1.15, lista_doubli.get(6), 0);
-        assertEquals(1.2, lista_doubli.get(5), 0);
-        assertEquals(1.15, lista_doubli.get(4), 0);
-        assertEquals(1.2, lista_doubli.get(3), 0);
+        assertEquals(1.2, lista_doubli.get(0), 0);
+        assertEquals(1.15, lista_doubli.get(1), 0);
         assertEquals(1.2, lista_doubli.get(2), 0);
-        assertEquals(1.2, lista_doubli.get(1), 0);
-        assertEquals(1.15, lista_doubli.get(0), 0);
+        assertEquals(1.15, lista_doubli.get(3), 0);
+        assertEquals(1.2, lista_doubli.get(4), 0);
+        assertEquals(1.15, lista_doubli.get(5), 0);
+        assertEquals(1.2, lista_doubli.get(6), 0);
+        assertEquals(1.15, lista_doubli.get(7), 0);
         
-        for(PeriodControl aKey : lista.keySet()) {
-            lista_periodow.add(aKey);
-        }
-        assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(1).getPeriod());
-        assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(0).getPeriod());
+        assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(0).getPeriod());
+        assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(7).getPeriod());
     }
     
 }

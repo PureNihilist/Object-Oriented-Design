@@ -119,26 +119,23 @@ public class HotelAdministratorTest {
         hoteladmin.loadSeasons(reader);
         List<Double> lista_doubli = new ArrayList<>();
         List<PeriodControl> lista_periodow = new ArrayList<>();
-        HashMap<PeriodControl,Double> lista = hoteladmin.getSeasons();
-        int count = 0;
-        for(double val : lista.values()) {
-            lista_doubli.add(count, val);
-            count++;
+        ArrayList<PeriodControl> lista = hoteladmin.getSeasons();
+       
+        for(PeriodControl control : lista) {
+            lista_periodow.add(control);
+            lista_doubli.add(control.getRabate());
         }
-        assertEquals(1, lista_doubli.get(0), 0.2);
-        assertEquals(1, lista_doubli.get(1), 0.2);
-        assertEquals(1, lista_doubli.get(2), 0.2);
-        assertEquals(1, lista_doubli.get(3), 0.2);
-        assertEquals(1, lista_doubli.get(4), 0.15);
-        assertEquals(1, lista_doubli.get(5), 0.2);
-        assertEquals(1, lista_doubli.get(6), 0.2);
-        assertEquals(1, lista_doubli.get(7), 0.2);
-        int count1 = 0;
-        for(PeriodControl aKey : lista.keySet()) {
-            lista_periodow.add(aKey);
-        }
-        assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(1).getPeriod());
-        assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(3).getPeriod());
+        assertEquals(1.2, lista_doubli.get(0), 0);
+        assertEquals(1.15, lista_doubli.get(1), 0);
+        assertEquals(1.2, lista_doubli.get(2), 0);
+        assertEquals(1.15, lista_doubli.get(3), 0);
+        assertEquals(1.2, lista_doubli.get(4), 0);
+        assertEquals(1.15, lista_doubli.get(5), 0);
+        assertEquals(1.2, lista_doubli.get(6), 0);
+        assertEquals(1.15, lista_doubli.get(7), 0);
+       
+        assertEquals(Period.between(LocalDate.of(2017, 12, 20), LocalDate.of(2018, 1, 3)), lista_periodow.get(0).getPeriod());
+        assertEquals(Period.between(LocalDate.of(2021, 7, 1), LocalDate.of(2021, 9, 1)), lista_periodow.get(1).getPeriod());
     }
     
     /**

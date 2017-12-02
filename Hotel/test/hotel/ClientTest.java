@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author huber
+ * @author Hubert Banaś and Mateusz Galas
  */
 public class ClientTest {
 
@@ -26,6 +26,9 @@ public class ClientTest {
     CompanyAgent companyagent;
     Learner learner;
     
+    /**
+     *
+     */
     public ClientTest() {
         person = new Person("Stanisław", "Olejniczak", 55, 62032923453L);
         pensioner = new Pensioner("Mateusz", "Rozmaryn", 76, 41041467534L);
@@ -146,6 +149,7 @@ public class ClientTest {
 
     /**
      * Test of clone method, of class Client.
+     * @throws java.lang.Exception
      */
     @Test
     public void testClone() throws Exception {

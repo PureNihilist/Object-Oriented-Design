@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author huber
+ * @author Hubert Banaś and Mateusz Galas
  */
 public class ReservationInstanceTest {
     
@@ -29,7 +29,10 @@ public class ReservationInstanceTest {
     ReservationInstance reservation4;
     ReservationInstance reservation5;
     
-    
+    /**
+     *
+     * @throws Exception
+     */
     public ReservationInstanceTest() throws Exception{
         List<Room> rooms1 = new ArrayList<>();
         rooms1.add(new Room("1", 3, 4));

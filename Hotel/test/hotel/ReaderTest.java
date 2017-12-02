@@ -21,10 +21,13 @@ import java.util.HashMap;
 
 /**
  *
- * @author huber
+ * @author Hubert Banaś and Mateusz Galas
  */
 public class ReaderTest {
     
+    /**
+     *
+     */
     public ReaderTest() {
     }
 

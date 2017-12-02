@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import org.junit.runners.MethodSorters;
 /**
  *
- * @author huber
+ * @author Hubert Banaś and Mateusz Galas
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class HotelAdministratorTest {
@@ -31,6 +31,9 @@ public class HotelAdministratorTest {
     Reader reader;
     ClientCache clientcache;
     
+    /**
+     *
+     */
     public HotelAdministratorTest() {
         hoteladmin = new HotelAdministrator();
         reader = Reader.getInstance();
@@ -112,6 +115,7 @@ public class HotelAdministratorTest {
     
     /**
      * Test of loadSeasons and getSeasonsmethod, of class HotelAdministrator.
+     * @throws java.lang.Exception
      */
     @Test
     public void test3LoadAndGetSeasons() throws Exception {
@@ -192,6 +196,7 @@ public class HotelAdministratorTest {
 
     /**
      * Test of findFreeRooms method, of class HotelAdministrator.
+     * @throws java.lang.Exception
      */
     @Test
     public void test8FindFreeRooms() throws Exception {

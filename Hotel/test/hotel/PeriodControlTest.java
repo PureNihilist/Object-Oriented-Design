@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 import org.junit.runners.MethodSorters;
 /**
  *
- * @author huber
+ * @author Hubert Banaś and Mateusz Galas
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PeriodControlTest {
@@ -30,7 +30,10 @@ public class PeriodControlTest {
     PeriodControl period5;
     PeriodControl period_set;
     
-    
+    /**
+     *
+     * @throws Exception
+     */
     public PeriodControlTest() throws Exception {
         period1 = new PeriodControl(LocalDate.of(2017, 12, 12), LocalDate.of(2017, 12, 18));
         period2 = new PeriodControl(LocalDate.of(2018, 1, 15), LocalDate.of(2018, 1, 17));

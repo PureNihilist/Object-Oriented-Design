@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author huber
+ * @author Hubert Banaś and Mateusz Galas
  */
 public class RoomTest {
     
@@ -24,6 +24,9 @@ public class RoomTest {
     Room room4;
     Room room5;
     
+    /**
+     *
+     */
     public RoomTest() {
         room1 = new Room("1", 4, 3);
         room2 = new Room("2", 5, 5);

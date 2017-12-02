@@ -16,12 +16,15 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author huber
+ * @author Hubert Banaś and Mateusz Galas
  */
 public class ClientCacheTest {
     
     ClientCache clientcache;
     
+    /**
+     *
+     */
     public ClientCacheTest() {
         clientcache = ClientCache.getInstance();
         clientcache.initilizeClientCache(new ArrayList<Client>());
@@ -75,6 +78,7 @@ public class ClientCacheTest {
 
     /**
      * Test of searchForClient method, of class ClientCache.
+     * @throws java.lang.Exception
      */
     @Test
     public void testSearchForClient() throws Exception {
@@ -90,6 +94,7 @@ public class ClientCacheTest {
 
     /**
      * Test of createClient method, of class ClientCache.
+     * @throws java.lang.Exception
      */
     @Test
     public void testCreateClient() throws Exception {

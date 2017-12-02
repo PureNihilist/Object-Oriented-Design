@@ -3,10 +3,10 @@ package hotel;
 import java.util.List;
 
 /**
- *
- * @author Mateusz Galas
+ * Interface Hotel, declaring methods to implement in other class
+ * @author Hubert Banaś and Mateusz Galas
  */
-interface Hotel {
+public interface Hotel {
     void loadRooms(Reader reader);
     void saveRooms(Writer writer);
     void saveReservations(Writer writer);

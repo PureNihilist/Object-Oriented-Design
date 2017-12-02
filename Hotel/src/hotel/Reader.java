@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author Mateusz Galas and Hubert Banaś
  * Reader class reads CVS files. Uses singleton design pattern.
+ * @author Mateusz Galas and Hubert Banaś
  */
 public class Reader {
     

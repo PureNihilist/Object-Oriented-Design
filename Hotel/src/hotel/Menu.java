@@ -59,7 +59,7 @@ public class Menu{
                                 switch(choice) {
                                     case "1"://wszystkie pokoje
                                         admin.getRooms().forEach((r) -> {
-                                              System.out.println("Nazwa pokoju:"+r.getName()+",pojemność:"+ r.getCapacity() + ",poziom komfortu:" + r.getQuality() + "/5,cena bazowa:" + r.getPrice());
+                                              System.out.println("Nazwa pokoju:"+r.getName()+", pojemność:"+ r.getCapacity() + ", poziom komfortu:" + r.getQuality() + "/5, cena bazowa:" + r.getPrice());
                                           });
                                         break;
                                     case "2"://wyswietla rezerwacje dla zalogowanego klienta
@@ -69,7 +69,7 @@ public class Menu{
                                                 PeriodControl period = reservation.getPeriodControl();
                                                 String confirmed = reservation.isConfirmed();
                                                 double seasonDiscount = admin.getPriceifSeason(period);
-                                                System.out.println("Id rezerwacji:"+reservation.getId()+"potwierdzona: "+confirmed+",imię:"+loggedClientName+",nazwisko:"+loggedClientSurname+",wiek:"+client.getAge()+",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka:"+client.getDiscount());
+                                                System.out.println("Id rezerwacji:"+reservation.getId()+", potwierdzona: "+confirmed+", imię:"+loggedClientName+", nazwisko:"+loggedClientSurname+", wiek:"+client.getAge()+", numer PESEL:" + client.getPESEL() + ", grupa zniżkowa:" + client.getClass().getSimpleName() + ", zniżka:"+client.getDiscount());
                                                 System.out.println("Rezerwacja na okres od:"+period.getBegin() + " do " + period.getEnd() + " ");
                                                 reservation.getRoomsInfo().forEach((roomInfo) -> {
                                                     System.out.println("Pokój "+roomInfo.getName()+", "+ roomInfo.getCapacity() + "-osobowy, o poziomie komfortu:" + roomInfo.getQuality() + "/5,cena: " + roomInfo.getPrice());
@@ -358,8 +358,12 @@ public class Menu{
                                     String eventdateTo = scanner.next();
                                     LocalDate eventto = LocalDate.parse(eventdateTo);
                                     PeriodControl event = new PeriodControl(eventfrom,eventto);
-                                    System.out.println("Ile procent ceny bazowej ma wynosić pokój w czasie tego wydarzenia? Podaj liczbę całkowitą.");
+                                    System.out.println("Ile procent ceny bazowej ma wynosić pokój w czasie tego wydarzenia? Podaj liczbę całkowitą większą od zera.");
                                     double discount = scanner.nextInt()*0.01;
+                                    if(discount <= 0 ){
+                                        System.err.println("Wprowadzono zniżkę mniejszą bądź równą zero.");
+                                        break;
+                                    }
                                     admin.addEvent(event,discount);
                                     break;
                                 case "11": //tworzenie rezerwacji

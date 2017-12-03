@@ -16,7 +16,7 @@ public class Invalid extends Client{
         this.Surname = Surname;
         this.age = age;
         this.PESEL = PESEL;
-        this.discount = 0.55;
+        this.discount = 0.4;
         this.id = 4;
     }
         /**

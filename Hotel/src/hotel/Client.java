@@ -62,7 +62,7 @@ public abstract class Client implements Cloneable {
      * upgradeDiscount method, to increase client discount
      */
     public void upgradeDiscount(){
-        this.discount = this.getDiscount()+0.05;
+        this.discount += 0.05;
     }
         
     /**

@@ -8,7 +8,7 @@ public class Room implements RoomInfo {
     private String name = null;
     private final int capacity;
     private final int quality;
-    private double price; //price nie może być final bo przecież ma się zmieniać jak jest zniżka
+    private double price = 100.0; //price nie może być final bo przecież ma się zmieniać jak jest zniżka
     
     /**
      * Constructor of class
@@ -30,7 +30,7 @@ public class Room implements RoomInfo {
         this.name = roomName;
         this.capacity = roomCapacity;
         this.quality = roomQuality;
-        this.price = this.quality * this.capacity;
+        this.price *= this.quality * this.capacity;
     }
     
     /**

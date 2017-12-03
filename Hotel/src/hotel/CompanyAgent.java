@@ -16,7 +16,7 @@ public class CompanyAgent extends Client {
         this.Surname = Surname;
         this.age = age;
         this.PESEL = PESEL;
-        this.discount = 0.35;
+        this.discount = 0.7;
         this.id = 5;
     }
         /**

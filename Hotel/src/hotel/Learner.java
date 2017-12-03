@@ -18,7 +18,7 @@ public class Learner extends Client{
             this.age = age;
         }
         this.PESEL = PESEL;
-        this.discount = 0.47;
+        this.discount = 0.6;
         this.id = 1;
     }
     /**

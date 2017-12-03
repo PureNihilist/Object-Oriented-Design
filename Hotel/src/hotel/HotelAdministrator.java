@@ -122,14 +122,15 @@ public class HotelAdministrator implements Hotel{
             System.out.println("Lista rezerwacji:");
             int count = 1;
             for(ReservationInstance res : list_reservations){
-                System.out.println("Rezerwacja potwierdzona: "+res.isConfirmed());
                 Client client = res.getClient();
+                System.out.println("Rezerwacja "+res.getId()+" dla: "+client.getName() + " " + client.getSurname());
+                System.out.println("Rezerwacja potwierdzona: "+res.isConfirmed());
                 System.out.print(count+". "+res.getPeriodControl().getBegin()+"-"+res.getPeriodControl().getEnd()+" Pokoje: ");
 
                 res.getRoomsInfo().forEach((Room r) -> {
                     System.out.print("Nazwa "+r.getName()+", Wielkość "+r.getCapacity()+"-osobowy, jakość "+r.getQuality()+"/5 "+"cena: "+ r.getPrice());
                 });
-                System.out.println("Cena za całość rezerwacji ze zniżką: "+res.countPrice()*client.getDiscount());
+                System.out.println("Cena za całość rezerwacji uwzględniająca ewentualne zniżki: "+res.countPrice()*client.getDiscount());
                 System.out.println("");
                 count++;
             }

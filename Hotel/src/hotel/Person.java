@@ -16,7 +16,7 @@ public class Person extends Client{
         this.Surname = Surname;
         this.age = age;
         this.PESEL = PESEL;
-        this.discount = 0;
+        this.discount = 1; //cena calkowita
         this.id = 0;
     }
     /**

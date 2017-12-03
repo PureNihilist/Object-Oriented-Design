@@ -16,7 +16,7 @@ public class Pensioner extends Client{
         this.Surname = Surname;
         this.age = age;
         this.PESEL = PESEL;
-        this.discount = 0.3;
+        this.discount = 0.6;
         this.id = 3;
     }
     /**

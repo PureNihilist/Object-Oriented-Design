@@ -269,15 +269,41 @@ public class Menu{
                                         }
                                     }
                                     if(!unconfirmed.isEmpty()) {
-                                        System.out.println("Proszę podać ID rezerwacji, którą potwierdzić.");
-                                        long Id = Long.valueOf(scanner.next());
-                                        for(ReservationInstance r : unconfirmed) {
-                                            if(r.getId() == Id){
-                                                r.setConfirmed();
-                                                break;
+                                        System.out.println("Proszę podać ID rezerwacji, którą potwierdzić. Dla wielu id proszę rozdzielić je przecinkiem.");
+                                        String id_line = scanner.next();
+                                        List<Long> id_list = new ArrayList<>();
+                                        if(id_line.contains(",")) { //podano wiecej niz jedno id
+                                            String [] idNumbers = id_line.split(",");
+                                            if(idNumbers.length > id_list.size()) {
+                                                System.err.println("Podano za dużo id. Zostanie potwierdzone pierwsze "+id_list.size() + " numery id.");
+                                            } 
+                                            for(ReservationInstance r : unconfirmed) {
+                                                for(int i = 0 ; i < idNumbers.length ; i ++) {
+                                                    if(Long.valueOf(idNumbers[i]) == r.getId()){
+                                                       id_list.add(r.getId());
+                                                    } 
+                                                }
+                                            }
+                                        } else { //jedno id 
+                                            for(ReservationInstance r : unconfirmed) {
+                                                if(r.getId() == Long.valueOf(id_line)) {
+                                                   id_list.add(r.getId());
+                                                   break;
+                                                } 
                                             }
                                         }
-                                        System.err.println("Wprowadzono złe id rezerwacji");
+                                        if(id_list.isEmpty()){
+                                            System.err.println("Wybrano id, którego nie było na liście.");
+                                            break;
+                                        }
+                                        for(ReservationInstance r : unconfirmed) { //z niepotwierdzonych
+                                            for(Long id : id_list) { //wybieram wybrane do potwiedzenia
+                                                if(r.getId() == id){
+                                                    r.setConfirmed();
+                                                    System.out.println("Potwierdzono id:"+r.getId());
+                                                }
+                                            }
+                                        }
                                         break;
                                     } else {
                                         System.out.println("Brak niepotwierdzonych rezerwacji w systemie.");

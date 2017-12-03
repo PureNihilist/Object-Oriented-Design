@@ -260,7 +260,6 @@ public class HotelAdministrator implements Hotel{
             String userAnswer = scanner.next();
             List<Room> room_list = new ArrayList<>();
             if(userAnswer.contains(",")) { //podano wiecej niz jeden pokoj
-                System.out.println("podano wiecej niz jeden pokoj");
                 String [] roomNames = userAnswer.split(",");
                 if(roomNames.length > requested_rooms.size()) {
                     System.err.println("Podano za dużo nazw pokoi. Zostanie zapisane pierwsze "+requested_rooms.size() + " pokoi");

@@ -36,7 +36,8 @@ public class Menu{
         System.out.println("Wybierz zakres usług.");
         System.out.println("Wprowadź 1 jeśli chcesz przejść do panelu klienta.");
         System.out.println("Wprowadź 2 jeśli chcesz przejść do panelu administratora.");
-        String menuChoice = scanner.next();
+        try {
+            String menuChoice = scanner.next();
             switch (menuChoice) {
                 case "1": //panel klienta
                     System.out.println("Podaj twój numer PESEL.");
@@ -413,7 +414,12 @@ public class Menu{
                     System.out.println("Wprowadź enter jeśli chcesz wrócić do wyboru menu.");
                     System.in.read();
                     break;
-            }//koniec glownego switcha
+                }//koniec glownego switcha
+            } catch(Exception ex){
+                System.err.println("Wprowadzono niewłaściwe dane");
+                System.out.println("Wprowadź enter jeśli chcesz wrócić do wyboru menu.");
+                System.in.read();
+            }
         }//koniec glownego while'a        
     }//koniec maina
 }//koniec klasy Menu

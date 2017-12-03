@@ -256,23 +256,38 @@ public class HotelAdministrator implements Hotel{
             free_rooms.forEach((Room r) -> {
                 System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, o poziomie komfortu: "+r.getQuality());
             });
-            System.out.println("Proszę podać nazwę/nazwy pokoju/oi do rejestracji z listy dostępnych, oddzielone przecinkiem.");
+            System.out.println("Proszę podać nazwę lub nazwy oddzielone przecinkiem pokoi do rejestracji z listy dostępnych.");
             String userAnswer = scanner.next();
-            String [] roomNames = userAnswer.split(",");
-            if(roomNames.length > requested_rooms.size()) {
-                System.err.println("Podano za dużo nazw pokoi. Zostanie zapisane pierwsze "+requested_rooms.size() + " pokoi");
-            } else if (roomNames.length == 0 ){
-                System.err.println("Nie podano żadnej nazwy pokoju albo była ona nieprawidłowa.");
-                return false;
-            }
             List<Room> room_list = new ArrayList<>();
-            for(int i = 0 ; i < requested_rooms.size() ; i++){
+            if(userAnswer.contains(",")) { //podano wiecej niz jeden pokoj
+                System.out.println("podano wiecej niz jeden pokoj");
+                String [] roomNames = userAnswer.split(",");
+                if(roomNames.length > requested_rooms.size()) {
+                    System.err.println("Podano za dużo nazw pokoi. Zostanie zapisane pierwsze "+requested_rooms.size() + " pokoi");
+                } else if (roomNames.length == 0 ){
+                    System.err.println("Nie podano żadnej nazwy pokoju albo była ona nieprawidłowa.");
+                    return false;
+                }
+                for(int i = 0 ; i < requested_rooms.size() ; i++){
+                    for(Room room : free_rooms) {
+                        if(room.getName().equals(roomNames[i])) {
+                           System.out.println("Zapisano pokój "+room.getName());
+                           room_list.add(room);
+                        } 
+                    }
+                }
+            } else { //jeden pokoj podano
                 for(Room room : free_rooms) {
-                    if(room.getName().equals(roomNames[i])) {
+                    if(room.getName().equals(userAnswer)) {
                        System.out.println("Zapisano pokój "+room.getName());
                        room_list.add(room);
+                       break;
                     } 
                 }
+            }
+            if(room_list.isEmpty()){
+                System.err.println("Wybrano pokój, którego nie było na liście.");
+                return false;
             }
             boolean confirmation = request.isConfirmed;
             ReservationInstance correct_request = new ReservationInstance(request.getId(),request.getClient(),period,room_list,confirmation); 

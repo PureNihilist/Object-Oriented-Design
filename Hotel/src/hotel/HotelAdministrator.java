@@ -141,7 +141,17 @@ public class HotelAdministrator implements Hotel{
      * @param name
      */
     @Override
-    public void deleteRoom(String name) {
+    public void deleteRoom(String name) {     
+        //sprawdzamy czy ktos ten pokoj zamowil
+        for(ReservationInstance r : reservations){
+            List<Room> room_list = r.getRoomsInfo();
+            for(Room room : room_list){
+                if(room.getName().equals(name)){
+                    System.err.println("Nie można usunąć pokoju na który jest istniejąca rezerwacja!");
+                    return;
+                }
+            }
+        }
         for(Room room : rooms){
             if(room.getName().equals(name)){
                 rooms.remove(room);

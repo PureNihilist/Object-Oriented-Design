@@ -5,7 +5,6 @@
  */
 package hotel;
 
-
 /**
  * CompanyAgent class, used for clients who are an agents of company
  * @author Hubert Banaś and Mateusz Galas

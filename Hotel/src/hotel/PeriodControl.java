@@ -1,12 +1,7 @@
 package hotel;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class PeriodControl, which represents periods. Implements methods from interface PeriodInterface.

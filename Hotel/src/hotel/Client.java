@@ -1,7 +1,5 @@
 package hotel;
 
-import java.util.List;
-
 /**
  *  Client class, using pattern prototype for clients of our system
  * @author Hubert Banaś and Mateusz Galas

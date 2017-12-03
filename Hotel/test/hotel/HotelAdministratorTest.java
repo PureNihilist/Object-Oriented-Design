@@ -6,11 +6,9 @@
 package hotel;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Period;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import org.junit.After;
 import org.junit.AfterClass;

@@ -5,7 +5,6 @@
  */
 package hotel;
 
-
 /**
  * Invalid class, used for clients physically or mentally disabled
  * @author Hubert Banaś and Mateusz Galas

@@ -36,9 +36,9 @@ public class Menu{
         System.out.println("Wybierz zakres usług.");
         System.out.println("Wprowadź 1 jeśli chcesz przejść do panelu klienta.");
         System.out.println("Wprowadź 2 jeśli chcesz przejść do panelu administratora.");
-        int menuChoice = Integer.valueOf(scanner.next());
+        String menuChoice = scanner.next();
             switch (menuChoice) {
-                case 1: //panel klienta
+                case "1": //panel klienta
                     System.out.println("Podaj twój numer PESEL.");
                     Long pesel = Long.valueOf(scanner.next());
                     List<Client> client_list = cache.getClients();
@@ -54,14 +54,14 @@ public class Menu{
                                 System.out.println("3. Wyświetl aktualnie wolne pokoje.");
                                 System.out.println("4. Zamów nową rezerwację.");
                                 System.out.println("5. Zakończ działanie systemu.");
-                                int choice = scanner.nextInt();
+                                String choice = scanner.next();
                                 switch(choice) {
-                                    case 1://wszystkie pokoje
+                                    case "1"://wszystkie pokoje
                                         admin.getRooms().forEach((r) -> {
                                               System.out.println("Nazwa pokoju:"+r.getName()+",pojemność:"+ r.getCapacity() + ",poziom komfortu:" + r.getQuality() + ",cena bazowa:" + r.getPrice());
                                           });
                                         break;
-                                    case 2://wyswietla rezerwacje dla zalogowanego klienta
+                                    case "2"://wyswietla rezerwacje dla zalogowanego klienta
                                         admin.getReservations().forEach((reservation) -> {
                                             Client client = reservation.getClient();
                                             if(client.getPESEL() == pesel) {
@@ -77,7 +77,7 @@ public class Menu{
                                             }
                                           });
                                         break;
-                                    case 3://wyswietla wolne pokoje ale... aktualnie tzn minimalnie od dzis :)
+                                    case "3"://wyswietla wolne pokoje ale... aktualnie tzn minimalnie od dzis :)
                                         System.out.println("Wyświetlanie aktualnie wolnych pokoi/");
                                         LocalDate today = LocalDate.now();
                                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
@@ -109,7 +109,7 @@ public class Menu{
                                             System.out.flush();
                                         }
                                         break;
-                                    case 4://dodaje nowa rezerwacje przez klienta
+                                    case "4"://dodaje nowa rezerwacje przez klienta
                                         System.out.println("Zamawianie rezerwacji.");
                                         System.out.println("Podaj termin rezerwacji.");
                                         System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
@@ -134,7 +134,7 @@ public class Menu{
                                         ReservationInstance request = new ReservationInstance(++ID,c,period,room_list,false);
                                         admin.makeReservation(request);
                                         break;
-                                    case 5://exit
+                                    case "5"://exit
                                         admin.saveReservations(writer); // teraz pytanie czy klient'a rezerwacje dodawac od razu do systemu ? czy czekac na akceptacje recepcji 
                                         System.exit(0);
                                     default://zla komenda
@@ -151,7 +151,7 @@ public class Menu{
                     System.in.read();
                     break;        
                 //koniec panelu klienta
-                case 2: //panel admina
+                case "2": //panel admina
                     System.out.println("Podaj hasło do panelu administatora.");
                     String password = scanner.next();
                     if(password.equals("ogorek")) {
@@ -172,19 +172,19 @@ public class Menu{
                             System.out.println("13. Usuń rezerwację.");
                             System.out.println("14. Usuń klienta.");
                             System.out.println("15. Zakończ działanie systemu.");
-                            int choice = scanner.nextInt();
+                            String choice = scanner.next();
                             switch (choice) {
-                                case 1: //wyswietl wszystkie pokoje
+                                case "1": //wyswietl wszystkie pokoje
                                     admin.getRooms().forEach((r) -> {
                                         System.out.println("Nazwa pokoju:"+r.getName()+",pojemność:"+ r.getCapacity() + ",poziom komfortu:" + r.getQuality() + ",cena bazowa:" + r.getPrice());
                                     });
                                     break;
-                                case 2://wyszukaj rezerwacje po numerze pesel klienta
+                                case "2"://wyszukaj rezerwacje po numerze pesel klienta
                                     System.out.println("Wyszukiwanie Rezerwacji.");
                                     System.out.println("Podaj numer pesel klienta.");
                                     admin.findReservation(Long.valueOf(scanner.next()));
                                     break;
-                                case 3://wszystkie rezerwacje
+                                case "3"://wszystkie rezerwacje
                                     admin.getReservations().forEach((r) -> {
                                         Client client = r.getClient();
                                         PeriodControl period = r.getPeriodControl();
@@ -201,13 +201,13 @@ public class Menu{
                                         System.out.println("Cena za całość rezerwacji ze zniżką: "+r.countPrice()*client.getDiscount()*seasonDiscount);
                                     });
                                     break;
-                                case 4: //wyswietl wszystkich gosci hotelowych!
+                                case "4": //wyswietl wszystkich gosci hotelowych!
                                     List<Client> actual_client_list = cache.getClients();
                                     actual_client_list.forEach((client) -> {
                                         System.out.println("imię:" +client.getName() + ",nazwisko:" + client.getSurname() + ",wiek:" + client.getAge() + ",numer PESEL:" + client.getPESEL() + ",typ:" + client.getClass().getSimpleName() + ",zniżka bazowa:"+client.discount);
                                     });
                                     break;
-                                case 5: //wyswietla wolne pokoje
+                                case "5": //wyswietla wolne pokoje
                                     System.out.println("Wyświetlanie wolnych pokoi");
                                     System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
                                     String dateFromStr = scanner.next();
@@ -230,14 +230,14 @@ public class Menu{
                                         System.err.println("W tym przedziale czasowym nie mamy żadnego pokoju do zaoferowania.");
                                     }
                                     break;
-                                case 6://aktualne sezony promocyjne
+                                case "6"://aktualne sezony promocyjne
                                     ArrayList<PeriodControl> actual_seasons = admin.getSeasons();
                                     for(PeriodControl control : actual_seasons) {
                                         double value = control.getRabate();
                                         System.out.println("Od: "+control.getBegin().toString() + " do " + control.getEnd().toString() + ",zniżka: "+value);
                                     }
                                     break;
-                                case 7://potwierdzanie rezerwacji klienckich
+                                case "7"://potwierdzanie rezerwacji klienckich
                                     System.out.println("Potwierdanie rezerwacji klienckich");
                                     System.out.println("Aktualnie niepotwierdzone rejestracje: ");
                                     List<ReservationInstance> actual_reservations = admin.getReservations();
@@ -274,7 +274,7 @@ public class Menu{
                                         System.out.println("Brak niepotwierdzonych rezerwacji w systemie.");
                                         break;
                                     }
-                                case 8://dodawanie klienta
+                                case "8"://dodawanie klienta
                                     System.out.println("Dodawanie nowego klienta.");
                                     System.out.println("Podaj imię.");
                                     String newclientName = scanner.next();
@@ -294,7 +294,7 @@ public class Menu{
                                     System.out.println("Ulga 5 dla firm");                                     
                                     cache.createClient(newclientName, newclientSurname, newclientAge,peselNumber,discountChoice);
                                     break;
-                                case 9: //dodawanie nowego pokoju
+                                case "9": //dodawanie nowego pokoju
                                     int roomCounter = admin.getRooms().size();
                                     System.out.println("Dodawanie pokoju.");
                                     System.out.println("Aktualnie hotel posiada "+roomCounter +" zapisanych pokoi.");
@@ -306,7 +306,7 @@ public class Menu{
                                     int roomQuality = Integer.valueOf(scanner.next());
                                     admin.addRoom(roomName, roomCapacity, roomQuality );
                                     break;
-                                case 10: //dodaj nowy event okolicznosciowy
+                                case "10": //dodaj nowy event okolicznosciowy
                                     System.out.println("Dodawanie promocji okolicznościowej.");
                                     System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
                                     String eventdateFrom = scanner.next();
@@ -319,7 +319,7 @@ public class Menu{
                                     double discount = scanner.nextInt()*0.01;
                                     admin.addEvent(event,discount);
                                     break;
-                                case 11: //tworzenie rezerwacji
+                                case "11": //tworzenie rezerwacji
                                     System.out.println("Dodawanie rezerwacji.");
                                     System.out.println("Podaj numer PESEL klienta");
                                     long clientID = Long.valueOf(scanner.next());
@@ -351,30 +351,28 @@ public class Menu{
                                     ReservationInstance request = new ReservationInstance(++ID,client,period,room_list,true);
                                     admin.makeReservation(request);
                                     break;
-                                case 12: //usuwanie pokoju
+                                case "12": //usuwanie pokoju
                                     System.out.println("Usuwanie pokoju.");
                                     System.out.println("Podaj nazwę pokoju do usunięcia.");
                                     admin.deleteRoom(scanner.next());
                                     break;
-                                case 13://usuwanie rezerwacji
+                                case "13"://usuwanie rezerwacji
                                     System.out.println("Usuwanie rezerwacji.");
                                     System.out.println("Podaj id rezerwacji do usunięcia.");
                                     admin.deleteReservation(Long.valueOf(scanner.next()));
                                     break;
-                                case 14://usuwanie klienta
+                                case "14"://usuwanie klienta
                                     System.out.println("Usuwanie klienta.");
                                     System.out.println("Podaj Pesel klienta do usunięcia.");
                                     admin.deleteClient(Long.valueOf(scanner.next()));
                                     break;
-                                case 15: //exit
+                                case "15": //exit
                                     admin.saveRooms(writer);
                                     admin.saveReservations(writer);
                                     admin.saveSeasons(writer);
                                     System.exit(0);
                                 default:
                                     System.err.println("Podano złą komendę.");
-                                    System.out.println("Wprowadź enter jeśli chcesz wrócić do wyboru menu.");
-                                    System.in.read();
                                     break;
                             }//koniec switcha
                             System.out.println("Wprowadź enter jeśli chcesz przejść do menu.");

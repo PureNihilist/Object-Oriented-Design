@@ -6,7 +6,6 @@
 package hotel;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Period;
 import org.junit.After;
 import org.junit.AfterClass;

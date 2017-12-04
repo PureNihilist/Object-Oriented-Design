@@ -284,7 +284,7 @@ public class Menu{
                                         List<Long> id_list = new ArrayList<>();
                                         if(id_line.contains(",")) { //podano wiecej niz jedno id
                                             String [] idNumbers = id_line.split(",");
-                                            if(idNumbers.length > id_list.size()) {
+                                            if(idNumbers.length > unconfirmed.size()) {
                                                 System.err.println("Podano za dużo id. Zostanie potwierdzone pierwsze "+id_list.size() + " numery id.");
                                             } 
                                             for(ReservationInstance r : unconfirmed) {

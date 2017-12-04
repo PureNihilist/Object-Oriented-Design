@@ -281,7 +281,7 @@ public class HotelAdministrator implements Hotel{
                 for(int i = 0 ; i < requested_rooms.size() ; i++){
                     for(Room room : free_rooms) {
                         if(room.getName().equals(roomNames[i])) {
-                           System.out.println("Zapisano pokój "+room.getName());
+                           System.out.println("Zarezerwowano pokój "+room.getName());
                            room_list.add(room);
                         } 
                     }
@@ -289,7 +289,7 @@ public class HotelAdministrator implements Hotel{
             } else { //jeden pokoj podano
                 for(Room room : free_rooms) {
                     if(room.getName().equals(userAnswer)) {
-                       System.out.println("Zapisano pokój "+room.getName());
+                       System.out.println("Zarezerwowano pokój "+room.getName());
                        room_list.add(room);
                        break;
                     } 

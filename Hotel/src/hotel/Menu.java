@@ -220,7 +220,7 @@ public class Menu{
                                     for(Client client : actual_client_list) {   
                                         if(!pesels.contains(client.getPESEL())) {
                                             pesels.add(client.getPESEL());
-                                           System.out.println("Imię:" +client.getName() + ", nazwisko:" + client.getSurname() + ", wiek:" + client.getAge() + ", numer PESEL:" + client.getPESEL() + ", grupa zniżkowa:" + client.getClass().getSimpleName() + ", zniżka klienta:"+client.discount);
+                                           System.out.println("Imię:" +client.getName() + ", nazwisko:" + client.getSurname() + ", wiek:" + client.getAge() + ", numer PESEL:" + client.getPESEL() + ", grupa zniżkowa:" + client.getClass().getSimpleName() + ", zniżka klienta:"+client.getDiscount());
                                         }
                                     }
                                     break;

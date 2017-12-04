@@ -386,6 +386,7 @@ public class HotelAdministrator implements Hotel{
                     if(count == 5) {
                         toUpgrade.upgradeDiscount();
                         toUpgrade.setId(6);
+                        return;
                     }
                 }
             }

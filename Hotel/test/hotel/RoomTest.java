@@ -80,11 +80,11 @@ public class RoomTest {
     @Test
     public void testGetPrice() {
         System.out.println("getPrice");
-        assertEquals(12, room1.getPrice(), 0);
-        assertEquals(25, room2.getPrice(), 0);
-        assertEquals(6, room3.getPrice(), 0);
-        assertEquals(8, room4.getPrice(), 0);
-        assertEquals(1, room5.getPrice(), 0);
+        assertEquals(1200, room1.getPrice(), 0);
+        assertEquals(2500, room2.getPrice(), 0);
+        assertEquals(600, room3.getPrice(), 0);
+        assertEquals(800, room4.getPrice(), 0);
+        assertEquals(100, room5.getPrice(), 0);
     }
     
 }

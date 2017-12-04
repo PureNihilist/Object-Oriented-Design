@@ -2,6 +2,7 @@ package hotel;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Class PeriodControl, which represents periods. Implements methods from interface PeriodInterface.
@@ -78,8 +79,9 @@ public class PeriodControl implements PeriodInterface{
     }
     
     /**
+     * For testing purposes.
      * getPeriod method
-     * @return period
+     * @return period 
      */
     @Override
     public Period getPeriod() {
@@ -87,15 +89,15 @@ public class PeriodControl implements PeriodInterface{
     }
 
     /**
-     * checks if periods are overlaped
+     * checks if periods are overlapped
      * @param start1
      * @param end1
      * @param start2
      * @param end2
-     * @return true if periods are overlaped, else false
+     * @return true if periods are overlapped, else false
      */
 
-    public static boolean isOverLaped(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2){
+    public static boolean isOverLapped(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2){
         return (start1.isBefore(start2) && start2.isBefore(end1) && end1.isBefore(end2)) || //czesc wspólna
                 (start2.isBefore(start1) && start1.isBefore(end2) && end2.isBefore(end1)) || //czesc wspolna odwrotnie
                 (start1.isBefore(start2) && end2.isBefore(end1)) || // zawieranie
@@ -105,12 +107,20 @@ public class PeriodControl implements PeriodInterface{
                 (start1.isEqual(start2) && end2.isBefore(end1)) || // wspolny poczatek
                 (start1.isEqual(start2) && end1.isBefore(end2)) || // wspolny poczatek odwrotnie
                 (start1.isEqual(start2) && end1.isEqual(end2)); //rowne przedzialy
-    } 
+    }
+    /**
+     * Counts days of given PeriodControl object
+     * @param p
+     * @return number of days in long value
+     */
+    public long countDays(PeriodControl p){
+        long p2 = ChronoUnit.DAYS.between(p.begin,p.end);
+        return p2;
+    }
 }
 
     //Jeśli potrzebujesz dokładnych danych to robi się to tak:
     /* gdzie p to obiekt Period
-    long p2 = ChronoUnit.DAYS.between(birthday, today);
     System.out.println("You are " + p.getYears() + " years, " + p.getMonths() +
                    " months, and " + p.getDays() +
                    " days old. (" + p2 + " days total)");

@@ -240,7 +240,7 @@ public class HotelAdministrator implements Hotel{
             LocalDate reservationBegin = reservation.getPeriodControl().getBegin();
             LocalDate reservationEnd = reservation.getPeriodControl().getEnd();
             //ten if sprawdza czy okresy na siebie zachodza/czy maja czesci wspolne
-            if (PeriodControl.isOverLaped(requestedBegin, requestedEnd, reservationBegin, reservationEnd)) {
+            if (PeriodControl.isOverLapped(requestedBegin, requestedEnd, reservationBegin, reservationEnd)) {
                 //dla okresow ktore sie pokrywaja sprawdzic czy pokoje sa zajete
                 List<Room> reservation_rooms = reservation.getRoomsInfo(); // tutaj sa pokoje zarejestrowane w tym okresie w tej rejestracji
                 reservation_rooms.stream().filter((reserved_room) -> (free_rooms.contains(reserved_room))).forEachOrdered(free_rooms::remove //usuwam te co sa zajete, uwaga nawet jak jeden dzien sie pokrywa to tez zajete!
@@ -265,7 +265,7 @@ public class HotelAdministrator implements Hotel{
             System.out.println("Obecnie w tym przedziale czasowym mamy do zaoferowania:");
             Scanner scanner = new Scanner(System.in);
             free_rooms.forEach((Room r) -> {
-                System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, o poziomie komfortu: "+r.getQuality());
+                System.out.println("Pokój "+r.getName()+", "+r.getCapacity()+"-osobowy, o poziomie komfortu: "+r.getQuality() +" o cenie bazowej: "+r.getPrice());
             });
             System.out.println("Proszę podać nazwę lub nazwy oddzielone przecinkiem pokoi do rejestracji z listy dostępnych.");
             String userAnswer = scanner.next();
@@ -273,7 +273,7 @@ public class HotelAdministrator implements Hotel{
             if(userAnswer.contains(",")) { //podano wiecej niz jeden pokoj
                 String [] roomNames = userAnswer.split(",");
                 if(roomNames.length > requested_rooms.size()) {
-                    System.err.println("Podano za dużo nazw pokoi. Zostanie zapisane pierwsze "+requested_rooms.size() + " pokoi");
+                    System.err.println("Podano za dużo nazw pokoi. Zostanie zapisane pierwsze "+requested_rooms.size() + " pokoi.");
                 } else if (roomNames.length == 0 ){
                     System.err.println("Nie podano żadnej nazwy pokoju albo była ona nieprawidłowa.");
                     return false;
@@ -359,18 +359,20 @@ public class HotelAdministrator implements Hotel{
         double value = control.getRabate();
         LocalDate control_begin = control.getBegin();
         LocalDate control_end = control.getEnd();
-        if(PeriodControl.isOverLaped(p_begin,p_end,control_begin,control_end)){
+        if(PeriodControl.isOverLapped(p_begin,p_end,control_begin,control_end)){
             return value;
         }        
        }
        return 1;
    }
 
-    /**
-     * upgrades list of loyal clients (if client has at least five reservations)
+    /** 
+     * upgrades clients rebate (if client has at least five reservations)
+     * @param toUpgrade
+     * 
      */
 
-    public void upgradeLoayalClients(){
+    public void upgradeLoayalClients(Client toUpgrade){
         List<Client> client_list = ClientCache.getInstance().getClients();
         int count = 0;
         
@@ -382,10 +384,12 @@ public class HotelAdministrator implements Hotel{
                         count++;
                     }
                     if(count == 5) {
-                        client.upgradeDiscount();
+                        toUpgrade.upgradeDiscount();
+                        toUpgrade.setId(6);
                     }
                 }
-            }    
+            }
+            count = 0;
         }
     }
 }

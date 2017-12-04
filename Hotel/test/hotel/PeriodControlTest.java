@@ -108,16 +108,16 @@ public class PeriodControlTest {
     public void testIsOverLaped() {
         System.out.println("isOverLaped");
         boolean expResult = false;
-        boolean result = PeriodControl.isOverLaped(period1.getBegin(), period1.getEnd(), period2.getBegin(), period2.getEnd());
-        boolean result1 = PeriodControl.isOverLaped(period1.getBegin(), period1.getEnd(), period3.getBegin(), period3.getEnd());
-        boolean result2 = PeriodControl.isOverLaped(period1.getBegin(), period1.getEnd(), period4.getBegin(), period4.getEnd());
-        boolean result3 = PeriodControl.isOverLaped(period1.getBegin(), period1.getEnd(), period5.getBegin(), period5.getEnd());
-        boolean result4 = PeriodControl.isOverLaped(period2.getBegin(), period2.getEnd(), period3.getBegin(), period3.getEnd());
-        boolean result5 = PeriodControl.isOverLaped(period2.getBegin(), period2.getEnd(), period4.getBegin(), period4.getEnd());
-        boolean result6 = PeriodControl.isOverLaped(period2.getBegin(), period2.getEnd(), period5.getBegin(), period5.getEnd());
-        boolean result7 = PeriodControl.isOverLaped(period3.getBegin(), period3.getEnd(), period4.getBegin(), period4.getEnd());
-        boolean result8 = PeriodControl.isOverLaped(period3.getBegin(), period3.getEnd(), period5.getBegin(), period5.getEnd());
-        boolean result9 = PeriodControl.isOverLaped(period4.getBegin(), period4.getEnd(), period5.getBegin(), period5.getEnd());
+        boolean result = PeriodControl.isOverLapped(period1.getBegin(), period1.getEnd(), period2.getBegin(), period2.getEnd());
+        boolean result1 = PeriodControl.isOverLapped(period1.getBegin(), period1.getEnd(), period3.getBegin(), period3.getEnd());
+        boolean result2 = PeriodControl.isOverLapped(period1.getBegin(), period1.getEnd(), period4.getBegin(), period4.getEnd());
+        boolean result3 = PeriodControl.isOverLapped(period1.getBegin(), period1.getEnd(), period5.getBegin(), period5.getEnd());
+        boolean result4 = PeriodControl.isOverLapped(period2.getBegin(), period2.getEnd(), period3.getBegin(), period3.getEnd());
+        boolean result5 = PeriodControl.isOverLapped(period2.getBegin(), period2.getEnd(), period4.getBegin(), period4.getEnd());
+        boolean result6 = PeriodControl.isOverLapped(period2.getBegin(), period2.getEnd(), period5.getBegin(), period5.getEnd());
+        boolean result7 = PeriodControl.isOverLapped(period3.getBegin(), period3.getEnd(), period4.getBegin(), period4.getEnd());
+        boolean result8 = PeriodControl.isOverLapped(period3.getBegin(), period3.getEnd(), period5.getBegin(), period5.getEnd());
+        boolean result9 = PeriodControl.isOverLapped(period4.getBegin(), period4.getEnd(), period5.getBegin(), period5.getEnd());
         assertEquals(expResult, result);
         assertEquals(expResult, result1);
         assertEquals(expResult, result2);

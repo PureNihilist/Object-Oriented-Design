@@ -57,12 +57,20 @@ public abstract class Client implements Cloneable {
     public int getId(){
       return id;
     }
+     /**
+      * @param newid
+      * setId method
+      * 
+      */
+    public void setId(int newid){
+      id = newid;
+    }
     
     /**
      * upgradeDiscount method, to increase client discount
      */
     public void upgradeDiscount(){
-        this.discount += 0.05;
+        this.discount -= 0.05;
     }
         
     /**

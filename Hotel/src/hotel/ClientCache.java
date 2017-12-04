@@ -83,6 +83,7 @@ public class ClientCache {
         for(Client client : clients) {
             if(client.PESEL == clientPESEL) {
                 c = client;
+                break;
             }
         }
         return c; //c moze byc nullem ale jest to obsluzone w uzyciu -> patrz Menu
@@ -98,13 +99,19 @@ public class ClientCache {
      * @throws CloneNotSupportedException 
      */ 
     public Client createClient(String name, String surname, int age, long pesel, int type) throws CloneNotSupportedException {
+        Client client = null;
         if(clients != null) {
             for(Client p : clients) {//jest taki klient
                 if(p.getName().equals(name) && p.getSurname().equals(surname) && p.getAge() == age && p.getPESEL() == pesel ){
-                    return (Client)p.clone();
+                    client = (Client)p.clone();
+                    if(type == 6){
+                        client.upgradeDiscount();
+                        client.setId(6);
+                    }
+                    return client;
                 }
             } // nie ma takiego klienta jeszcze
-            Client client = null;
+
             switch(type) {
                     case 0 :
                         client = new Person(name,surname,age,pesel);

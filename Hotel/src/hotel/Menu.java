@@ -29,7 +29,6 @@ public class Menu{
         admin.loadSeasons(reader); //ladowanie sezonow
   
         ClientCache cache = ClientCache.getInstance();
-        admin.upgradeLoayalClients(); //zwiekszanie znizek dla stalych klientow za kazde 5 rezerwacji 5% w dol
         
         while(true){
         System.out.println("Witamy w systemie obsługi hotelu recepcja!");
@@ -74,7 +73,9 @@ public class Menu{
                                                 reservation.getRoomsInfo().forEach((roomInfo) -> {
                                                     System.out.println("Pokój "+roomInfo.getName()+", "+ roomInfo.getCapacity() + "-osobowy, o poziomie komfortu:" + roomInfo.getQuality() + "/5,cena: " + roomInfo.getPrice());
                                                 });
-                                                System.out.println("Cena za całość rezerwacji ze zniżką: "+reservation.countPrice()*client.getDiscount()*seasonDiscount);
+                                                double fullPrice = reservation.countPrice()*client.getDiscount()*seasonDiscount;
+                                                System.out.println("Cena za całość rezerwacji ze zniżką: "+fullPrice+" na dzień pobytu.");
+                                                System.out.println("Cały pobyt: "+period.countDays(period)*fullPrice);
                                             }
                                           });
                                         break;
@@ -111,6 +112,7 @@ public class Menu{
                                         }
                                         break;
                                     case "4"://dodaje nowa rezerwacje przez klienta
+                                        admin.upgradeLoayalClients(c); //zwiekszanie znizek dla stalych klientow za kazde 5 rezerwacji na nastepna rezerwacje
                                         System.out.println("Zamawianie rezerwacji.");
                                         System.out.println("Podaj termin rezerwacji.");
                                         System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
@@ -126,13 +128,13 @@ public class Menu{
                                         for(int i = 0; i < roomAmount; i++){
                                             System.out.println("Podaj pojemność pokoju w skali 1-5:");
                                             int roomCapacity = Integer.valueOf(scanner.next());
-                                            if(roomCapacity < 0 || roomCapacity > 5) {
+                                            if(roomCapacity <= 0 || roomCapacity > 5) {
                                                 System.err.println("Podano pojemność spoza zakresu skali!");
                                                 break;
                                             }
                                             System.out.println("Podaj poziom komfortu pokoju w skali 1-5:");
                                             int roomQuality = Integer.valueOf(scanner.next());
-                                            if(roomQuality < 0 || roomQuality > 5) {
+                                            if(roomQuality <= 0 || roomQuality > 5) {
                                                 System.err.println("Podano poziom komfortu spoza zakresu skali!");
                                                 break;
                                             }
@@ -207,14 +209,20 @@ public class Menu{
                                         r.getRoomsInfo().forEach((roomInfo) -> {
                                             System.out.println("Pokój "+roomInfo.getName()+", "+ roomInfo.getCapacity() + "-osobowy, o poziomie komfortu:" + roomInfo.getQuality() + "/5,cena: " + roomInfo.getPrice()*seasonDiscount);                         
                                         });
-                                        System.out.println("Cena za całość rezerwacji ze zniżką: "+r.countPrice()*client.getDiscount()*seasonDiscount);
+                                        double fullPrice = r.countPrice()*client.getDiscount()*seasonDiscount;
+                                        System.out.println("Cena za całość rezerwacji ze zniżką: "+fullPrice+" na dzień pobytu.");
+                                        System.out.println("Cały pobyt: "+period.countDays(period)*fullPrice);
                                     });
                                     break;
                                 case "4": //wyswietl wszystkich gosci hotelowych!
                                     List<Client> actual_client_list = cache.getClients();
-                                    actual_client_list.forEach((client) -> {
-                                        System.out.println("Imię:" +client.getName() + ", nazwisko:" + client.getSurname() + ", wiek:" + client.getAge() + ", numer PESEL:" + client.getPESEL() + ", grupa zniżkowa:" + client.getClass().getSimpleName() + ", zniżka klienta:"+client.discount);
-                                    });
+                                    List<Long> pesels = new ArrayList<>();
+                                    for(Client client : actual_client_list) {   
+                                        if(!pesels.contains(client.getPESEL())) {
+                                            pesels.add(client.getPESEL());
+                                           System.out.println("Imię:" +client.getName() + ", nazwisko:" + client.getSurname() + ", wiek:" + client.getAge() + ", numer PESEL:" + client.getPESEL() + ", grupa zniżkowa:" + client.getClass().getSimpleName() + ", zniżka klienta:"+client.discount);
+                                        }
+                                    }
                                     break;
                                 case "5": //wyswietla wolne pokoje
                                     System.out.println("Wyświetlanie wolnych pokoi");
@@ -243,7 +251,7 @@ public class Menu{
                                     ArrayList<PeriodControl> actual_seasons = admin.getSeasons();
                                     for(PeriodControl control : actual_seasons) {
                                         double value = control.getRabate();
-                                        System.out.println("Od: "+control.getBegin().toString() + " do " + control.getEnd().toString() + ",zniżka: "+value);
+                                        System.out.println("Od: "+control.getBegin().toString() + " do " + control.getEnd().toString() + ",zniżka: "+value + " ceny.");
                                     }
                                     break;
                                 case "7"://potwierdzanie rezerwacji klienckich
@@ -264,7 +272,9 @@ public class Menu{
                                             r.getRoomsInfo().forEach((roomInfo) -> {
                                                 System.out.println("Pokój "+roomInfo.getName()+", "+ roomInfo.getCapacity() + "-osobowy, o poziomie komfortu" + roomInfo.getQuality() + "/5, cena:" + roomInfo.getPrice()*seasonPrice);
                                             });
-                                            System.out.println("Cena za całość rezerwacji ze zniżką: "+r.countPrice()*client.getDiscount()*seasonPrice);
+                                            double fullPrice = r.countPrice()*client.getDiscount()*seasonPrice;
+                                            System.out.println("Cena za całość rezerwacji ze zniżką: "+fullPrice+" na dzień pobytu.");
+                                            System.out.println("Cały pobyt: "+period.countDays(period)*fullPrice);
                                             unconfirmed.add(r);
                                         }
                                     }
@@ -326,7 +336,11 @@ public class Menu{
                                     System.out.println("Ulga 2 student");
                                     System.out.println("Ulga 3 emeryt");
                                     System.out.println("Ulga 4 inwalida");
-                                    System.out.println("Ulga 5 dla firm");                                     
+                                    System.out.println("Ulga 5 dla firm");
+                                    if(discountChoice < 0 || discountChoice > 5) {
+                                        System.err.println("Podano niewłaściwy numer ulgi.");
+                                        break;
+                                    }
                                     cache.createClient(newclientName, newclientSurname, newclientAge,peselNumber,discountChoice);
                                     break;
                                 case "9": //dodawanie nowego pokoju
@@ -337,13 +351,13 @@ public class Menu{
                                     String roomName = scanner.next();
                                     System.out.println("Podaj pojemność pokoju w skali 1-5:");
                                     int roomCapacity = Integer.valueOf(scanner.next());
-                                    if(roomCapacity < 0 || roomCapacity > 5) {
+                                    if(roomCapacity <= 0 || roomCapacity > 5) {
                                         System.err.println("Podano pojemność spoza zakresu skali!");
                                         break;
                                     }
                                     System.out.println("Podaj poziom komfortu pokoju w skali 1-5:");
                                     int roomQuality = Integer.valueOf(scanner.next());
-                                    if(roomQuality < 0 || roomQuality > 5) {
+                                    if(roomQuality <= 0 || roomQuality > 5) {
                                         System.err.println("Podano poziom komfortu spoza zakresu skali!");
                                         break;
                                     }
@@ -374,7 +388,9 @@ public class Menu{
                                     if(client == null) {
                                         System.err.println("Klient o podanym numerze PESEL nie istnieje!");
                                         break;
-                                    } 
+                                    }
+                                    Client new_record = cache.createClient(client.getName(), client.getSurname(), client.getAge(),client.getPESEL(), client.getId());
+                                    admin.upgradeLoayalClients(new_record); //zwiekszanie znizek dla stalych klientow za kazde 5 rezerwacji na nastepna rezerwacje
                                     System.out.println("Podaj termin rezerwacji.");
                                     System.out.println("Od kiedy? Podaj datę w formacie YYYY-MM-DD");
                                     String dateFrom = scanner.next();
@@ -389,13 +405,13 @@ public class Menu{
                                     for(int i = 0; i < roomAmount; i++){
                                         System.out.println("Podaj pojemność pokoju w skali 1-5:");
                                         int capacity = Integer.valueOf(scanner.next());
-                                        if(capacity < 0 || capacity > 5) {
+                                        if(capacity <= 0 || capacity > 5) {
                                             System.err.println("Podano pojemność spoza zakresu skali!");
                                             break;
                                         }
                                         System.out.println("Podaj poziom komfortu pokoju w skali 1-5:");
                                         int quality = Integer.valueOf(scanner.next());
-                                        if(quality < 0 || quality > 5) {
+                                        if(quality <= 0 || quality > 5) {
                                             System.err.println("Podano poziom komfortu spoza zakresu skali!");
                                             break;
                                         }
@@ -403,7 +419,7 @@ public class Menu{
                                         room_list.add(requestedRoom);
                                     }
                                     long ID = admin.getReservations().size();
-                                    ReservationInstance request = new ReservationInstance(++ID,client,period,room_list,true);
+                                    ReservationInstance request = new ReservationInstance(++ID,new_record,period,room_list,true);
                                     admin.makeReservation(request);
                                     break;
                                 case "12": //usuwanie pokoju

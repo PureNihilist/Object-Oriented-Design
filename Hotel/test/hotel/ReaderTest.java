@@ -52,23 +52,23 @@ public class ReaderTest {
         assertEquals("1", lista.get(0).getName());
         assertEquals(3, lista.get(0).getCapacity());
         assertEquals(4, lista.get(0).getQuality());
-        assertEquals(12, lista.get(0).getPrice(), 0);
+        assertEquals(1200, lista.get(0).getPrice(), 0);
         assertEquals("2", lista.get(1).getName());
         assertEquals(2, lista.get(1).getCapacity());
         assertEquals(2, lista.get(1).getQuality());
-        assertEquals(4, lista.get(1).getPrice(), 0);
+        assertEquals(400, lista.get(1).getPrice(), 0);
         assertEquals("3", lista.get(2).getName());
         assertEquals(1, lista.get(2).getCapacity());
         assertEquals(3, lista.get(2).getQuality());
-        assertEquals(3, lista.get(2).getPrice(), 0);
+        assertEquals(300, lista.get(2).getPrice(), 0);
         assertEquals("4", lista.get(3).getName());
         assertEquals(2, lista.get(3).getCapacity());
         assertEquals(5, lista.get(3).getQuality());
-        assertEquals(10, lista.get(3).getPrice(), 0);
+        assertEquals(1000, lista.get(3).getPrice(), 0);
         assertEquals("5", lista.get(4).getName());
         assertEquals(1, lista.get(4).getCapacity());
         assertEquals(5, lista.get(4).getQuality());
-        assertEquals(5, lista.get(4).getPrice(), 0);
+        assertEquals(500, lista.get(4).getPrice(), 0);
     }
 
     /**
@@ -106,19 +106,19 @@ public class ReaderTest {
         assertEquals("6", lista.get(0).getRoomsInfo().get(0).getName());
         assertEquals(2, lista.get(0).getRoomsInfo().get(0).getCapacity());
         assertEquals(3, lista.get(0).getRoomsInfo().get(0).getQuality());
-        assertEquals(6, lista.get(0).getRoomsInfo().get(0).getPrice(), 0);
+        assertEquals(600, lista.get(0).getRoomsInfo().get(0).getPrice(), 0);
         assertEquals("7", lista.get(1).getRoomsInfo().get(0).getName());
         assertEquals(1, lista.get(1).getRoomsInfo().get(0).getCapacity());
         assertEquals(4, lista.get(1).getRoomsInfo().get(0).getQuality());
-        assertEquals(4, lista.get(1).getRoomsInfo().get(0).getPrice(), 0);
+        assertEquals(400, lista.get(1).getRoomsInfo().get(0).getPrice(), 0);
         assertEquals("6", lista.get(1).getRoomsInfo().get(1).getName());
         assertEquals(2, lista.get(1).getRoomsInfo().get(1).getCapacity());
         assertEquals(3, lista.get(1).getRoomsInfo().get(1).getQuality());
-        assertEquals(6, lista.get(1).getRoomsInfo().get(1).getPrice(), 0);
+        assertEquals(600, lista.get(1).getRoomsInfo().get(1).getPrice(), 0);
         assertEquals("6", lista.get(2).getRoomsInfo().get(0).getName());
         assertEquals(2, lista.get(2).getRoomsInfo().get(0).getCapacity());
         assertEquals(3, lista.get(2).getRoomsInfo().get(0).getQuality());
-        assertEquals(6, lista.get(2).getRoomsInfo().get(0).getPrice(), 0);
+        assertEquals(600, lista.get(2).getRoomsInfo().get(0).getPrice(), 0);
     }
     
     /**

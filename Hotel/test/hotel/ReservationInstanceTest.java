@@ -71,9 +71,9 @@ public class ReservationInstanceTest {
     public void testGetClient() {
         System.out.println("getClient");
         assertEquals(reservation1.getClient().getDiscount(), reservation4.getClient().getDiscount(), 0.4);
-        assertEquals(0, reservation2.getClient().getDiscount(), 0.3);
+        assertEquals(0, reservation2.getClient().getDiscount(), 0.6);
         assertEquals(0, reservation3.getClient().getDiscount(), 0.55);
-        assertEquals(0, reservation5.getClient().getDiscount(), 0);
+        assertEquals(0, reservation5.getClient().getDiscount(), 1.0);
         assertEquals("Mateusz", reservation1.getClient().getName());
         assertEquals("Marcin", reservation2.getClient().getName());
         assertEquals("Gryzelda", reservation3.getClient().getName());

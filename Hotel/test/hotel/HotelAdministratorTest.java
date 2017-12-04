@@ -50,23 +50,23 @@ public class HotelAdministratorTest {
         assertEquals("1", lista.get(0).getName());
         assertEquals(1, lista.get(0).getCapacity());
         assertEquals(5, lista.get(0).getQuality());
-        assertEquals(5, lista.get(0).getPrice(), 0);
+        assertEquals(500, lista.get(0).getPrice(), 0);
         assertEquals("2", lista.get(1).getName());
         assertEquals(1, lista.get(1).getCapacity());
         assertEquals(4, lista.get(1).getQuality());
-        assertEquals(4, lista.get(1).getPrice(), 0);
+        assertEquals(400, lista.get(1).getPrice(), 0);
         assertEquals("3", lista.get(2).getName());
         assertEquals(3, lista.get(2).getCapacity());
         assertEquals(5, lista.get(2).getQuality());
-        assertEquals(15, lista.get(2).getPrice(), 0);
+        assertEquals(1500, lista.get(2).getPrice(), 0);
         assertEquals("4", lista.get(3).getName());
         assertEquals(2, lista.get(3).getCapacity());
         assertEquals(4, lista.get(3).getQuality());
-        assertEquals(8, lista.get(3).getPrice(), 0);
+        assertEquals(800, lista.get(3).getPrice(), 0);
         assertEquals("5", lista.get(4).getName());
         assertEquals(2, lista.get(4).getCapacity());
         assertEquals(4, lista.get(4).getQuality());
-        assertEquals(8, lista.get(4).getPrice(), 0);
+        assertEquals(800, lista.get(4).getPrice(), 0);
     }
 
         /**
@@ -100,15 +100,15 @@ public class HotelAdministratorTest {
         assertEquals("3", lista.get(0).getRoomsInfo().get(0).getName());
         assertEquals(3, lista.get(0).getRoomsInfo().get(0).getCapacity());
         assertEquals(5, lista.get(0).getRoomsInfo().get(0).getQuality());
-        assertEquals(15, lista.get(0).getRoomsInfo().get(0).getPrice(), 0);
+        assertEquals(1500, lista.get(0).getRoomsInfo().get(0).getPrice(), 0);
         assertEquals("8", lista.get(1).getRoomsInfo().get(0).getName());
         assertEquals(3, lista.get(1).getRoomsInfo().get(0).getCapacity());
         assertEquals(3, lista.get(1).getRoomsInfo().get(0).getQuality());
-        assertEquals(9, lista.get(1).getRoomsInfo().get(0).getPrice(), 0);
+        assertEquals(900, lista.get(1).getRoomsInfo().get(0).getPrice(), 0);
         assertEquals("9", lista.get(2).getRoomsInfo().get(0).getName());
         assertEquals(2, lista.get(2).getRoomsInfo().get(0).getCapacity());
         assertEquals(5, lista.get(2).getRoomsInfo().get(0).getQuality());
-        assertEquals(10, lista.get(2).getRoomsInfo().get(0).getPrice(), 0);
+        assertEquals(1000, lista.get(2).getRoomsInfo().get(0).getPrice(), 0);
     }
     
     /**
@@ -151,7 +151,7 @@ public class HotelAdministratorTest {
         assertEquals("150", hoteladmin.getRooms().get(12).getName());
         assertEquals(3, hoteladmin.getRooms().get(12).getCapacity());
         assertEquals(4, hoteladmin.getRooms().get(12).getQuality());
-        assertEquals(12, hoteladmin.getRooms().get(12).getPrice(), 0);
+        assertEquals(1200, hoteladmin.getRooms().get(12).getPrice(), 0);
     }
 
     /**
@@ -173,12 +173,13 @@ public class HotelAdministratorTest {
     @Test
     public void test6DeleteRoom() {
         System.out.println("deleteRoom");
+        hoteladmin.loadReservations(reader);
         hoteladmin.loadRooms(reader);
-        hoteladmin.deleteRoom("2");
-        assertEquals("3", hoteladmin.getRooms().get(1).getName());
-        assertEquals(3, hoteladmin.getRooms().get(1).getCapacity());
-        assertEquals(5, hoteladmin.getRooms().get(1).getQuality());
-        assertEquals(15, hoteladmin.getRooms().get(1).getPrice(), 0);
+        hoteladmin.deleteRoom("66");
+        assertEquals("2", hoteladmin.getRooms().get(1).getName());
+        assertEquals(1, hoteladmin.getRooms().get(1).getCapacity());
+        assertEquals(4, hoteladmin.getRooms().get(1).getQuality());
+        assertEquals(400, hoteladmin.getRooms().get(1).getPrice(), 0);
     }
 
     /**
